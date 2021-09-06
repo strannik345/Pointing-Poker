@@ -3,8 +3,10 @@
   margin: 0;
   list-style: none;
   text-decoration: none;
-  font-family: Roboto;
-  color: white;
+}
+
+html, body {
+  height: 100%;
 }
 
 #root{ 
@@ -49,6 +51,7 @@ footer {
   height: 70px;
   background-color: #2B3A67;
   flex-shrink: 0;
+  
 }
 
 .footer-info {  
@@ -63,6 +66,8 @@ footer {
 .footer-info > li {
   display: flex;
   align-items: center;
+  font-family: Roboto;
+  color: white;
 }
 
 .git-logo {
@@ -77,6 +82,8 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  font-family: Roboto;
+  color: white;
 }
 
 .git-links li {
@@ -89,6 +96,8 @@ footer {
 
 .git-links a{
   width: 120px;
+  font-family: Roboto;
+  color: white;
 }
 
 .git-links li:hover {
