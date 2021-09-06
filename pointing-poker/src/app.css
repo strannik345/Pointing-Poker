@@ -1,0 +1,107 @@
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+  font-family: Roboto;
+  color: white;
+}
+
+#root{ 
+  height: 100%;
+  display:flex; 
+  flex-direction:column; 
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+header {
+  width: 100%;
+  height: 100px;
+}
+
+.blue-line {
+  width: 100%;
+  height: 50px;
+  background-color: #2B3A67;
+}
+
+.light-blue-line {
+  width: 100%;
+  height: 20px;
+  background-color: #66999B;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  background-image: url('./assets/logo.png');
+  background-size: contain;
+  position: relative;
+  left: 64px;
+  top: -55px;
+}
+
+footer {
+  width: 100%;
+  height: 70px;
+  background-color: #2B3A67;
+  flex-shrink: 0;
+}
+
+.footer-info {  
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;  
+}
+
+.footer-info > li {
+  display: flex;
+  align-items: center;
+}
+
+.git-logo {
+  width: 22px;
+  height: 22px;
+  background-image: url('./assets/GitHub-Mark-32px.png');
+  background-size: contain;
+}
+
+.git-links {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.git-links li {
+  width: 150px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.git-links a{
+  width: 120px;
+}
+
+.git-links li:hover {
+  transform: scale(1.05);
+}
+
+.git-links li:hover a {
+  color: #66999B;
+  cursor: pointer;  
+}
+
+.git-links li:hover .git-logo {
+  background-image: url('./assets/GitHub-Mark-Light-32px.png'); 
+}
+
+
