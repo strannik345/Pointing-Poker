@@ -1,0 +1,39 @@
+.team-members{
+    display: flex !important;
+    flex-wrap: wrap;
+    max-width: 1000px !important;
+    justify-content: space-between;
+}
+.lobby-info{
+    display: flex !important;
+    flex-direction: column;
+    max-width: 1000px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    min-height: 200px ;
+}
+.lobby--title{
+    font-family: "Ruda" !important;
+    font-style: normal;
+    font-weight: bold !important;
+    &__primary{
+        text-align: center;
+        font-size: 24px !important;
+        line-height: 30px !important;
+        padding: 20px auto;
+    }
+    &__secondary{
+        text-align: start;
+        font-size: 12px !important;
+        line-height: 15px !important;
+    }
+    
+}
+.button{
+    width: 189px;
+    height: 47px;
+    &__right{
+        display: flex;
+        align-self: flex-end;
+    }
+}
