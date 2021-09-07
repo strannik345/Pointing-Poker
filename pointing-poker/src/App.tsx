@@ -22,7 +22,7 @@ function App() {
               <li><div className="git-logo"></div><a href="https://github.com/strannik345" target='_blank' rel="noreferrer">Vasiliy Volodko</a></li>              
             </ul>
           </li>
-          <li className='rs-logo'><a href="https://rs.school/react/">rs-school-link</a></li>
+          <li className='rs-logo'><a href="https://rs.school/react/" target='_blank' rel="noreferrer"> </a></li>
         </ul>
       </footer>
     </>
