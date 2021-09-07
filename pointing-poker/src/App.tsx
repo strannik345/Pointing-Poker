@@ -3,9 +3,6 @@ import { TeamMember } from './pages/lobby/teamMember/teamMember';
 function App() {
   return (
     <div>
-      <header >
-        Pointing poker
-      </header>
       <TeamMember/>
     </div>
   );
