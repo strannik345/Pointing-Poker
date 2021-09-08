@@ -11,7 +11,7 @@ export const MemberCard: React.FC = () => {
             style={
             {color: '#ffffff',  
             backgroundColor: '#60DABF', 
-            boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25);',
+            boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
             width: '48px', 
             height: '48px'}
             } >OP</Avatar>
