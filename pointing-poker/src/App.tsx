@@ -1,5 +1,7 @@
 import React from 'react';
+import { Route, Switch } from 'react-router';
 import './app.css';
+import { NoMatchPage } from './pages/404page/NoMatchPage';
 import { StartPage } from './pages/start page/StartPage';
 
 function App() {
@@ -11,7 +13,14 @@ function App() {
         <div className="logo"></div>
       </header>
       <main>
-        <StartPage/>
+        <Switch>
+          <Route exact path="/">
+            <StartPage/>
+          </Route>
+          <Route path='*'>
+            <NoMatchPage />
+          </Route>
+        </Switch>
       </main>      
       <footer>
         <ul className='footer-info'>
