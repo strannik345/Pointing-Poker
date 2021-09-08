@@ -1,5 +1,6 @@
 import { Box, Button, Container, FormControlLabel, Paper, Switch, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface ModalProp {
   setIsOpen(isopen: boolean): void;
@@ -8,6 +9,8 @@ interface ModalProp {
 export const ModalForm: React.FC<ModalProp> = (prop: ModalProp) => {
   const [isObserver, setIsObserver] = useState<boolean>(false);
   const { setIsOpen } = prop;
+  const dispatch = useDispatch();
+  const player = useSelector(state => state)
   return (    
     <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>      
       <Paper elevation={3} component='form' style={{width: '100%', height: '80vh', maxHeight: '470px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
