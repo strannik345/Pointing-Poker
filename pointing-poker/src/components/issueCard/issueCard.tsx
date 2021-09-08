@@ -17,7 +17,7 @@ export const IssueCard: React.FC<IIssue> = ({isNew = true}) => {
       <IconButton aria-label="edit">
         <EditIcon/>
       </IconButton>
-      <IconButton aria-label="delete">
+      <IconButton color="secondary" aria-label="delete">
         <DeleteIcon/>
       </IconButton>
     </Box>

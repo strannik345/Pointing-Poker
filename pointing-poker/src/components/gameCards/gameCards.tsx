@@ -5,16 +5,10 @@ import '@fontsource/ruda';
 import { Card, CardMedia, Container, makeStyles, Typography } from '@material-ui/core';
 
 export const GameCards: React.FC=()=> {
-    const useStyles = makeStyles({
-        media: {
-          height: 162,
-        },
-      });
-      const classes = useStyles();
     return (<div className = "game-cards">
         <Container>
             <Typography className = "lobby--title lobby--title__primary">Game cards:</Typography>
-            <Typography className = "lobby--title lobby--title__secondary">Select cover:</Typography>
+            <Typography className = "lobby--title lobby--title__primary">Select cover:</Typography>
         </Container>
         <Container className = "cards-list" style={{display:"flex", justifyContent:"end", padding:"20px"}}>
         <div className = "game-card">
