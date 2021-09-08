@@ -2,9 +2,8 @@ import React from 'react';
 import './../../pages/lobby/lobby.scss';
 import '@fontsource/ruda';
 import './gameSettings';
-import { Typography, Container, FormGroup, FormControlLabel, Switch, InputLabel, Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles } from '@material-ui/core';
+import { Typography, Container, FormGroup, FormControlLabel, Switch,  Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles } from '@material-ui/core';
 import { Timer } from '../timer/timer';
-import { Label } from '@material-ui/icons';
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
     focusVisible?: string;
