@@ -1,11 +1,41 @@
 import React from 'react';
+import { Route, Switch } from 'react-router';
+import './app.css';
+import { NoMatchPage } from './pages/404page/NoMatchPage';
+import { StartPage } from './pages/start page/StartPage';
+
+
 function App() {
   return (
-    <div>
-      <header >
-        Pointing poker
+    <>
+      <header>
+        <div className="blue-line"></div>
+        <div className="light-blue-line"></div>
+        <div className="logo"></div>
       </header>
-    </div>
+      <main>
+        <Switch>
+          <Route exact path="/">
+            <StartPage/>
+          </Route>
+          <Route path='*'>
+            <NoMatchPage />
+          </Route>
+        </Switch>
+      </main>      
+      <footer>
+        <ul className='footer-info'>
+          <li>2021</li>
+          <li>
+            <ul className='git-links'>
+              <li><div className="git-logo"></div><a href="https://github.com/IanaLit" target='_blank' rel="noreferrer">Iana Litvinova</a></li>
+              <li><div className="git-logo"></div><a href="https://github.com/strannik345" target='_blank' rel="noreferrer">Vasiliy Volodko</a></li>              
+            </ul>
+          </li>
+          <li className='rs-logo'><a href="https://rs.school/react/" target='_blank' rel="noreferrer"> </a></li>
+        </ul>
+      </footer>
+    </>
   );
 }
 

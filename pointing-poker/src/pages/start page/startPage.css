@@ -1,0 +1,7 @@
+.start-img {  
+  width: 550px;
+  height: 140px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../../assets/Poker-planer.png');
+}
