@@ -9,13 +9,13 @@ export const MembersList: React.FC =()=> {
         <Typography className = "lobby--title lobby--title__primary">Members:</Typography>
     </Container>
     <Container className = "team-members">
-        <MemberCard/>
-        <MemberCard/>
-        <MemberCard/>
-        <MemberCard/>
-        <MemberCard/>
-        <MemberCard/>
-        <MemberCard/>
+        <MemberCard isSmall={false}/>
+        <MemberCard isSmall={false}/>
+        <MemberCard isSmall={false}/>
+        <MemberCard isSmall={false}/>
+        <MemberCard isSmall={false}/>
+        <MemberCard isSmall={false}/>
+        <MemberCard isSmall={false}/>
     </Container>
     </>);
 }

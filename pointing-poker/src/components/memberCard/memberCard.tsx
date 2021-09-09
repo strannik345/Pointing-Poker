@@ -3,22 +3,25 @@ import './memberCard.scss'
 import '@fontsource/roboto';
 import { Avatar, Card, Typography, IconButton } from '@material-ui/core';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
-export const MemberCard: React.FC = () => {
+interface CardSize{
+  isSmall:boolean;
+}
+export const MemberCard: React.FC<CardSize> = ({isSmall = false}) => {
     return (
       <>
-      <Card className = "member-card">
+      <Card className = {"member-card " + (isSmall ? 'member-card__small' : '')} >
         <Avatar className = "avatar" 
             style={
             {color: '#ffffff',  
             backgroundColor: '#60DABF', 
             boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
-            width: '48px', 
-            height: '48px'}
+            width: (isSmall ? '30px' : '48px'), 
+            height: (isSmall ? '30px' : '48px')}
             } >OP</Avatar>
-            <div>
+            <div>{ !isSmall &&
               <Typography variant="subtitle1">
               IT’S YOU
-              </Typography>
+              </Typography>}
               <Typography variant="h5">
               IT’S YOU
               </Typography>
@@ -26,8 +29,8 @@ export const MemberCard: React.FC = () => {
               sinior software engeneer
               </Typography>
             </div>
-            <IconButton aria-label="delete">
-              <BlockOutlinedIcon style={{ fontSize: 56 }}/>
+            <IconButton aria-label="delete" className = "delete">
+              <BlockOutlinedIcon style={{ fontSize: (isSmall ? 26 : 56) }}/>
             </IconButton>
       </Card>
       </>

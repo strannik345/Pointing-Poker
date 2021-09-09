@@ -16,7 +16,7 @@ export const LobbyInfo: React.FC<ILobbyInfo> =(props)=> {
             <Typography className = " lobby--title lobby--title__secondary">
                 Scram master:
             </Typography>
-            <MemberCard/>
+            <MemberCard isSmall={false}/>
         </Container>
         {isMaster && <ManageGame/>}
         { !isMaster && <Button  className ="button button__outlined button__right" variant="outlined" >Exit</Button>}
