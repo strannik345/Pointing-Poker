@@ -1,0 +1,19 @@
+.manage-game{
+    padding-top: 10px;
+    padding-bottom: 40px;
+    padding-right: 0 !important;
+}
+.link-to-lobby{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &--text{
+        border: solid 1px lightgray;
+        padding: 10px;
+    }
+}
+.manage-game-buttons{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
