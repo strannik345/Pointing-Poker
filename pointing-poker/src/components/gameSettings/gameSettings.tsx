@@ -70,42 +70,47 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 export const GameSettings: React.FC =()=> {
     return(<>
-    <Container className = "settings-container" style={{width: '1000px'}}>
+    <Container className = "settings-container" style={{width: '1000px', paddingTop: "100px"}}>
         <Container>
             <Typography className = "lobby--title lobby--title__primary">Game settings:</Typography>
         </Container>
         <FormGroup className = "settings-form"
         style={{alignItems: "baseline",  width:"400px"}}>
-            <FormControlLabel
+            <FormControlLabel 
                 control={<IOSSwitch color="primary" className="switch" name = "master-as-player"/>}
                 label="Scram master as player:"
                 labelPlacement=  "start"
-                style={{display:"flex", justifyContent: "space-between"}}
+                style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />
             <FormControlLabel
                 control={<IOSSwitch color="primary" className="switch" name = "changing-card"/>}
                 label="Changing card in round end:"
                 labelPlacement=  "start"
+                style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />
             <FormControlLabel
                 control={<IOSSwitch color="primary" className="switch" name = "need-timer" />}
                 label="Is timer needed:"
                 labelPlacement=  "start"
+                style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />
             <FormControlLabel
                 control={<Input id="score-type" aria-describedby="score type" />}
                 label="Score type:"
                 labelPlacement=  "start"
+                style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />
             <FormControlLabel
                 label="Score type (short):"
                 control={<Input id="short-score-type" aria-describedby="short-score type" />}
                 labelPlacement=  "start"
+                style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />
             <FormControlLabel
                 label="Round time:"
                 control={<Timer/>}
                 labelPlacement=  "start"
+                style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />
             </FormGroup>
         </Container>
