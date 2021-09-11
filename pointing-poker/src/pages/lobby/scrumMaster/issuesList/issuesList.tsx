@@ -1,5 +1,5 @@
 import React from 'react';
-import './../../pages/lobby/lobby.scss';
+import './../../lobby.scss';
 import '@fontsource/ruda';
 import { Typography, Container } from '@material-ui/core';
 import { IssueCard } from '../issueCard/issueCard';

@@ -1,7 +1,7 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { deepOrange } from "@material-ui/core/colors";
-import { MemberCard } from "../../../components/memberCard/memberCard";
+import { MemberCard } from "../../../shared/memberCard/memberCard";
 
 interface Message {
   userName:string;

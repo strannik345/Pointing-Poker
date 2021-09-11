@@ -1,6 +1,6 @@
 import React from 'react';
 import './gameCards.scss';
-import './../../pages/lobby/lobby.scss'
+import './../../lobby.scss'
 import '@fontsource/ruda';
 import { Card, CardMedia, Container, makeStyles, Typography } from '@material-ui/core';
 

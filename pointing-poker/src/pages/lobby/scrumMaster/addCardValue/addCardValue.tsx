@@ -1,6 +1,6 @@
 import React from 'react';
 import '../gameCards/gameCards.scss';
-import './../../pages/lobby/lobby.scss';
+import './../../lobby.scss';
 import './addCardValue.scss';
 import '@fontsource/ruda';
 import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
