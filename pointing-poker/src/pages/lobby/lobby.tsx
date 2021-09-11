@@ -1,4 +1,3 @@
-import { Container } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
 import Chat from './chat/chat';

@@ -2,7 +2,6 @@ import React from 'react';
 import './timer.scss';
 import '@fontsource/ruda';
 import { Card, FormControlLabel, Input } from '@material-ui/core';
-import { Height } from '@material-ui/icons';
 export const Timer: React.FC =()=> {
     return(<Card className="timer">
         <FormControlLabel

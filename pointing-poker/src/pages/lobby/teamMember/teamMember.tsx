@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
         width: "70vw",
-        // height: "100vh",
       },
   })
 )

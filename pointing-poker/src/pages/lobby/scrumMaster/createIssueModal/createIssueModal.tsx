@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, FormControlLabel, InputLabel, Paper, Select, Switch, TextField, Typography } from "@material-ui/core";
+import { Button, Container, FormControl, InputLabel, Paper, Select, TextField, Typography } from "@material-ui/core";
 import React from "react";
 
 export const CreateIssueModal: React.FC = () => {

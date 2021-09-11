@@ -5,7 +5,7 @@ import './addCardValue.scss';
 import '@fontsource/ruda';
 import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
 import CreateIcon from '@material-ui/icons/Create';
-import { Card, CardMedia, Container, IconButton,Typography } from '@material-ui/core';
+import { Container, IconButton,Typography } from '@material-ui/core';
 
 export const AddCardValue: React.FC=()=> {
     return (<div className = "game-cards">

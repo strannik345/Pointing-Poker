@@ -3,7 +3,7 @@ import '../../../../shared/memberCard/memberCard.scss';
 import './issueCard.scss';
 import '@fontsource/roboto';
 import { Card, Typography, IconButton, Box } from '@material-ui/core';
-import { IIssue } from '../../../../types/IIssue';
+import { IIssue } from '../../../../interfaces/IIssue';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import EditIcon from '@material-ui/icons/Edit';

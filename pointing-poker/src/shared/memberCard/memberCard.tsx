@@ -3,10 +3,9 @@ import './memberCard.scss'
 import '@fontsource/roboto';
 import { Avatar, Card, Typography, IconButton } from '@material-ui/core';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
-interface CardSize{
-  isSmall:boolean;
-}
-export const MemberCard: React.FC<CardSize> = ({isSmall = false}) => {
+import { ICardSize } from '../../interfaces/card';
+
+export const MemberCard: React.FC<ICardSize> = ({isSmall = false}) => {
     return (
       <>
       <Card className = {"member-card " + (isSmall ? 'member-card__small' : '')} >

@@ -8,12 +8,11 @@ import { IssuesList } from './issuesList/issuesList';
 import { GameSettings } from './gameSettings/gameSettings';
 import { GameCards } from './gameCards/gameCards';
 import { AddCardValue } from './addCardValue/addCardValue';
-import { createStyles, makeStyles, Modal, Theme } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
         width: "70vw",
-        // height: "100vh",
       },
   })
 )
