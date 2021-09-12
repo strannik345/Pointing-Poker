@@ -2,18 +2,17 @@ import React from 'react';
 import './scrumMaster.scss';
 import '../teamMember/teamMember.scss'
 import '@fontsource/ruda';
-import { MembersList } from '../../../components/membersList/membersList';
-import { LobbyInfo } from '../../../components/lobbyInfo/lobbyInfo';
-import { IssuesList } from '../../../components/issuesList/issuesList';
-import { GameSettings } from '../../../components/gameSettings/gameSettings';
-import { GameCards } from '../../../components/gameCards/gameCards';
-import { AddCardValue } from '../../../components/addCardValue/addCardValue';
-import { createStyles, makeStyles, Modal, Theme } from '@material-ui/core';
+import { MembersList } from '../../../shared/membersList/membersList';
+import { LobbyInfo } from '../../../shared/lobbyInfo/lobbyInfo';
+import { IssuesList } from './issuesList/issuesList';
+import { GameSettings } from './gameSettings/gameSettings';
+import { GameCards } from './gameCards/gameCards';
+import { AddCardValue } from './addCardValue/addCardValue';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
         width: "70vw",
-        height: "100vh",
       },
   })
 )

@@ -1,10 +1,7 @@
-import { Box, Button, Container, Paper, Typography } from "@material-ui/core";
+import { Button, Container, Paper, Typography } from "@material-ui/core";
 import React from "react";
+import { Player } from "../../../../interfaces/player";
 
-interface Player {
-    id: string;
-    name: string;
-}
 export const KickModal: React.FC<Player> = (player: Player) => {
   return (    
     <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)'}}>      

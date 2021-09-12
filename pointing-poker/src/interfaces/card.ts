@@ -3,3 +3,6 @@ export enum CardType {
     cover = "cover",
     value = "value"
 }
+export interface ICardSize{
+    isSmall:boolean;
+  }

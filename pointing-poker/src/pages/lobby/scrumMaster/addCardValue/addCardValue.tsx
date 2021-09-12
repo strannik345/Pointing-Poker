@@ -1,11 +1,11 @@
 import React from 'react';
 import '../gameCards/gameCards.scss';
-import './../../pages/lobby/lobby.scss';
+import './../../lobby.scss';
 import './addCardValue.scss';
 import '@fontsource/ruda';
 import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
 import CreateIcon from '@material-ui/icons/Create';
-import { Card, CardMedia, Container, IconButton,Typography } from '@material-ui/core';
+import { Container, IconButton,Typography } from '@material-ui/core';
 
 export const AddCardValue: React.FC=()=> {
     return (<div className = "game-cards">

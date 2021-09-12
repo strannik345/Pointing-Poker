@@ -1,14 +1,13 @@
 import React from 'react';
 import './teamMember.scss';
 import '@fontsource/ruda';
-import { MembersList } from '../../../components/membersList/membersList';
-import { LobbyInfo } from '../../../components/lobbyInfo/lobbyInfo';
+import { MembersList } from '../../../shared/membersList/membersList';
+import { LobbyInfo } from '../../../shared/lobbyInfo/lobbyInfo';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
         width: "70vw",
-        height: "100vh",
       },
   })
 )

@@ -1,13 +1,10 @@
 import { Box, Button, Container, FormControlLabel, Paper, Switch, TextField, Typography } from "@material-ui/core";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { IStartModalProp } from "../../interfaces/IStartModalProp";
 import { useTypedSelector } from "../../store/hooks/hooks";
 
-interface ModalProp {
-  setIsOpen(isopen: boolean): void;
-}
-
-export const ModalForm: React.FC<ModalProp> = (prop: ModalProp) => {
+export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
   const [isObserver, setIsObserver] = useState<boolean>(false);
   const { setIsOpen } = prop;
   const dispatch = useDispatch();

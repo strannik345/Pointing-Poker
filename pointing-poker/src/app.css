@@ -7,16 +7,21 @@
 
 html, body {
   height: 100%;
+  overflow: auto;
 }
 
 #root{ 
   height: 100%;
   display:flex; 
   flex-direction:column; 
+  position: relative;
 }
 
 main {
-  flex: 1 0 auto;
+  flex: 1 0 content;
+  /* padding-bottom: 70px; */
+  /* margin-bottom: -70px;
+  padding-bottom: 70px; */
 }
 
 header {
@@ -51,6 +56,8 @@ footer {
   height: 70px;
   background-color: #2B3A67;
   flex-shrink: 0;
+  /* bottom: 0;*/
+  /* position:relative;  */
   
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import './app.css';
 import { NoMatchPage } from './pages/404page/NoMatchPage';
+import { Lobby } from './pages/lobby/lobby';
 import { StartPage } from './pages/start page/StartPage';
 
 
@@ -17,6 +18,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <StartPage/>
+          </Route>
+          <Route exact path="/lobby">
+            <Lobby/>
           </Route>
           <Route path='*'>
             <NoMatchPage />

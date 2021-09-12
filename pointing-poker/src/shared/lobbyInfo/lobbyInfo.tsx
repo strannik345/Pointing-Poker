@@ -3,8 +3,8 @@ import '@fontsource/ruda';
 import './lobbyInfo.scss';
 import { Typography, Button, Container} from '@material-ui/core';
 import { MemberCard } from '../memberCard/memberCard';
-import { ILobbyInfo } from '../../types/ILobbyInfo';
-import { ManageGame } from '../manageGame/manageGame';
+import { ILobbyInfo } from '../../interfaces/ILobbyInfo';
+import { ManageGame } from '../../pages/lobby/scrumMaster/manageGame/manageGame';
 export const LobbyInfo: React.FC<ILobbyInfo> =(props)=> {
     const isMaster = {...props}
     return(<>

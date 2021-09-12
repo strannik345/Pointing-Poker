@@ -1,11 +1,11 @@
 import React from 'react';
 import './gameCards.scss';
-import './../../pages/lobby/lobby.scss'
+import './../../lobby.scss'
 import '@fontsource/ruda';
 import { Card, CardMedia, Container, makeStyles, Typography } from '@material-ui/core';
 
 export const GameCards: React.FC=()=> {
-    return (<div className = "game-cards">
+    return (<div className = "game-cards" style={{width: '1000px', paddingTop: "100px"}}>
         <Container>
             <Typography className = "lobby--title lobby--title__primary">Game cards:</Typography>
             <Typography className = "lobby--title lobby--title__primary">Select cover:</Typography>
