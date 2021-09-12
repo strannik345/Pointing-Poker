@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 import { SendText } from "./sendText";
 import { ChatMessage } from "./chatMessage";
+import { useTypedSelector } from "../../../store/hooks/hooks";
+import { fetchMessages } from "../../../store/action-creators/message";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,6 +48,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Chat() {
   const classes = useStyles();
+  const {
+    messages
+  } = useTypedSelector((state) => state);
+  useEffect(() => {
+    fetchMessages();
+  });
+  console.log(messages);
   return (
     <div className={classes.container}>
       <Paper className={classes.paper} >

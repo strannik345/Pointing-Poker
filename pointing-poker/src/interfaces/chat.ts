@@ -16,3 +16,27 @@ export interface IUser{
     position: string,
     isBlocked: boolean
 }
+export interface MessageState {
+    messages:IMessage[],
+    error: null | string,
+}
+export enum MessageActionTypes {
+    FETCH_MESSAGES = 'FETCH_MESSAGES',
+    FETCH_MESSAGES_SUCCESS = 'FETCH_MESSAGES_SUCCESS',
+    FETCH_MESSAGES_ERROR = 'FETCH_MESSAGES_ERROR',
+}
+interface FetchMessagesAction {
+    type: MessageActionTypes.FETCH_MESSAGES,
+  }
+  interface FetchMessagesSuccessAction {
+    type: MessageActionTypes.FETCH_MESSAGES_SUCCESS,
+    payload:IMessage[],
+  }
+  interface FetchMessagesErrorAction {
+    type: MessageActionTypes.FETCH_MESSAGES_ERROR,
+    payload: string
+  }
+  export type MessageAction =
+    FetchMessagesAction
+    | FetchMessagesErrorAction
+    | FetchMessagesSuccessAction;
