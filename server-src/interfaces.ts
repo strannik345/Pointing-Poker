@@ -15,4 +15,5 @@ export interface IUser{
   name: string;
   position: string;
   isBlocked: boolean;
+  isObserver: boolean;
 }

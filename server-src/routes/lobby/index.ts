@@ -4,17 +4,20 @@ import { IUser } from "../../interfaces";
 
 const emitter = new events.EventEmitter();
 
+const userList: IUser[] = [];
+
 export const lobbyRouter = Router();
 
 lobbyRouter.get('/get-user', (req,res) => {
-  emitter.once('newUser', (user) => {
-    res.json(user);
+  emitter.once('newUser', () => {
+    res.json(userList);
   })
 })
 
 lobbyRouter.post('/new-user', function (req, res) {
   const user: IUser = req.body;
-  console.log(user);
+  userList.push(user);
+  console.log(userList);
   emitter.emit('newUser', user);
   res.status(200).end();
 })
