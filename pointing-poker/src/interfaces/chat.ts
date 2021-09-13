@@ -24,6 +24,7 @@ export enum MessageActionTypes {
     FETCH_MESSAGES = 'FETCH_MESSAGES',
     FETCH_MESSAGES_SUCCESS = 'FETCH_MESSAGES_SUCCESS',
     FETCH_MESSAGES_ERROR = 'FETCH_MESSAGES_ERROR',
+    POST_MESSAGE = 'POST_MESSAGE',
 }
 interface FetchMessagesAction {
     type: MessageActionTypes.FETCH_MESSAGES,
@@ -36,7 +37,12 @@ interface FetchMessagesAction {
     type: MessageActionTypes.FETCH_MESSAGES_ERROR,
     payload: string
   }
+  interface PostMessageAction {
+      type: MessageActionTypes.POST_MESSAGE,
+      payload: IMessage
+  }
   export type MessageAction =
     FetchMessagesAction
     | FetchMessagesErrorAction
-    | FetchMessagesSuccessAction;
+    | FetchMessagesSuccessAction
+    | PostMessageAction;

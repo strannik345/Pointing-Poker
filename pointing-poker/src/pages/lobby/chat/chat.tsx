@@ -4,7 +4,7 @@ import { Paper } from "@material-ui/core";
 import { SendText } from "./sendText";
 import { ChatMessage } from "./chatMessage";
 import { useTypedSelector } from "../../../store/hooks/hooks";
-import { fetchMessages } from "../../../store/action-creators/message";
+import { useActions } from "../../../store/hooks/useAction";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,20 +48,24 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Chat() {
   const classes = useStyles();
+  const { fetchMessages } = useActions();
   const {
     messages
-  } = useTypedSelector((state) => state);
+  } = useTypedSelector((state) => state.messages);
   useEffect(() => {
     fetchMessages();
-  });
-  console.log(messages);
+  }, messages);
   return (
     <div className={classes.container}>
       <Paper className={classes.paper} >
         <Paper id="style-1" className={classes.messagesBody}>
+          {messages.map((mes)=>{
+            console.log(mes);
+            <ChatMessage userName={(mes.user_id as unknown as string)} text={mes.text}/>
+          })}
+        {/* <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/>
         <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/>
-        <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/>
-        <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/>
+        <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/> */}
         </Paper>
         <SendText/>
       </Paper>
