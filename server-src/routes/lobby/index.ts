@@ -40,6 +40,11 @@ lobbyRouter.post('/stop-game', (req, res) => {
   res.status(200).end();  
 })
 
+lobbyRouter.get('/get-all-users', (req, res) => {
+  const { gameID } = req.query;
+  res.json(games.filter(game => game.gameID === Number(gameID)))
+})
+
 lobbyRouter.get('/get-users', (req,res) => {
   const { gameID } = req.query;
   emitter.once(`newUser${gameID}`, () => {
