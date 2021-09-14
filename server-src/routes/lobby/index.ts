@@ -6,39 +6,52 @@ interface StopGame {
   gameNumber: number;
 }
 
+interface IGame {
+  gameID: number;
+  users: IUser[];
+}
+
+interface IPostUser {
+  gameID: number;
+  user: IUser;
+}
+
 const emitter = new events.EventEmitter();
 
 const userList: IUser[] = [];
 
-const games: any[] = [];
+const games: IGame[] = [];
 
 export const lobbyRouter = Router();
 
 lobbyRouter.get('/start-new-game', (req, res) => {
   games.push({
-    gameURL: `/localhost:`,
-    gameNumber: games.length + 1,
+    gameID: games.length+1,
+    users: []
   });
   res.json(games[games.length-1]);
 });
 
 lobbyRouter.post('/stop-game', (req, res) => {
-  const gameNumber: StopGame = req.body;  
-  games.filter(game => game.gameNumber!== gameNumber.gameNumber);
+  const gameNumber: StopGame = req.body; 
+  const gameIndex: number = games.findIndex(game => game.gameID === gameNumber.gameNumber);
+  games.splice(gameIndex,1);
   console.log(games, gameNumber);
   res.status(200).end();  
 })
 
 lobbyRouter.get('/get-users', (req,res) => {
-  emitter.once('newUser', () => {
-    res.json(userList);
+  const { gameID } = req.query;
+  emitter.once(`newUser${gameID}`, () => {
+    res.json(games);
   })
 })
 
 lobbyRouter.post('/new-user', function (req, res) {
-  const user: IUser = req.body;
-  userList.push(user);
-  console.log(userList);
-  emitter.emit('newUser', user);
+  const user: IPostUser = req.body;
+  const gameIndex: number = games.findIndex(game => game.gameID === user.gameID);
+  games[gameIndex].users.push(user.user);
+  console.log(games);
+  emitter.emit(`newUser${user.gameID}`, user);
   res.status(200).end();
 })
