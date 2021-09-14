@@ -5,9 +5,6 @@ import SendIcon from '@material-ui/icons/Send';
 import Button from '@material-ui/core/Button';
 import { useActions } from '../../../store/hooks/useAction';
 
-
-
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     wrapForm : {
@@ -35,7 +32,7 @@ export const SendText = () => {
     const { postMessage } = useActions();
     const onSaveMessage = () => {
         postMessage({
-        id: 1,
+        id: +(new Date()),
         user_id: 1,
         text: content}
         )
@@ -50,6 +47,7 @@ export const SendText = () => {
                 id="standard-text"
                 label="text"
                 className={classes.wrapText}
+                value = {content}
                 onChange={onContentChanged}
             />
             <Button variant="contained" color="primary" 

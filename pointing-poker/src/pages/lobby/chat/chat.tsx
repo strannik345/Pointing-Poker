@@ -54,18 +54,20 @@ export default function Chat() {
   } = useTypedSelector((state) => state.messages);
   useEffect(() => {
     fetchMessages();
-  }, messages);
+  }, []);
   return (
     <div className={classes.container}>
       <Paper className={classes.paper} >
         <Paper id="style-1" className={classes.messagesBody}>
-          {messages.map((mes)=>{
-            console.log(mes);
-            <ChatMessage userName={(mes.user_id as unknown as string)} text={mes.text}/>
-          })}
-        {/* <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/>
-        <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/>
-        <ChatMessage userName={'John Doe'} text={'Hello, brothers! Lets talk about app'}/> */}
+          {console.log("messages",messages)};
+          { Object.keys(messages).map((key) => {
+            return messages[+key] ? <ChatMessage key = {messages[+key].id} userName={(messages[+key].user_id as unknown as string)} text={messages[+key].text} />
+    : ""})
+  }
+          {/* {messages.map((mes)=>{
+            return <ChatMessage key = {mes.id} userName={(mes.user_id as unknown as string)} text={mes.text}/>
+          })} */}
+        
         </Paper>
         <SendText/>
       </Paper>

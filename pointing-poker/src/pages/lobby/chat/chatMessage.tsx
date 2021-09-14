@@ -84,8 +84,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ChatMessage:React.FC<Message> = (props:Message) => {
-  const {userName, text} = {...props};
+  const {text} = {...props};
   const classes = useStyles();
+  console.log("chat mes", text);
   return (
     <>
       <div className={classes.messageRow}>
