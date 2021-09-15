@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Paper } from "@material-ui/core";
+import { Button, Paper, TextField } from "@material-ui/core";
 import { SendText } from "./sendText";
+import SendIcon from '@material-ui/icons/Send';
 import { ChatMessage } from "./chatMessage";
-import { useTypedSelector } from "../../../store/hooks/hooks";
-import { useActions } from "../../../store/hooks/useAction";
-
+import axios from '../../../services/api';
+import { IMessage } from "../../../interfaces/chat";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
@@ -32,28 +32,75 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: 10,
       overflowY: "scroll",
       height: "calc( 100% - 80px )"
-    }
+    },
+    wrapForm : {
+      display: "flex",
+      justifyContent: "center",
+      width: "95%",
+      margin: `${theme.spacing(0)} auto`
+  },
+  wrapText  : {
+      width: "100%"
+  },
+  button: {
+      margin: theme.spacing(1),
+  }
   })
 );
 
 export default function Chat() {
   const classes = useStyles();
-  const { fetchMessages } = useActions();
-  const { messages} = useTypedSelector((state) => state.messages);
-  useEffect(() => {
+
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [content, setContent] = useState('');
+  useEffect(()=> {
     fetchMessages();
-  }, []);
+}, []);
+  const fetchMessages = async () => {
+      try {
+        axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+        const {data} = await axios.get(`/api/get-message`);
+        setMessages(prev => [...prev, data]);
+        await fetchMessages();
+      } catch (e) {
+        setTimeout(() => {
+          fetchMessages();
+        }, 500)
+      }
+    }
+    const onSaveMessage = async () => {
+        await axios.post(`/api/new-message`,{
+        id: +(new Date()),
+        user_id: 1,
+        text: content})
+        await fetchMessages();
+    }
+  
+  
   return (
     <div className={classes.container}>
       <Paper className={classes.paper} >
         <Paper id="style-1" className={classes.messagesBody}>
-          {console.log("messages",messages)};
           { Object.keys(messages).map((key) => {
             return messages[+key] ? <ChatMessage key = {messages[+key].id} userName={(messages[+key].user_id as unknown as string)} text={messages[+key].text} />
               : ""})
           }
         </Paper>
-        <SendText/>
+        {/* <SendText/> */}
+        <div className={classes.wrapForm} >
+            <TextField
+                id="standard-text"
+                label="text"
+                className={classes.wrapText}
+                value = {content}
+                onChange={e => setContent(e.target.value)}
+            />
+            <Button variant="contained" color="primary" 
+                    className={classes.button}
+                    onClick = {onSaveMessage}>
+                <SendIcon />
+            </Button>
+            </div>
       </Paper>
     </div>
   );
