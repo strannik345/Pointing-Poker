@@ -8,12 +8,21 @@ export const MembersList: React.FC =()=> {
     const [membersList, setMemberList] = useState<Player[]>([])
     console.log(process.env.REACT_APP_SERVER)
     useEffect(()=> {
+        getCurrentUsers();
         subscribeMembers();
     }, []);
 
+    const getCurrentUsers = async () => {
+        console.log('1');
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameId=5`); //gameId from redux change then
+        const members: Player[] = await response.json();
+        setMemberList(members);
+    }
+
     const subscribeMembers = async () => {
+        console.log('2');
         try {             
-            const response = await fetch(`${process.env.RREACT_APP_SERVERE}/api/get-user`);
+            const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-users?gameId=5`);
             const members: Player[] = await response.json();
             setMemberList(prev => members );
             console.log(membersList);
