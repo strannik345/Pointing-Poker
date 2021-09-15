@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-
 export const SendText = () => {
     const [content, setContent] = useState('');
     const onContentChanged = (e: { target: { value: React.SetStateAction<string>; }; }) => {
@@ -59,7 +58,5 @@ export const SendText = () => {
         </>
     )
 }
-function e(e: any) {
-    throw new Error('Function not implemented.');
-}
+
 

@@ -10,7 +10,7 @@ export const GameCards: React.FC=()=> {
             <Typography className = "lobby--title lobby--title__primary">Game cards:</Typography>
             <Typography className = "lobby--title lobby--title__primary">Select cover:</Typography>
         </Container>
-        <Container className = "cards-list" style={{display:"flex", justifyContent:"end", padding:"20px"}}>
+        <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"20px"}}>
         <div className = "game-card">
                 <div className = "card card--cover__1"> </div>
             </div>

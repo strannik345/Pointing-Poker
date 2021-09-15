@@ -12,7 +12,7 @@ export const AddCardValue: React.FC=()=> {
         <Container>
             <Typography className = "lobby--title lobby--title__primary">Add cards value:</Typography>
         </Container>
-        <Container className = "cards-list" style={{display:"flex", justifyContent:"end", padding:"20px"}}>
+        <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"20px"}}>
             <div className = "game-card">
                 <div className = "card"> 
                 <span className = "card-value">12</span>
