@@ -1,3 +1,4 @@
+import { Container } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
 import Chat from './chat/chat';
@@ -8,11 +9,11 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
         // width: "100vw",
         height: "80vh",
-        minHeight: '1885px',
+        minHeight: '2150px',
         marginBottom: '70px',
         display: "flex",
-        alignItems: "end",
-        justifyContent: "center",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
         paddingBottom: "100px",
     }
   })
@@ -24,8 +25,8 @@ export const Lobby: React.FC =()=> {
         //     <TeamMember/> 
         //     <Chat/>
         // </div>);
-        <div className={classes.container}>
+        <Container className={classes.container}>
             <ScrumMaster/> 
             <Chat/>
-        </div>);
+        </Container>);
 }
