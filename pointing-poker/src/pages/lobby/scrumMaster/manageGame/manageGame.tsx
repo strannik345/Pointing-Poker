@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './manageGame.scss';
 import { Typography, Button, Container, Box} from '@material-ui/core';
+
+interface IGame {
+    gameID: number;
+  }
+
 export const ManageGame: React.FC =()=> {
+    const [gameURL, setGameURL] = useState<string>('');
+
+    useEffect(()=>{
+        getGameID()
+    },[])
+
+    const getGameID = async() => {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/start-new-game`);
+        const gameID = await response.json();
+        console.log(gameID);
+        setGameURL(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=${gameID.gameID}`);
+    }
     return(<>
         <Container className="manage-game">
             <Typography >Link to lobby:</Typography>
             <Box className="link-to-lobby">
-                <Typography className = "link-to-lobby--text">http://pockerplanning.c...</Typography>
+                <Typography className = "link-to-lobby--text">{gameURL}</Typography>
                 <Button className = "button" variant="contained" color="primary">Copy</Button>
             </Box> 
             <Box className="manage-game-buttons">

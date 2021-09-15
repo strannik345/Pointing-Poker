@@ -12,7 +12,7 @@ export const MembersList: React.FC =()=> {
     }, []);
 
     const subscribeMembers = async () => {
-        try {
+        try {             
             const response = await fetch(`${process.env.RREACT_APP_SERVERE}/api/get-user`);
             const members: Player[] = await response.json();
             setMemberList(prev => members );
