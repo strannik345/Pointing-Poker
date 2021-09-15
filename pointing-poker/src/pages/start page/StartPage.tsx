@@ -1,5 +1,7 @@
 import { Box, Button, Container, Modal, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Lobby } from '../lobby/lobby';
 import { ModalForm } from './ModalForm';
 import './startPage.css'
 
@@ -14,7 +16,10 @@ export const StartPage: React.FC = () => {
           <Container style={{display: 'flex', flexDirection: 'column', width: 'fit-content'}}>
             <Box display="flex" flexDirection="row" justifyContent="space-between" height={40}>
               <Typography style={{color: 'black'}}>Create new session</Typography>
-              <Button variant="contained" color="primary">Start new game</Button>
+              <Link to='/lobby'>
+                <Button variant="contained" color="primary">Start new game</Button>
+              </Link>
+              
             </Box>
             <Box display="flex" flexDirection="column" >
               <Typography style={{color: 'black'}}>Connect to lobby by URL:</Typography>
