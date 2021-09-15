@@ -9,7 +9,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
   const { setIsOpen } = prop;
   const dispatch = useDispatch();
   const {lastName, name, observer, position} = useTypedSelector(state => state.player);
-  const formData = {
+  const formData = { 
     name: useRef<HTMLInputElement>(),
     lastName: useRef<HTMLInputElement>(),
     position: useRef<HTMLInputElement>()

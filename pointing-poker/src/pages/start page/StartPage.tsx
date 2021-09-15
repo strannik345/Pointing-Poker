@@ -1,12 +1,21 @@
 import { Box, Button, Container, Modal, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useTypedSelector } from '../../store/hooks/hooks';
 import { Lobby } from '../lobby/lobby';
 import { ModalForm } from './ModalForm';
 import './startPage.css'
 
 export const StartPage: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
+  
+  const dispatch = useDispatch();
+  const { gameURL } = useTypedSelector(state => state.gameURL);
+  
+  const urlHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({type: "CHANGE_GameURL", payload: {gameURL: event.target.value}});
+  }
 
   return (
     <>
@@ -24,7 +33,7 @@ export const StartPage: React.FC = () => {
             <Box display="flex" flexDirection="column" >
               <Typography style={{color: 'black'}}>Connect to lobby by URL:</Typography>
               <Box display="flex" flexDirection="row" justifyContent="space-between">
-                <TextField size="small" id="input-url" label="URL" variant="outlined" style={{width: '400px'}}/>
+                <TextField onChange={urlHandler} size="small" id="input-url" label="URL" variant="outlined" style={{width: '400px'}}/>
                 <Button variant="contained" color="primary" onClick={() => setOpenModal(prev => !prev)}>Connect</Button>
               </Box>
             </Box>
