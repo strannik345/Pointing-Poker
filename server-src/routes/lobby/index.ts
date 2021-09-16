@@ -48,7 +48,7 @@ lobbyRouter.get('/get-all-users', (req, res) => {
 lobbyRouter.get('/get-users', (req,res) => {
   const { gameID } = req.query;
   emitter.once(`newUser${gameID}`, () => {
-    res.json(games);
+    res.json(games.filter(game => game.gameID === Number(gameID)));
   })
 })
 
