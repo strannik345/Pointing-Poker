@@ -15,6 +15,7 @@ export interface IUser{
   id: number;
   avatar: string;
   name: string;
+  lastName: string;
   position: string;
   isBlocked: boolean;
   isObserver: boolean;

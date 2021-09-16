@@ -5,16 +5,16 @@ import { IStartModalProp } from "../../interfaces/IStartModalProp";
 import { useTypedSelector } from "../../store/hooks/hooks";
 
 export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
-  const [isObserver, setIsObserver] = useState<boolean>(false);
+  const [observer, setObserver] = useState<boolean>(false);
   const { setIsOpen } = prop;
   const dispatch = useDispatch();
-  const {lastName, name, observer, position} = useTypedSelector(state => state.player);
+  const {lastName, name, isObserver, position} = useTypedSelector(state => state.player);
   const formData = { 
     name: useRef<HTMLInputElement>(),
     lastName: useRef<HTMLInputElement>(),
     position: useRef<HTMLInputElement>()
   };
-  console.log(lastName, name, observer, position);
+  console.log(lastName, name, position);
   return (    
     <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>      
       <Paper elevation={3} component='form' style={{width: '100%', height: '80vh', maxHeight: '470px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
@@ -31,9 +31,9 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
           </div>
           <FormControlLabel 
             control={<Switch
-                checked={isObserver}
-                onChange={() => setIsObserver(prev => !prev)}
-                name="isObserver"
+                checked={observer}
+                onChange={() => setObserver(prev => !prev)}
+                name="observer"
                 color="primary"
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />}
@@ -42,7 +42,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
         </Box>        
         <div style={{justifyContent: 'space-between', display: 'flex', flexDirection: 'row', width: '90%'}}>
           <Button variant='contained' color='primary' onClick={()=>{
-            dispatch({type: 'CHANGE_PLAYER', payload: {lastName: formData.lastName.current?.value, name: formData.name.current?.value, observer: isObserver, position: formData.position.current?.value}});
+            dispatch({type: 'CHANGE_PLAYER', payload: {lastName: formData.lastName.current?.value, name: formData.name.current?.value, isObserver: observer, position: formData.position.current?.value}});
           }}>Confirm</Button>
           <Button variant='contained' color='secondary' onClick={()=>setIsOpen(false)}>Cancel</Button>
         </div>
