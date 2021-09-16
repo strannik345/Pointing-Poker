@@ -3,6 +3,10 @@ export interface IMessage{
     user_id: number,
     text: string
 }
+// export interface IChatProps {
+//     messages : IMessage[],
+//     setMessages : (prev:IMessage[]) => void,
+// } 
 export interface GET200_chat{
     messages:IMessage[];
 }

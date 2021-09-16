@@ -4,8 +4,10 @@ import '@fontsource/roboto';
 import { Avatar, Card, Typography, IconButton } from '@material-ui/core';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
 import { ICardSize } from '../../interfaces/card';
+import { useTypedSelector } from '../../store/hooks/hooks';
 
 export const MemberCard: React.FC<ICardSize> = ({isSmall = false}) => {
+  const player = useTypedSelector(state=>state.player);
     return (
       <>
       <Card className = {"member-card " + (isSmall ? 'member-card__small' : '')} >
@@ -19,13 +21,13 @@ export const MemberCard: React.FC<ICardSize> = ({isSmall = false}) => {
             } >OP</Avatar>
             <div>{ !isSmall &&
               <Typography variant="subtitle1">
-              IT’S YOU
+              {player.lastName}
               </Typography>}
               <Typography variant="h5">
-              IT’S YOU
+              {player.name}
               </Typography>
               <Typography variant="caption">
-              sinior software engeneer
+              {player.position}
               </Typography>
             </div>
             <IconButton aria-label="delete" className = "delete">
