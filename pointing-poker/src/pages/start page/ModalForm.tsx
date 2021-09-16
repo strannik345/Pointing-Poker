@@ -8,7 +8,8 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
   const [observer, setObserver] = useState<boolean>(false);
   const { setIsOpen } = prop;
   const dispatch = useDispatch();
-  const {lastName, name, isObserver, position} = useTypedSelector(state => state.player);
+  const {lastName, name, position} = useTypedSelector(state => state.player);
+  const {gameURL} = useTypedSelector(state => state.gameURL);
   const formData = { 
     name: useRef<HTMLInputElement>(),
     lastName: useRef<HTMLInputElement>(),
@@ -42,7 +43,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
         </Box>        
         <div style={{justifyContent: 'space-between', display: 'flex', flexDirection: 'row', width: '90%'}}>
           <Button variant='contained' color='primary' onClick={()=>{
-            dispatch({type: 'CHANGE_PLAYER', payload: {lastName: formData.lastName.current?.value, name: formData.name.current?.value, isObserver: observer, position: formData.position.current?.value}});
+            dispatch({type: 'CHANGE_PLAYER', payload: {id: gameURL , lastName: formData.lastName.current?.value, name: formData.name.current?.value, isObserver: observer, position: formData.position.current?.value}});
           }}>Confirm</Button>
           <Button variant='contained' color='secondary' onClick={()=>setIsOpen(false)}>Cancel</Button>
         </div>

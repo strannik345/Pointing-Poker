@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './../../pages/lobby/lobby.scss';
 import '@fontsource/ruda';
 import { Typography, Container } from '@material-ui/core';
-import { MemberCard } from '../memberCard/memberCard';
-import { Player } from '../../interfaces/player';
 import { LobbyMemberCard } from '../memberCard/LobbyMemberCard';
+import { useDispatch } from 'react-redux';
+import { useTypedSelector } from '../../store/hooks/hooks';
 
 interface IGame {
   gameID: number;
@@ -12,7 +12,7 @@ interface IGame {
 }
 
 export interface IUser{
-  id: number;
+  id: string;
   avatar: string;
   name: string;
   lastName: string;
@@ -22,26 +22,30 @@ export interface IUser{
 }
 
 export const MembersList: React.FC =()=> {
-    const [memberList, setMemberList] = useState<IUser[]>([])
+    const [memberList, setMemberList] = useState<IUser[]>([]);    
+    const dispatch = useDispatch();
+    const gameURL = useTypedSelector(state => state.gameURL.gameURL);
     useEffect(()=> {
         getCurrentUsers();
-        subscribeMembers();
+        subscribeMembers(); 
     }, []);
 
     const getCurrentUsers = async () => {
-        console.log('1');
-        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=3`); //gameId from redux change then
-        const members: IGame[] = await response.json();     
-        console.log(members[0].users);
-        setMemberList(prev => members[0].users);
-        console.log(memberList);
+        try {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=${gameURL}`); //gameId from redux change then
+        const members: IGame[] = await response.json(); 
+        setMemberList(members[0].users);
+        } catch (e) {
+            getCurrentUsers();
+        }
     }
 
     const subscribeMembers = async () => {
-        console.log('2');
+        console.log(gameURL);
         try {             
-            const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-users?gameID=3`);
-            const members = await response.json();
+            const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-users?gameID=${gameURL}`);
+            const members: IGame[] = await response.json();
+            console.log(members[0].users);
             setMemberList(members[0].users);
             await subscribeMembers()
         } catch(e) {

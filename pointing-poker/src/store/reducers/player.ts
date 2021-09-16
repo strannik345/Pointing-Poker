@@ -6,7 +6,7 @@ export interface PlayerAction {
 }
 
 export const defaultPlayerState: IUser = {
-  id: 0,
+  id: '',
   avatar: '',
   name: 'Jhon',
   lastName: 'Doe',
@@ -16,14 +16,13 @@ export const defaultPlayerState: IUser = {
 }
 
 const registerNewPlayer = async (data: IUser) => {
-  console.log('registering....')
   await fetch(`${process.env.REACT_APP_SERVER}/api/new-user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      gameID: 3,
+      gameID: data.id,
       user: data      
     })
   })
