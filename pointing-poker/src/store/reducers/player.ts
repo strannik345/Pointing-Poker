@@ -3,6 +3,7 @@ export interface PlayerState {
   lastName: string;
   position: string;
   observer: boolean;
+  avatar: string;
 }
 
 export interface PlayerAction {
@@ -15,6 +16,7 @@ export const defaultPlayerState: PlayerState = {
   lastName: '',
   position: '',
   observer: false,
+  avatar: '',
 }
 
 export const playerReducer = (state = defaultPlayerState, action: PlayerAction): PlayerState => {

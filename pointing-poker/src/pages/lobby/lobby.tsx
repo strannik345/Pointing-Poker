@@ -1,6 +1,7 @@
 import { Container } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
+import { useTypedSelector } from '../../store/hooks/hooks';
 import Chat from './chat/chat';
 import { ScrumMaster } from './scrumMaster/scrumMaster';
 import { TeamMember } from './teamMember/teamMember';
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 export const Lobby: React.FC =()=> {
+  const {lastName, name, observer, position, avatar} = useTypedSelector(state => state.player);
     const classes = useStyles();
     return(
         // <div className={classes.container}>
