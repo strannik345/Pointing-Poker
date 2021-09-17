@@ -15,7 +15,7 @@ export const TeamMember: React.FC =()=> {
     const classes = useStyles();
     return(
         <div className={classes.container}>
-            <LobbyInfo isMaster={false}/>
+            {/* <LobbyInfo isMaster={false}/> */}
             <MembersList/>
         </div>
     );
