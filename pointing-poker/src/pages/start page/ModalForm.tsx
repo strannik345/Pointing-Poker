@@ -1,6 +1,7 @@
 import { Box, Button, Container, FormControlLabel, Paper, Switch, TextField, Typography } from "@material-ui/core";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { IStartModalProp } from "../../interfaces/IStartModalProp";
 import { useTypedSelector } from "../../store/hooks/hooks";
 
@@ -15,7 +16,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
     lastName: useRef<HTMLInputElement>(),
     position: useRef<HTMLInputElement>()
   };
-  console.log(lastName, name, position);
+  const history = useHistory();
   return (    
     <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>      
       <Paper elevation={3} component='form' style={{width: '100%', height: '80vh', maxHeight: '470px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
@@ -44,6 +45,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
         <div style={{justifyContent: 'space-between', display: 'flex', flexDirection: 'row', width: '90%'}}>
           <Button variant='contained' color='primary' onClick={()=>{
             dispatch({type: 'CHANGE_PLAYER', payload: {id: gameURL , lastName: formData.lastName.current?.value, name: formData.name.current?.value, isObserver: observer, position: formData.position.current?.value}});
+            history.push('/player-lobby');
           }}>Confirm</Button>
           <Button variant='contained' color='secondary' onClick={()=>setIsOpen(false)}>Cancel</Button>
         </div>

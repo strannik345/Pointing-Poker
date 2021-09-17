@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 import './app.css';
 import { NoMatchPage } from './pages/404page/NoMatchPage';
 import { Lobby } from './pages/lobby/lobby';
+import { PlayerLobby } from './pages/lobby/PlayerLobby';
 import { StartPage } from './pages/start page/StartPage';
 
 
@@ -21,6 +22,9 @@ function App() {
           </Route>
           <Route exact path="/lobby">
             <Lobby/>
+          </Route>
+          <Route exact path="/player-lobby">
+            <PlayerLobby />
           </Route>
           <Route path='*'>
             <NoMatchPage />

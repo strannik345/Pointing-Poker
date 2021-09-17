@@ -32,11 +32,11 @@ export const MembersList: React.FC =()=> {
 
     const getCurrentUsers = async () => {
         try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=${gameURL}`); //gameId from redux change then
-        const members: IGame[] = await response.json(); 
-        setMemberList(members[0].users);
+          const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=${gameURL}`); //gameId from redux change then
+          const members: IGame[] = await response.json(); 
+          setMemberList(members[0].users);                   
         } catch (e) {
-            getCurrentUsers();
+          getCurrentUsers();
         }
     }
 
