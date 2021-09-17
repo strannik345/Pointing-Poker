@@ -28,7 +28,7 @@ export const MembersList: React.FC =()=> {
     useEffect(()=> {
         getCurrentUsers();
         subscribeMembers(); 
-    }, []);
+    }, [gameURL]);
 
     const getCurrentUsers = async () => {
         try {

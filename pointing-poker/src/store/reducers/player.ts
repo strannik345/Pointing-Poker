@@ -15,17 +15,19 @@ export const defaultPlayerState: IUser = {
   isObserver: false,
 }
 
-const registerNewPlayer = async (data: IUser) => {
+const registerNewPlayer = async (data: IUser) => {  
+  const request = {
+    gameID: Number(data.id),
+    user: data   
+  };
+  console.log(request);
   await fetch(`${process.env.REACT_APP_SERVER}/api/new-user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      gameID: data.id,
-      user: data      
-    })
-  })
+    body: JSON.stringify(request),
+  });
 }
 
 export const playerReducer = (state = defaultPlayerState, action: PlayerAction): IUser => {

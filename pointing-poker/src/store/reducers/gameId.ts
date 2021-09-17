@@ -9,7 +9,7 @@ export interface GameURLAction {
 
 
 export const defaultGameURL: GameURL = {
-  gameURL: '123',
+  gameURL: '',
 }
 
 export const gameURLReducer = (state = defaultGameURL, action: GameURLAction): GameURL => {
