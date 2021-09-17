@@ -1,5 +1,6 @@
 import { IUser } from "../../shared/membersList/membersList";
 
+
 export interface PlayerAction {
   type: string;
   payload: IUser; 
@@ -14,7 +15,6 @@ export const defaultPlayerState: IUser = {
   isBlocked: false,
   isObserver: false,
 }
-
 const registerNewPlayer = async (data: IUser) => {  
   const request = {
     gameID: Number(data.id),
@@ -28,8 +28,6 @@ const registerNewPlayer = async (data: IUser) => {
     },
     body: JSON.stringify(request),
   });
-}
-
 export const playerReducer = (state = defaultPlayerState, action: PlayerAction): IUser => {
   switch (action.type) {
     case 'CHANGE_PLAYER':
