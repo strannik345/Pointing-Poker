@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 export const Lobby: React.FC =()=> {
-  const {lastName, name, observer, position, avatar} = useTypedSelector(state => state.player);
+  const {lastName, name, isObserver, position, avatar} = useTypedSelector(state => state.player);
     const classes = useStyles();
     return(
         // <div className={classes.container}>

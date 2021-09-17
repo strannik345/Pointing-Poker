@@ -28,6 +28,7 @@ const registerNewPlayer = async (data: IUser) => {
     },
     body: JSON.stringify(request),
   });
+}
 export const playerReducer = (state = defaultPlayerState, action: PlayerAction): IUser => {
   switch (action.type) {
     case 'CHANGE_PLAYER':

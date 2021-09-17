@@ -17,8 +17,8 @@ export const MemberCard: React.FC<ICardSize> = ({isSmall = false}) => {
       cloudName: 'pointingpoker'
     }
   }); 
-  const {lastName, name, observer, position, avatar} = useTypedSelector(state => state.player);
-  console.log(lastName, name, observer, position, avatar);
+  const {lastName, name, isObserver, position, avatar} = useTypedSelector(state => state.player);
+  console.log(lastName, name, isObserver, position, avatar);
   const avatarImage = cld.image(avatar);
   if (isSmall) {
     avatarImage
