@@ -11,6 +11,7 @@ app.ws('/',(ws: any, req: any) => {
   console.log('ПОДКЛЮЧЕНО');
   ws.on('message', (msg: any) => {
     console.log('getttttt');
+    console.log(msg);
     msg = JSON.parse(msg);
     switch (msg.method) {
       case 'connection' :
