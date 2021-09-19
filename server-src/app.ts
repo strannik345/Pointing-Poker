@@ -34,9 +34,9 @@ app.ws('/',(ws: any, req: any) => {
 })
 
 
-const broadcastConnection = (ws: any, msg: any) => {
-  console.log(msg.method);
+const broadcastConnection = (ws: any, msg: any) => {  
   aWss.clients.forEach((client: any) => {
+    console.log('in aws foreach', msg.method);
     switch (msg.method) {
       case 'connection' || 'first-connection':
         console.log('connection');
