@@ -1,4 +1,3 @@
-import { stringOrNumber } from "@cloudinary/url-gen/types/types";
 import { IUser } from "../shared/membersList/membersList";
 export interface IIssue{
     id: string,
@@ -26,7 +25,7 @@ export enum ScramInfoActionTypes {
     ADD_ISSUE = 'ADD_ISSUE',
     SET_SCRAM_IS_PLAYER = 'SET_SCRAM_IS_PLAYER',
     SET_CHANGING_CARD_IN_ROUND_END = 'SET_CHANGING_CARD_IN_ROUND_END',
-    SET_IS_TIME_NEED = 'SET_IS_TIME_NEED',
+    SET_IS_TIMER_NEED = 'SET_IS_TIME_NEED',
     SET_SCORE_TYPE = "SET_SCORE_TYPE",
     SET_SCORE_TYPE_SHORT = "SET_SCORE_TYPE_SHORT",
     SET_ROUND_TIME_MINUTES = "SET_ROUND_TIME_MINUTES",
@@ -46,7 +45,7 @@ export enum ScramInfoActionTypes {
         payload: boolean,
     }
     interface SetIsTimeNeed {
-        type: ScramInfoActionTypes.SET_IS_TIME_NEED,
+        type: ScramInfoActionTypes.SET_IS_TIMER_NEED,
         payload: boolean,
     }
     interface SetScoreType {

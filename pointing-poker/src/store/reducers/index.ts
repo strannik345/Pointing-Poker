@@ -1,5 +1,6 @@
 import { combineReducers } from "redux"
 import { gameURLReducer } from "./gameId"
+import { gameSettingsReducer } from "./gameSettings"
 import { messageReducer } from "./messageReducer"
 import { playerReducer } from "./player"
 
@@ -9,7 +10,8 @@ import { playerReducer } from "./player"
 export const rootReducer = combineReducers({
   player: playerReducer,
   gameURL: gameURLReducer,
-  messages: messageReducer
+  messages: messageReducer,
+  gameSettings: gameSettingsReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

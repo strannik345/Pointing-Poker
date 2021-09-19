@@ -11,6 +11,7 @@ import { AddCardValue } from './addCardValue/addCardValue';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { IScramInfo } from '../../../interfaces/IScramInfo';
 import { useTypedSelector } from '../../../store/hooks/hooks';
+import { useDispatch } from 'react-redux';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -20,7 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 export const ScrumMaster: React.FC =()=> {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const gameUrl = useTypedSelector(state => state.gameURL);
+    const gameSettings = useTypedSelector(state => state.gameSettings);
     
     // const [settings, setSettings] = useState<IScramInfo>();
     return(
