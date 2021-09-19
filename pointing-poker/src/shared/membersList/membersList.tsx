@@ -30,6 +30,7 @@ export const MembersList: React.FC =()=> {
 
     const connectToServer = () => {
       const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
+      // const socket = new WebSocket('ws:localhost:8000');
       socket.onopen = () => {
         console.log('connected'); 
         socket.send(JSON.stringify({

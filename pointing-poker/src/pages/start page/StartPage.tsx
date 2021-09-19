@@ -19,32 +19,32 @@ export const StartPage: React.FC = () => {
     dispatch({type: "CHANGE_GameURL", payload: {gameURL: gameID}});
   }
 
-  // useEffect(()=> {
-  //   const socket = new WebSocket('ws://localhost:8000/');
-  //   socket.onmessage= (event) => {
-  //     console.log('get message');
-  //     const type = JSON.parse(event.data).type;
-  //     console.log(type);
-  //     if(type === 'chat-message'){
-  //       const message = JSON.parse(event.data).msg;        
-  //       console.log(message);
-  //       setM(prev => {return [...prev, message] });
-  //     }
-  //   }
-  // },[])
+  useEffect(()=> {
+    const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
+    socket.onmessage= (event) => {
+      console.log('get message');
+      const type = JSON.parse(event.data).type;
+      console.log(type);
+      if(type === 'chat-message'){
+        const message = JSON.parse(event.data).msg;        
+        console.log(message);
+        setM(prev => {return [...prev, message] });
+      }
+    }
+  },[])
 
-  // const click = () => {
-  //   console.log('clicked')
-  //   const socket = new WebSocket('ws://localhost:8000/');
-  //   socket.onopen = () => {
-  //     console.log('connected for chat'); 
-  //     socket.send(JSON.stringify({
-  //       method: 'chat-message',
-  //       msg: 'hello',
-  //     }))     
-  //   } 
+  const click = () => {
+    console.log('clicked')
+    const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
+    socket.onopen = () => {
+      console.log('connected for chat'); 
+      socket.send(JSON.stringify({
+        method: 'chat-message',
+        msg: 'hello',
+      }))     
+    } 
     
-  // }
+  }
 
   return (
     <>
@@ -55,7 +55,7 @@ export const StartPage: React.FC = () => {
             <Box display="flex" flexDirection="row" justifyContent="space-between" height={40}>
               <Typography style={{color: 'black'}}>Create new session</Typography>
               {/* <Link to='/lobby'> */}
-                <Button variant="contained" color="primary" >Start new game</Button>
+                <Button variant="contained" color="primary" onClick={click}>Start new game</Button>
               {/* </Link> */}
               {
                 m.map(i => <div>i</div>)

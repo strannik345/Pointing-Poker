@@ -30,7 +30,8 @@ export const defaultPlayerState: IUser = {
 // }
 
 const registerNewPlayer = (data: IUser) => {
-  const socket = new WebSocket('ws://localhost:8000/');
+  // const socket = new WebSocket('ws://localhost:8000/');
+  const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
   socket.onopen = () => {
     console.log('connected');
     socket.send(JSON.stringify({

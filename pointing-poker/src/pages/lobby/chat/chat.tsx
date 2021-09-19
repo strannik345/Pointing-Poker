@@ -54,27 +54,27 @@ export default function Chat() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [content, setContent] = useState('');
   useEffect(()=> {
-    fetchMessages();
+    // fetchMessages();
 }, []);
-  const fetchMessages = async () => {
-      try {
-        axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
-        const {data} = await axios.get(`/api/get-message`);
-        setMessages(prev => [...prev, data]);
-        await fetchMessages();
-      } catch (e) {
-        setTimeout(() => {
-          fetchMessages();
-        }, 500)
-      }
-    }
-    const onSaveMessage = async () => {
-        await axios.post(`/api/new-message`,{
-        id: +(new Date()),
-        user_id: 1,
-        text: content})
-        await fetchMessages();
-    }
+  // const fetchMessages = async () => {
+  //     try {
+  //       axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+  //       const {data} = await axios.get(`/api/get-message`);
+  //       setMessages(prev => [...prev, data]);
+  //       await fetchMessages();
+  //     } catch (e) {
+  //       setTimeout(() => {
+  //         fetchMessages();
+  //       }, 500)
+  //     }
+  //   }
+  //   const onSaveMessage = async () => {
+  //       await axios.post(`/api/new-message`,{
+  //       id: +(new Date()),
+  //       user_id: 1,
+  //       text: content})
+  //       await fetchMessages();
+  //   }
   
   
   return (
@@ -97,7 +97,7 @@ export default function Chat() {
             />
             <Button variant="contained" color="primary" 
                     className={classes.button}
-                    onClick = {onSaveMessage}>
+                    onClick = {()=>{}}>
                 <SendIcon />
             </Button>
             </div>
