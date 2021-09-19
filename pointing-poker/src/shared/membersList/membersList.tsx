@@ -29,7 +29,7 @@ export const MembersList: React.FC =()=> {
     }, [])
 
     const connectToServer = () => {
-      const socket = new WebSocket('ws://localhost:8000/');
+      const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
       socket.onopen = () => {
         console.log('connected'); 
         socket.send(JSON.stringify({
@@ -37,10 +37,14 @@ export const MembersList: React.FC =()=> {
         }))       
       }
       socket.onmessage = (event) => {
-        const users: IUser[] = JSON.parse(event.data);        
-        setMemberList(users);
-        console.log(users);
-        console.log(memberList);
+        const type = JSON.parse(event.data).type;
+        console.log(type);
+        if(type === 'connection'){
+          const users: IUser[] = JSON.parse(event.data).msg;        
+          setMemberList(users);
+          console.log(users);
+          console.log(memberList);
+        }
       }
     }
 
