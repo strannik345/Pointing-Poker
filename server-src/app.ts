@@ -45,6 +45,13 @@ const broadcastConnection = (ws: any, msg: any) => {
           msg: users,
         })); 
         break;
+        case 'first-connection':
+        console.log('connection');
+        client.send(JSON.stringify({
+          type: 'connection',
+          msg: users,
+        })); 
+        break;
       case 'chat-message':
         client.send(JSON.stringify({
           type: 'chat-message',
