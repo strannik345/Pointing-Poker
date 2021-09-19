@@ -38,7 +38,7 @@ const broadcastConnection = (ws: any, msg: any) => {
   aWss.clients.forEach((client: any) => {
     console.log('in aws foreach', msg.method);
     switch (msg.method) {
-      case 'connection' || 'first-connection':
+      case 'connection':
         console.log('connection');
         client.send(JSON.stringify({
           type: 'connection',
