@@ -2,7 +2,7 @@ import React from 'react';
 import './../../lobby.scss';
 import '@fontsource/ruda';
 import './gameSettings';
-import { Typography, Container, FormGroup, FormControlLabel, Switch,  Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles } from '@material-ui/core';
+import { Typography, Container, FormGroup, FormControlLabel, Switch,  Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles, TextField } from '@material-ui/core';
 import { Timer } from '../../../../shared/timer/timer';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../../../store/hooks/hooks';
@@ -113,19 +113,24 @@ export const GameSettings: React.FC =()=> {
                     payload: !gameSettings.isTimerNeed})}}
             />
             <FormControlLabel
-                control={<Input id="score-type" aria-describedby="score type" />}
+                control={<Input id="score-type" aria-describedby="score type" 
+                onChange = {(e)=>{
+                  dispatch({type: ScramInfoActionTypes.SET_SCORE_TYPE, 
+                    payload: e.target.value})
+                }}/>}
                 label="Score type:"
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
                 value = {gameSettings.scoreType}
-                // onInput = {(e)=>{
-                //   dispatch({type: ScramInfoActionTypes.SET_SCORE_TYPE, 
-                //     payload: e.target.value})}}
 
             />
             <FormControlLabel
                 label="Score type (short):"
-                control={<Input id="short-score-type" aria-describedby="short-score type" />}
+                control={<Input id="short-score-type" aria-describedby="short-score type" 
+                onChange = {(e)=>{
+                  dispatch({type: ScramInfoActionTypes.SET_SCORE_TYPE_SHORT, 
+                    payload: e.target.value})
+                }}/>}
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />

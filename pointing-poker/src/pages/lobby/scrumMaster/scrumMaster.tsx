@@ -24,8 +24,6 @@ export const ScrumMaster: React.FC =()=> {
     const dispatch = useDispatch();
     const gameUrl = useTypedSelector(state => state.gameURL);
     const gameSettings = useTypedSelector(state => state.gameSettings);
-    
-    // const [settings, setSettings] = useState<IScramInfo>();
     return(
         <div className={classes.container}>
         <LobbyInfo isMaster = {true} />
