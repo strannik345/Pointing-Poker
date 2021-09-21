@@ -18,7 +18,7 @@ export interface IScramInfo{
     scoreTypeShort: string,
     roundTimeMinutes: number,
     roundTimeSeconds: number,
-    cardValues:string[] 
+    cardValues:string[]
 }
 
 export enum ScramInfoActionTypes {

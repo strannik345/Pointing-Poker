@@ -73,7 +73,6 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 export const GameSettings: React.FC =()=> {
   const dispatch = useDispatch();
-  const gameUrl = useTypedSelector(state => state.gameURL);
   const gameSettings = useTypedSelector(state => state.gameSettings);
     return(<>
     <Container className = "settings-container" style={{width: '1000px', paddingTop: "100px"}}>
