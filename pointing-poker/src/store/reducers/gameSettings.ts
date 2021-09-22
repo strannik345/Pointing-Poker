@@ -26,20 +26,15 @@ const defaultSettings: IScramInfo ={
 export const gameSettingsReducer =(state = defaultSettings, action: ScramInfoAction) =>{
     switch(action.type){
         case ScramInfoActionTypes.ADD_CARD_VALUE:
-
             return {...state, cardValues: state.cardValues.concat("")}
         case ScramInfoActionTypes.EDIT_CARD_VALUE:
-
             return {...state, 
         cardValues: state.cardValues.map((cardValue, index) => {
           if (index !== action.id) {
             return cardValue
           }
-
-          return action.payload
-
+          return action.text
         })}
-        
         case ScramInfoActionTypes.ADD_ISSUE:
             return {...state, issues: state.issues.concat(action.payload) }
         case ScramInfoActionTypes.SET_CHANGING_CARD_IN_ROUND_END:

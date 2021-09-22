@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import './../../lobby.scss';
 import '@fontsource/ruda';
 import { Typography, Container, Modal } from '@material-ui/core';

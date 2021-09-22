@@ -3,7 +3,6 @@ import '../gameCards/gameCards.scss';
 import './../../lobby.scss';
 import './addCardValue.scss';
 import '@fontsource/ruda';
-import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
 import CreateIcon from '@material-ui/icons/Create';
 import { Container, IconButton,TextField,Typography } from '@material-ui/core';
 import { useTypedSelector } from '../../../../store/hooks/hooks';
@@ -24,11 +23,10 @@ export const AddCardValue: React.FC=()=> {
                     return <CardValue cardValue={cardValue} index={index}/>
                 })
             }
-            
             <div className = "game-card">
                 <div className = "card new-card" onClick={()=>{
-                    dispatch({type: ScramInfoActionTypes.ADD_CARD_VALUE});
-                }}> </div>
+                    dispatch({type: ScramInfoActionTypes.ADD_CARD_VALUE});}}> 
+                </div>
             </div>
         </Container>
 </div>)

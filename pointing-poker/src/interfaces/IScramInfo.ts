@@ -73,7 +73,8 @@ export enum ScramInfoActionTypes {
     interface EditCardValue {
         type: ScramInfoActionTypes.EDIT_CARD_VALUE,
         id: number,
-        payload: string
+        text: string,
+        isBreak: boolean
     }
 
     export type ScramInfoAction =
