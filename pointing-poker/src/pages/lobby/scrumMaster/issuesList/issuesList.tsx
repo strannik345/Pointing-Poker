@@ -17,11 +17,11 @@ export const IssuesList: React.FC =()=> {
         <Container className = "team-members" >
             {
                 issues.map((issue: IIssue) =>{
-                    return <IssueCard key = {+new Date()}
+                    return <IssueCard 
                     isNew={false} setOpenIssueModal={setOpenIssueModal} issue = {issue}/>
                 })
             }
-            <IssueCard key = {+new Date()} isNew={true} setOpenIssueModal={setOpenIssueModal}
+            <IssueCard  isNew={true} setOpenIssueModal={setOpenIssueModal}
              issue={{id: "0", title: "add new issue", link: "", priority:""}}/>
         </Container>
         <Modal open={openIssueModal} onClose={() => setOpenIssueModal(prev => !prev)}>
