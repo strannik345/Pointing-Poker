@@ -12,23 +12,35 @@ export const defaultPlayerState: IUser = {
   name: 'Jhon',
   lastName: 'Doe',
   position: 'no position',
-  isBlocked: false,
   isObserver: false,
 }
-const registerNewPlayer = async (data: IUser) => {  
-  const request = {
-    gameID: Number(data.id),
-    user: data   
-  };
-  console.log(request);
-  await fetch(`${process.env.REACT_APP_SERVER}/api/new-user`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(request),
-  });
+// const registerNewPlayer = async (data: IUser) => {  
+//   const request = {
+//     gameID: Number(data.id),
+//     user: data   
+//   };
+//   console.log(request);
+//   await fetch(`${process.env.REACT_APP_SERVER}/api/new-user`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(request),
+//   });
+// }
+
+const registerNewPlayer = (data: IUser) => {
+  // const socket = new WebSocket('ws://localhost:8000/');
+  const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
+  socket.onopen = () => {
+    console.log('connected');
+    socket.send(JSON.stringify({
+      method: 'connection',
+      msg: data,
+    }));
+  }
 }
+
 export const playerReducer = (state = defaultPlayerState, action: PlayerAction): IUser => {
   switch (action.type) {
     case 'CHANGE_PLAYER':
