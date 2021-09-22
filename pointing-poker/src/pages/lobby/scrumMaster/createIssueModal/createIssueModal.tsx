@@ -1,8 +1,7 @@
 import { Button, Container, FormControl, InputLabel, Paper, Select, TextField, Typography } from "@material-ui/core";
-import { stringify } from "querystring";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { IIssue, ScramInfoActionTypes } from "../../../../interfaces/IScramInfo";
+import { ScramInfoActionTypes } from "../../../../interfaces/IScramInfo";
 import { ICreateIssueProp } from "../../../../interfaces/IssueProp";
 import { useTypedSelector } from "../../../../store/hooks/hooks";
 
@@ -17,12 +16,6 @@ export const CreateIssueModal: React.FC<ICreateIssueProp> = (prop: ICreateIssueP
     setPriority(e.target.value);
     newIssue.priority = priority as string;
   }
-  // const newIssue = { 
-  //   id : `${(new Date())}`,
-  //   title: useRef<HTMLInputElement>(),
-  //   link: useRef<HTMLInputElement>(),
-  //   priority: ''
-  // };
   const newIssue = {
     id: `${(new Date())}`,
     title: title,

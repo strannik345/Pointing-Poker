@@ -1,4 +1,5 @@
 import { IScramInfo, ScramInfoAction, ScramInfoActionTypes } from "../../interfaces/IScramInfo"
+import { CardValue } from "../../pages/lobby/scrumMaster/addCardValue/cardValue"
 
 const defaultSettings: IScramInfo ={
     master: {
@@ -20,12 +21,25 @@ const defaultSettings: IScramInfo ={
     scoreTypeShort: "SP",
     roundTimeMinutes: 2,
     roundTimeSeconds: 20,
-    cardValues:[]
+    cardValues:["2", "4", "8"]
 }
 export const gameSettingsReducer =(state = defaultSettings, action: ScramInfoAction) =>{
     switch(action.type){
         case ScramInfoActionTypes.ADD_CARD_VALUE:
-            return {...state, cardValues: state.cardValues.concat(action.payload)}
+
+            return {...state, cardValues: state.cardValues.concat("")}
+        case ScramInfoActionTypes.EDIT_CARD_VALUE:
+
+            return {...state, 
+        cardValues: state.cardValues.map((cardValue, index) => {
+          if (index !== action.id) {
+            return cardValue
+          }
+
+          return action.payload
+
+        })}
+        
         case ScramInfoActionTypes.ADD_ISSUE:
             return {...state, issues: state.issues.concat(action.payload) }
         case ScramInfoActionTypes.SET_CHANGING_CARD_IN_ROUND_END:

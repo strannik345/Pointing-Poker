@@ -31,6 +31,7 @@ export enum ScramInfoActionTypes {
     SET_ROUND_TIME_MINUTES = "SET_ROUND_TIME_MINUTES",
     SET_ROUND_TIME_SECONDS = "SET_ROUND_TIME_SECONDS",
     ADD_CARD_VALUE = "ADD_CARD_VALUE",
+    EDIT_CARD_VALUE = "EDIT_CARD_VALUE",
 }
     interface AddIssueAction {
         type: ScramInfoActionTypes.ADD_ISSUE,
@@ -66,6 +67,12 @@ export enum ScramInfoActionTypes {
     }
     interface AddCardValue {
         type: ScramInfoActionTypes.ADD_CARD_VALUE,
+        id: number,
+        payload: string
+    }
+    interface EditCardValue {
+        type: ScramInfoActionTypes.EDIT_CARD_VALUE,
+        id: number,
         payload: string
     }
 
@@ -78,4 +85,5 @@ export enum ScramInfoActionTypes {
         SetRoundTimeSeconds |
         SetScoreType |
         SetScoreTypeShort |
+        EditCardValue |
         AddCardValue;
