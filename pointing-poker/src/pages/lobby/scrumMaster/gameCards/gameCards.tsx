@@ -21,7 +21,7 @@ export const GameCards: React.FC=()=> {
                 <div className = "card card--cover__3"> </div>
             </div>
             <div className = "game-card">
-                <div className = "card new-card"> </div>
+                <div className = "card new-card" > </div>
             </div>
         </Container>
 </div>)

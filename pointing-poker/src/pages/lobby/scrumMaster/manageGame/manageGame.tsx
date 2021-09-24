@@ -20,8 +20,8 @@ export const ManageGame: React.FC =()=> {
     return(<>
         <Container className="manage-game">
             <Typography >Link to lobby:</Typography>
-            <Box className="link-to-lobby">
-                <Typography className = "link-to-lobby--text">gameID</Typography>
+            <Box className="link-to-lobby" >
+                <Typography className = "link-to-lobby--text" style={{height: "1.5rem", width: "-webkit-fill-available"}}>gameID</Typography>
                 <Button className = "button" variant="contained" color="primary">Copy</Button>
             </Box> 
             <Box className="manage-game-buttons">

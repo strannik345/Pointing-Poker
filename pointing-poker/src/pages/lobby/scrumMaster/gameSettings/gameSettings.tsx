@@ -2,8 +2,11 @@ import React from 'react';
 import './../../lobby.scss';
 import '@fontsource/ruda';
 import './gameSettings';
-import { Typography, Container, FormGroup, FormControlLabel, Switch,  Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles } from '@material-ui/core';
+import { Typography, Container, FormGroup, FormControlLabel, Switch,  Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles, TextField } from '@material-ui/core';
 import { Timer } from '../../../../shared/timer/timer';
+import { useDispatch } from 'react-redux';
+import { useTypedSelector } from '../../../../store/hooks/hooks';
+import { ScramInfoActionTypes } from '../../../../interfaces/IScramInfo';
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
     focusVisible?: string;
@@ -69,6 +72,8 @@ const IOSSwitch = withStyles((theme: Theme) =>
 });
 
 export const GameSettings: React.FC =()=> {
+  const dispatch = useDispatch();
+  const gameSettings = useTypedSelector(state => state.gameSettings);
     return(<>
     <Container className = "settings-container" style={{width: '1000px', paddingTop: "100px"}}>
         <Container>
@@ -81,28 +86,50 @@ export const GameSettings: React.FC =()=> {
                 label="Scram master as player:"
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
+                checked = {gameSettings.scramIsPlayer}
+                onChange = {()=>{
+                    dispatch({type: ScramInfoActionTypes.SET_SCRAM_IS_PLAYER, 
+                        payload: !gameSettings.scramIsPlayer})}}
             />
             <FormControlLabel
                 control={<IOSSwitch color="primary" className="switch" name = "changing-card"/>}
                 label="Changing card in round end:"
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
+                checked = {gameSettings.changingCardInRoundEnd}
+                onChange = {()=>{
+                    dispatch({type: ScramInfoActionTypes.SET_CHANGING_CARD_IN_ROUND_END, 
+                      payload: !gameSettings.changingCardInRoundEnd})}}
             />
             <FormControlLabel
                 control={<IOSSwitch color="primary" className="switch" name = "need-timer" />}
                 label="Is timer needed:"
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
+                checked = {gameSettings.isTimerNeed}
+                onChange = {()=>{
+                  dispatch({type: ScramInfoActionTypes.SET_IS_TIMER_NEED, 
+                    payload: !gameSettings.isTimerNeed})}}
             />
             <FormControlLabel
-                control={<Input id="score-type" aria-describedby="score type" />}
+                control={<Input id="score-type" aria-describedby="score type" 
+                onChange = {(e)=>{
+                  dispatch({type: ScramInfoActionTypes.SET_SCORE_TYPE, 
+                    payload: e.target.value})
+                }}/>}
                 label="Score type:"
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
+                value = {gameSettings.scoreType}
+
             />
             <FormControlLabel
                 label="Score type (short):"
-                control={<Input id="short-score-type" aria-describedby="short-score type" />}
+                control={<Input id="short-score-type" aria-describedby="short-score type" 
+                onChange = {(e)=>{
+                  dispatch({type: ScramInfoActionTypes.SET_SCORE_TYPE_SHORT, 
+                    payload: e.target.value})
+                }}/>}
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />

@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { IStartModalProp } from "../../interfaces/IStartModalProp";
 import { useTypedSelector } from "../../store/hooks/hooks";
 import axios from 'axios';
+import { uploadImage } from "../../services/uploadImage";
 
 export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
   const [avatar, setAvatar] = useState<string>("");
@@ -18,17 +19,20 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
     lastName: useRef<HTMLInputElement>(),
     position: useRef<HTMLInputElement>()
   };
-  const uploadImage= async (file:File | null)=>{
-    console.log("file", file);
-    const imageData = new FormData();
-    file && imageData.append("file", file);
-    imageData.append("upload_preset", "pqlbzyac");
-    await axios.post("https://api.cloudinary.com/v1_1/pointingpoker/image/upload", 
-    imageData).then((response)=>{
-      console.log(response.data.public_id);
+  const handleUploadImage = (file:File | null) =>{
+    uploadImage(file).then((response) => {
       setAvatar(response.data.public_id);
     })
   }
+  // const uploadImage= async (file:File | null)=>{
+  //   const imageData = new FormData();
+  //   file && imageData.append("file", file);
+  //   imageData.append("upload_preset", "pqlbzyac");
+  //   await axios.post("https://api.cloudinary.com/v1_1/pointingpoker/image/upload", 
+  //   imageData).then((response)=>{
+  //     setAvatar(response.data.public_id);
+  //   })
+  // }
   const history = useHistory();
   return (    
     <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>      
@@ -42,7 +46,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
             <input accept='image/*' id='input-avatar' 
                   type='file' 
                   style={{display: 'none'}}
-                  onChange={(event)=>{ event.target.files && uploadImage(event.target.files[0])}}/>
+                  onChange={(event)=>{ event.target.files && handleUploadImage(event.target.files[0])}}/>
             <label htmlFor='input-avatar'>
               <Button variant="outlined" color="primary" component="span">Upload avatar</Button>
             </label>
