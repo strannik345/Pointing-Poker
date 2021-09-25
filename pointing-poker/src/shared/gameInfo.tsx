@@ -8,6 +8,7 @@ import { ILobbyInfo } from '../interfaces/ILobbyInfo';
 import { callbackify } from 'util';
 import { IssuesList } from '../pages/lobby/scrumMaster/issuesList/issuesList';
 import { useTypedSelector } from '../store/hooks/hooks';
+import { GameTimer } from './gameTimer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
         justifyContent: "space-between",
         marginTop: "75px",
         paddingLeft:"0",
+        alignItems: "center",
     },
     issues: {
 
@@ -37,9 +39,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
     },
     controlPart:{
-        width: "calc((40vw - 20px)/3)",
-        paddingLeft:"0",
-
+        width: "calc((60vw)/3)",
+    },
+    controlPanelItem:{
+        
+    },
+    nextIssueButton:{
+        width: "200px",
     }
   })
 )
@@ -48,13 +54,6 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
     const [activeIssue, setActiveIssue] = useState(0);
     const {isMaster} = {...props}
     const classes = useStyles();
-    // const handleClick = () =>{
-    //     if (issues.length < (activeIssue+1)) {
-    //         prompt("ok");
-    //         setActiveIssue(activeIssue+1)
-    //     }
-    //             else setActiveIssue(0)
-    // }
     return(<Container className={classes.container}>
         <Typography className = " lobby--title lobby--title__primary">
             Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)
@@ -73,14 +72,17 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
         }
         </Container>
         <Container className={classes.controlPanel}>
-            <div className={`${classes.issues} ${classes.controlPart}`}>
-                <div ><IssuesList isGame={true} activeIssue={activeIssue}/></div>
+            <div className={`${classes.issues} ${classes.controlPart} ${classes.controlPanelItem}`}>
+                <div className={classes.issuesList}><IssuesList isGame={true} activeIssue={activeIssue}/></div>
                 <div className={classes.statistic}>Statistic</div>
             </div>
-            {/* <GameTimer/> */}
-            <h2>Game timer and timer button</h2>
-            <Button  className ="button button__contained " variant="contained" color='primary'
-            onClick ={()=>{issues.length > activeIssue+1 ? setActiveIssue(activeIssue + 1) : setActiveIssue(+0)}}>Next issue</Button>
+            <div className={classes.controlPanelItem}>
+            <GameTimer/>
+            </div>
+            <Button  className ={`button button__contained  ${classes.nextIssueButton}`} variant="contained" color='primary'
+            onClick ={()=>{issues.length > activeIssue+1 
+            ? setActiveIssue(activeIssue + 1) 
+            : setActiveIssue(+0)}}>Next issue</Button>
         </Container>
     </Container>);
 }

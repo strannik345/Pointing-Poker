@@ -24,7 +24,7 @@ export const IssuesList: React.FC<IIssueListProp> =(props:IIssueListProp)=> {
                 })
             }
             <IssueCard  isNew={true} setOpenIssueModal={setOpenIssueModal} isActive ={false}
-                issue={{ id: "0", title: "add new issue", link: "", priority: "" }} isGame={false}/>
+                issue={{ id: "0", title: "add new issue", link: "", priority: "" }} isGame={isGame}/>
         </Container>
         <Modal open={openIssueModal} onClose={() => setOpenIssueModal(prev => !prev)}>
             <CreateIssueModal setIsOpen={setOpenIssueModal}/>

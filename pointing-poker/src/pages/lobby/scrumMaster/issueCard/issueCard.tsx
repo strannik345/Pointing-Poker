@@ -11,11 +11,15 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     active: {
       backgroundColor:"rgba(96, 218, 191, 0.46)"
+  },
+  issueInGame: {
+    width: "-webkit-fill-available"
   }}));
 export const IssueCard: React.FC<IssueProp> = (props:IssueProp) => {
     const {isNew, setOpenIssueModal, issue, isGame, isActive} = props;
+    console.log(isGame);
     const classes = useStyles();
-    const card =  <Card className = {`issue-card ${isActive && classes.active}`} style={{marginBottom:"10px"}}>
+    const card =  <Card className = {`issue-card ${isActive && classes.active} ${isGame && classes.issueInGame}`}>
     <Typography variant="h5">
       {issue.title}
     </Typography>
@@ -32,11 +36,12 @@ export const IssueCard: React.FC<IssueProp> = (props:IssueProp) => {
       </IconButton>
     </Box>:
      <IconButton color="secondary" aria-label="delete">
-     <DeleteIcon/>
-   </IconButton>
+      <DeleteIcon/>
+    </IconButton>
     }
   </Card>
-  const newCard = <Card className = "issue-card">
+  const newCard = <Card className = {`issue-card ${isGame && classes.issueInGame}`}>
+    {console.log(`${isGame}`)}
         <Typography variant="h5">
           {issue.title}
         </Typography>
