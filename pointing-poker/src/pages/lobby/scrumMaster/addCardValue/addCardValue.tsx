@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../gameCards/gameCards.scss';
 import './../../lobby.scss';
 import './addCardValue.scss';
 import '@fontsource/ruda';
-import CreateIcon from '@material-ui/icons/Create';
 import { Container, IconButton,TextField,Typography } from '@material-ui/core';
 import { useTypedSelector } from '../../../../store/hooks/hooks';
 import { CardValue } from './cardValue';
@@ -20,7 +19,7 @@ export const AddCardValue: React.FC=()=> {
         <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"20px"}}>
             {
                 cardValues.map((cardValue:string, index: number)=>{
-                    return <CardValue cardValue={cardValue} index={index}/>
+                    return <CardValue cardValue={cardValue} index={index} isSmall={false}/>
                 })
             }
             <div className = "game-card">

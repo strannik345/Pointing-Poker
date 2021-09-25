@@ -3,12 +3,11 @@ import '@fontsource/ruda';
 import './lobbyInfo/lobbyInfo.scss';
 import { Typography, Button, Container, makeStyles, Theme, createStyles, Paper} from '@material-ui/core';
 import { MemberCard } from './memberCard/memberCard';
-import { ManageGame } from '../pages/lobby/scrumMaster/manageGame/manageGame';
 import { ILobbyInfo } from '../interfaces/ILobbyInfo';
-import { callbackify } from 'util';
 import { IssuesList } from '../pages/lobby/scrumMaster/issuesList/issuesList';
 import { useTypedSelector } from '../store/hooks/hooks';
 import { GameTimer } from './gameTimer';
+import { Statistic } from '../pages/game/scramMaster/statistic';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: "75px",
         paddingLeft:"0",
         alignItems: "center",
+        width: "40vw",
     },
     issues: {
 
@@ -74,7 +74,7 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
         <Container className={classes.controlPanel}>
             <div className={`${classes.issues} ${classes.controlPart} ${classes.controlPanelItem}`}>
                 <div className={classes.issuesList}><IssuesList isGame={true} activeIssue={activeIssue}/></div>
-                <div className={classes.statistic}>Statistic</div>
+                <div className={classes.statistic}><Statistic/></div>
             </div>
             <div className={classes.controlPanelItem}>
             <GameTimer/>
