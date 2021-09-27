@@ -22,6 +22,7 @@ export interface IUser{
 
 export const MembersList: React.FC =()=> {
     const [memberList, setMemberList] = useState<IUser[]>([]); 
+    const player = useTypedSelector(state => state.player)
 
 
     useEffect(() => {
@@ -29,19 +30,20 @@ export const MembersList: React.FC =()=> {
     }, [])
 
     const connectToServer = () => {
-      const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
-      // const socket = new WebSocket('ws:localhost:8000');
+      const socket = new WebSocket(`ws://${process.env.REACT_APP_SERVER}`);
       socket.onopen = () => {
         console.log('connected'); 
         socket.send(JSON.stringify({
-          method: 'first-connection',
+          method: 'connection',
+          msg: {...player}
         }))       
       }
       socket.onmessage = (event) => {
         const type = JSON.parse(event.data).type;
         console.log(type);
         if(type === 'connection'){
-          const users: IUser[] = JSON.parse(event.data).msg;        
+          const users: IUser[] = JSON.parse(event.data).msg;   
+          console.log(users);     
           setMemberList(users);
           console.log(users);
           console.log(memberList);

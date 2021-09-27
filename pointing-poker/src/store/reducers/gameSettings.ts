@@ -8,7 +8,6 @@ const defaultSettings: IScramInfo ={
       name: 'Jhon',
       lastName: 'Doe',
       position: 'no position',
-      isBlocked: false,
       isObserver: true,
     },
     lobbyLink: "",
