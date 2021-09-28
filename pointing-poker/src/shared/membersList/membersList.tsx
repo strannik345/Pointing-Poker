@@ -5,6 +5,7 @@ import { Typography, Container } from '@material-ui/core';
 import { LobbyMemberCard } from '../memberCard/LobbyMemberCard';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../store/hooks/hooks';
+import { useParams } from 'react-router';
 
 interface IGame {
   gameID: number;
@@ -18,31 +19,43 @@ export interface IUser{
   lastName: string;
   position: string;
   isObserver: boolean;
+  isScrumMaster: boolean;
 }
 
 export const MembersList: React.FC =()=> {
     const [memberList, setMemberList] = useState<IUser[]>([]); 
-    const player = useTypedSelector(state => state.player)
-
+    const player = useTypedSelector(state => state.player);
+    const {gameURL} = useTypedSelector(state => state.gameURL);
+    const params = useParams<any>();
 
     useEffect(() => {
+      console.log('in member list', params.id);
       connectToServer();
     }, [])
 
     const connectToServer = () => {
       const socket = new WebSocket(`ws://${process.env.REACT_APP_SERVER}`);
       socket.onopen = () => {
-        console.log('connected'); 
-        socket.send(JSON.stringify({
-          method: 'connection',
-          msg: {...player}
-        }))       
+        if(player.isScrumMaster) {
+          console.log('start-server', player); 
+          socket.send(JSON.stringify({
+            id: params.id,
+            method: 'start-server',
+            msg: {...player}
+          }))       
+        } else {
+          socket.send(JSON.stringify({
+            id: params.id,
+            method: 'connection',
+            msg: {...player}
+          }))
+        }
       }
       socket.onmessage = (event) => {
         const type = JSON.parse(event.data).type;
         console.log(type);
         if(type === 'connection'){
-          const users: IUser[] = JSON.parse(event.data).msg;   
+          const users: IUser[] = JSON.parse(event.data).msg[0].players;   
           console.log(users);     
           setMemberList(users);
           console.log(users);
