@@ -25,7 +25,9 @@ export const Statistic: React.FC=()=> {
             {
                 cardValues.map((cardValue:string, index: number)=>{
                     return <div>
-                        <CardValue cardValue={cardValue} index={index} isSmall={true}/>
+                        <CardValue cardValue={cardValue} index={index} isSmall={true} isGame={true} nextIssueClick={function (): void {
+                            throw new Error('Function not implemented.');
+                        } }/>
                         <span className = {classes.percent}>45%</span>
                         </div>
                 })

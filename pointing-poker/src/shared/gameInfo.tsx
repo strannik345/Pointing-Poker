@@ -8,6 +8,7 @@ import { IssuesList } from '../pages/lobby/scrumMaster/issuesList/issuesList';
 import { useTypedSelector } from '../store/hooks/hooks';
 import { GameTimer } from './gameTimer';
 import { Statistic } from '../pages/game/scramMaster/statistic';
+import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
         justifyContent: "space-between",
         marginTop: "75px",
         paddingLeft:"0",
-        alignItems: "center",
+        alignItems: "start",
         width: "40vw",
     },
     issues: {
@@ -46,14 +47,27 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     nextIssueButton:{
         width: "200px",
+    },
+    hidden:{
+        visibility:"hidden"
     }
   })
 )
 export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
-    const {issues} = useTypedSelector(state => state.gameSettings);
+    const {issues, cardValues} = useTypedSelector(state => state.gameSettings);
     const [activeIssue, setActiveIssue] = useState(0);
     const {isMaster} = {...props}
     const classes = useStyles();
+    const [showStatistic, setShowStatistic] = useState(false);
+    const nextIssueClick = () => {
+        setShowStatistic(true);
+        if(issues.length > activeIssue+1 ) {
+            setActiveIssue(activeIssue + 1)
+        } else {
+            setActiveIssue(+0)
+            
+        }
+    }
     return(<Container className={classes.container}>
         <Typography className = " lobby--title lobby--title__primary">
             Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)
@@ -73,17 +87,26 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
         </Container>
         <Container className={classes.controlPanel}>
             <div className={`${classes.issues} ${classes.controlPart} ${classes.controlPanelItem}`}>
-                <div className={classes.issuesList}><IssuesList isMaster = {isMaster} isGame={true} activeIssue={activeIssue}/></div>
-               {isMaster ? <div className={classes.statistic}><Statistic/></div> : ""}
+                <div className={classes.issuesList}>
+                    <IssuesList isMaster = {isMaster} isGame={true} activeIssue={activeIssue}/>
+                </div>
+               {isMaster ? <div className={classes.statistic}><Statistic/></div> : 
+               <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"45px"}}>
+               {
+                   cardValues.map((cardValue:string, index: number)=>{
+                       return <CardValue cardValue={cardValue} index={index} isSmall={false} isGame={true} nextIssueClick = {nextIssueClick}/>
+                   })
+               }
+           </Container>}
             </div>
             <div className={classes.controlPanelItem}> 
-            <GameTimer isMaster={isMaster}/>
+                <GameTimer isMaster={isMaster}/>
+                {!isMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic/></div>}
             </div> 
+            
             {isMaster ? 
             <Button  className ={`button button__contained  ${classes.nextIssueButton}`} variant="contained" color='primary'
-            onClick ={()=>{issues.length > activeIssue+1 
-            ? setActiveIssue(activeIssue + 1) 
-            : setActiveIssue(+0)}}>Next issue</Button> : ""}
+            onClick ={()=>{nextIssueClick()}}>Next issue</Button> : ""}
         </Container>
     </Container>);
 }

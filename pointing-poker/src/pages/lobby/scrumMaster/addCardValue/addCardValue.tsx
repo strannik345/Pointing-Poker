@@ -19,7 +19,7 @@ export const AddCardValue: React.FC=()=> {
         <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"20px"}}>
             {
                 cardValues.map((cardValue:string, index: number)=>{
-                    return <CardValue cardValue={cardValue} index={index} isSmall={false}/>
+                    return <CardValue cardValue={cardValue} index={index} isSmall={false} isGame={false} nextIssueClick={()=>{}}/>
                 })
             }
             <div className = "game-card">

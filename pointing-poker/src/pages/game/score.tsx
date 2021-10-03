@@ -4,9 +4,6 @@ import { Button, Card, Container, Paper, TextField, Typography } from "@material
 import { useTypedSelector } from "../../store/hooks/hooks";
 import { LobbyMemberCard } from "../../shared/memberCard/LobbyMemberCard";
 import '@fontsource/ruda';
-import { mergeClasses } from "@material-ui/styles";
-import { findByLabelText } from "@testing-library/react";
-import { justify } from "@cloudinary/url-gen/qualifiers/textAlignment";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {

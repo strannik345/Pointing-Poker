@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
     timerContainer: {
         display: "flex",
         flexDirection: "column",
+        paddingTop:"25px",
 
     },
     timer: {
