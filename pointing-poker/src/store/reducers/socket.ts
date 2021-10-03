@@ -1,5 +1,6 @@
 export interface Socket {
-  socket: WebSocket;
+  socketUser: WebSocket;
+  socketChat: WebSocket;
 }
 
 export interface SocketAction {
@@ -8,13 +9,12 @@ export interface SocketAction {
 
 
 export const defaultSocket: Socket = {
-  socket: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`),
+  socketUser: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`),
+  socketChat: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`),
 }
 
 export const socketReducer = (state = defaultSocket, action: SocketAction): Socket => {
   switch (action.type) {  
-    case 'OPEN':
-      return {socket: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`)};
     default:
       return state;
   }

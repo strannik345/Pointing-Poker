@@ -6,6 +6,15 @@ import SendIcon from '@material-ui/icons/Send';
 import { ChatMessage } from "./chatMessage";
 import axios from '../../../services/api';
 import { IMessage } from "../../../interfaces/chat";
+import { connect } from "tls";
+import { useTypedSelector } from "../../../store/hooks/hooks";
+import { useParams } from "react-router";
+import { IUser } from "../../../shared/membersList/membersList";
+
+export interface ChatMessageFromServer extends IUser {
+  message: string;
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
@@ -50,40 +59,49 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Chat() {
   const classes = useStyles();
-
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessageFromServer[]>([]);
   const [content, setContent] = useState('');
+  const {socketChat} = useTypedSelector(state => state.socket);
+  const player = useTypedSelector(state => state.player);
+  const params = useParams<any>();
+
   useEffect(()=> {
-    // fetchMessages();
-}, []);
-  // const fetchMessages = async () => {
-  //     try {
-  //       axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
-  //       const {data} = await axios.get(`/api/get-message`);
-  //       setMessages(prev => [...prev, data]);
-  //       await fetchMessages();
-  //     } catch (e) {
-  //       setTimeout(() => {
-  //         fetchMessages();
-  //       }, 500)
-  //     }
-  //   }
-  //   const onSaveMessage = async () => {
-  //       await axios.post(`/api/new-message`,{
-  //       id: +(new Date()),
-  //       user_id: 1,
-  //       text: content})
-  //       await fetchMessages();
-  //   }
-  
+    connect();
+  }, []);
+
+  const connect = () => {
+    socketChat.onmessage = (event: any) => {
+      const type = JSON.parse(event.data).type;
+      console.log(type);
+      if(type === 'chat-message'){
+        const message: ChatMessageFromServer = JSON.parse(event.data).msg;  
+        console.log(message)            
+        setMessages(prev => {
+          console.log(prev)
+          console.log([...prev, message])
+          return [...prev, message]
+        })        
+      }      
+    }    
+  } 
+
+  const sendMessage = () => [
+    socketChat.send(JSON.stringify({
+      id: params.id,
+      method: 'chat-message',
+      msg: {...player, message: content}
+    }))
+  ]
   
   return (
     <div className={classes.container}>
       <Paper className={classes.paper} >
         <Paper id="style-1" className={classes.messagesBody}>
-          { Object.keys(messages).map((key) => {
-            return messages[+key] ? <ChatMessage key = {messages[+key].id} userName={(messages[+key].user_id as unknown as string)} text={messages[+key].text} />
-              : ""})
+          { 
+            messages.map(message => {
+              console.log(message)
+              return <ChatMessage {...message}/>
+            })
           }
         </Paper>
         {/* <SendText/> */}
@@ -97,7 +115,7 @@ export default function Chat() {
             />
             <Button variant="contained" color="primary" 
                     className={classes.button}
-                    onClick = {()=>{}}>
+                    onClick = {sendMessage}>
                 <SendIcon />
             </Button>
             </div>

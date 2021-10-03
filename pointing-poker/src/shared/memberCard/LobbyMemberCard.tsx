@@ -17,13 +17,13 @@ interface CardProp {
 
 export const LobbyMemberCard: React.FC<CardProp> = ({size, userInfo}) => {
   const params = useParams<any>()  
-  const {socket} = useTypedSelector(state => state.socket)
+  const {socketUser} = useTypedSelector(state => state.socket)
 
 
     const deletePlayer = () => {
-      if (socket.OPEN) {
+      if (socketUser.OPEN) {
         console.log(`deleting: ${userInfo}`)
-        socket.send(JSON.stringify({
+        socketUser.send(JSON.stringify({
           id: params.id,
           method: 'delete-player',
           msg: {...userInfo}

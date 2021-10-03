@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../store/hooks/hooks';
 import { useParams } from 'react-router';
 import { NoMatchPage } from '../../pages/404page/NoMatchPage';
+import { isConstructorDeclaration } from 'typescript';
 
 interface IGame {
   gameID: number;
@@ -32,7 +33,7 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     const [memberList, setMemberList] = useState<IUser[]>([]); 
     const player = useTypedSelector(state => state.player);
     const {gameURL} = useTypedSelector(state => state.gameURL);
-    const {socket} = useTypedSelector(state=> state.socket)
+    const {socketUser} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
     const dispatch = useDispatch();
     
@@ -43,31 +44,34 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     }, [])
 
     const connectToServer = () => {  
-      if(socket.readyState === 1) {
+      if(socketUser.readyState === 1) {
+        console.log('ready');
         if(player.isScrumMaster) {
           console.log('start-server', player); 
-          socket.send(JSON.stringify({
+          socketUser.send(JSON.stringify({
             id: params.id,
             method: 'start-server',
             msg: {...player}
           }))       
         } else {
-          socket.send(JSON.stringify({
+          socketUser.send(JSON.stringify({
             id: params.id,
             method: 'connection',
             msg: {...player}
           }))
         }
       } else {
-        socket.onopen = () => {
-          socket.send(JSON.stringify({
+        console.log('not ready');
+        socketUser.onopen = () => {
+          console.log('sending fir not ready')
+          socketUser.send(JSON.stringify({
             id: params.id,
             method: 'connection',
             msg: {...player}
           }))
         }
       }
-      socket.onmessage = (event: any) => {
+      socketUser.onmessage = (event: any) => {
         const type = JSON.parse(event.data).type;
         console.log(type);
         if(type === 'connection'){
