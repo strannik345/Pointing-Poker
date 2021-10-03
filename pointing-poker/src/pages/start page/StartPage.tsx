@@ -36,7 +36,8 @@ export const StartPage: React.FC = () => {
               <Typography style={{color: 'black'}}>Connect to lobby by Id:</Typography>
               <Box display="flex" flexDirection="row" justifyContent="space-between">
                 <TextField inputRef={idRef} size="small" id="input-url" label="URL" variant="outlined" style={{width: '400px'}}/>
-                <Button variant="contained" color="primary" onClick={() => {  
+                <Button variant="contained" color="primary" onClick={() => { 
+                  dispatch({type: 'CHANGE_PLAYER', payload: {...player, isScrumMaster: false}}); 
                   console.log(player);            
                   history.push(`/lobby/${idRef.current?.value}`)
                 }}>Connect</Button>

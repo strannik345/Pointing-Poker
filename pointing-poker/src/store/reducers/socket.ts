@@ -4,7 +4,6 @@ export interface Socket {
 
 export interface SocketAction {
   type: string;
-  payload: Socket; 
 }
 
 
@@ -13,7 +12,9 @@ export const defaultSocket: Socket = {
 }
 
 export const socketReducer = (state = defaultSocket, action: SocketAction): Socket => {
-  switch (action.type) {    
+  switch (action.type) {  
+    case 'OPEN':
+      return {socket: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`)};
     default:
       return state;
   }

@@ -64,7 +64,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
         </Box>        
         <div style={{justifyContent: 'space-between', display: 'flex', flexDirection: 'row', width: '90%'}}>
           <Button variant='contained' color='primary' onClick={()=>{
-            dispatch({type: 'CHANGE_PLAYER', payload: {id: gameURL , lastName: formData.lastName.current?.value, name: formData.name.current?.value, isObserver: observer, position: formData.position.current?.value, avatar: avatar}});            
+            dispatch({type: 'CHANGE_PLAYER', payload: { lastName: formData.lastName.current?.value, name: formData.name.current?.value, isObserver: observer, position: formData.position.current?.value, avatar: avatar}});            
             setIsOpen(false);
           }}>Confirm</Button>
           <Button variant='contained' color='secondary' onClick={()=>setIsOpen(false)}>Cancel</Button>

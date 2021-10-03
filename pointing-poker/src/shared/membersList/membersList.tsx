@@ -34,6 +34,7 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     const {gameURL} = useTypedSelector(state => state.gameURL);
     const {socket} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
+    const dispatch = useDispatch();
     
     
     useEffect(() => {
@@ -42,8 +43,7 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     }, [])
 
     const connectToServer = () => {  
-      console.log(socket.OPEN);
-      if(socket.OPEN) {
+      if(socket.readyState === 1) {
         if(player.isScrumMaster) {
           console.log('start-server', player); 
           socket.send(JSON.stringify({
@@ -52,6 +52,14 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
             msg: {...player}
           }))       
         } else {
+          socket.send(JSON.stringify({
+            id: params.id,
+            method: 'connection',
+            msg: {...player}
+          }))
+        }
+      } else {
+        socket.onopen = () => {
           socket.send(JSON.stringify({
             id: params.id,
             method: 'connection',

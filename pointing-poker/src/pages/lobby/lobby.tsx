@@ -6,7 +6,6 @@ import { MembersList } from '../../shared/membersList/membersList';
 import { useTypedSelector } from '../../store/hooks/hooks';
 import Chat from './chat/chat';
 import { ScrumMaster } from './scrumMaster/scrumMaster';
-import { TeamMember } from './teamMember/teamMember';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -22,7 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 export const Lobby: React.FC =()=> {
-  const {lastName, name, isObserver, position, avatar} = useTypedSelector(state => state.player);
     const classes = useStyles();
     const { isScrumMaster } = useTypedSelector(state => state.player)
     return(
