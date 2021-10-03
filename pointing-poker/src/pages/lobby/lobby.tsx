@@ -34,7 +34,7 @@ export const Lobby: React.FC =()=> {
                   isScrumMaster ? 
                     <ScrumMaster/> 
                     :
-                    <MembersList/>
+                    <MembersList scramMaster={false}/>
                 }                
                 <Chat/>
               </Container>

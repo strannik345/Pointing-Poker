@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './../../pages/lobby/lobby.scss';
 import '@fontsource/ruda';
-import { Typography, Container } from '@material-ui/core';
+import { Typography, Container, Modal } from '@material-ui/core';
 import { LobbyMemberCard } from '../memberCard/LobbyMemberCard';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../store/hooks/hooks';
 import { useParams } from 'react-router';
+import { NoMatchPage } from '../../pages/404page/NoMatchPage';
 
 interface IGame {
   gameID: number;
@@ -22,20 +23,27 @@ export interface IUser{
   isScrumMaster: boolean;
 }
 
-export const MembersList: React.FC =()=> {
+export interface MemberListProps {
+  scramMaster: boolean;
+}
+
+export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
+    const [openModal, setOpenModal] = useState<boolean>(true);
     const [memberList, setMemberList] = useState<IUser[]>([]); 
     const player = useTypedSelector(state => state.player);
     const {gameURL} = useTypedSelector(state => state.gameURL);
+    const {socket} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
-
+    
+    
     useEffect(() => {
-      console.log('in member list', params.id);
+      console.log('in member list', params.id);      
       connectToServer();
     }, [])
 
-    const connectToServer = () => {
-      const socket = new WebSocket(`ws://${process.env.REACT_APP_SERVER}`);
-      socket.onopen = () => {
+    const connectToServer = () => {  
+      console.log(socket.OPEN);
+      if(socket.OPEN) {
         if(player.isScrumMaster) {
           console.log('start-server', player); 
           socket.send(JSON.stringify({
@@ -51,15 +59,15 @@ export const MembersList: React.FC =()=> {
           }))
         }
       }
-      socket.onmessage = (event) => {
+      socket.onmessage = (event: any) => {
         const type = JSON.parse(event.data).type;
         console.log(type);
         if(type === 'connection'){
           const users: IUser[] = JSON.parse(event.data).msg[0].players;   
-          console.log(users);     
           setMemberList(users);
-          console.log(users);
-          console.log(memberList);
+        } else if(type === 'update-players') {
+          const users: IUser[] = JSON.parse(event.data).msg[0].players;   
+          setMemberList(users);
         }
       }
     }
@@ -71,7 +79,21 @@ export const MembersList: React.FC =()=> {
       </Container>
       <Container className = "team-members">
         {
-          memberList.map(member=> <LobbyMemberCard size={{isSmall:false}} userInfo={member}/>)
+          memberList.some(member=> member.id === player.id) || scramMaster ?
+            <>
+              {
+                memberList.map(member=>             
+                      !member.isScrumMaster || !scramMaster ?
+                      <LobbyMemberCard size={{isSmall:false}} userInfo={member} />
+                      :
+                      <></>           
+                )
+              }
+            </>            
+            :
+            <Modal open={openModal} onClose={() => setOpenModal(prev => !prev)} disableBackdropClick  >
+              <div>You have been kicked from the server</div>
+            </Modal>
         }        
       </Container>
     </>

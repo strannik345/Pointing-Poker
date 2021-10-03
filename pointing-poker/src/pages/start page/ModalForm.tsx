@@ -10,7 +10,7 @@ import { uploadImage } from "../../services/uploadImage";
 export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
   const [avatar, setAvatar] = useState<string>("");
   const [observer, setObserver] = useState<boolean>(false);
-  const { setIsOpen } = prop;
+  const { setIsOpen } = prop; 
   const dispatch = useDispatch();
   const {lastName, name, position} = useTypedSelector(state => state.player);
   const {gameURL} = useTypedSelector(state => state.gameURL);

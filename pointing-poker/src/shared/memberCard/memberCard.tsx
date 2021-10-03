@@ -58,9 +58,6 @@ export const MemberCard: React.FC<ICardSize> = ({isSmall = false}) => {
               {position}
               </Typography>
             </div>
-            <IconButton aria-label="delete" className = "delete">
-              <BlockOutlinedIcon style={{ fontSize: (isSmall ? 26 : 56) }}/>
-            </IconButton>
       </Card>
       </>
     );

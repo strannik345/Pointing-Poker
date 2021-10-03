@@ -1,5 +1,5 @@
 import { Box, Button, Container, Modal, Paper, TextField, Typography } from '@material-ui/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { useTypedSelector } from '../../store/hooks/hooks';
@@ -17,7 +17,7 @@ export const StartPage: React.FC = () => {
   const urlHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
     dispatch({type: "CHANGE_GameURL", payload: {gameURL: event.target.value}});
-  }
+  }  
 
   return (
     <>
@@ -45,7 +45,7 @@ export const StartPage: React.FC = () => {
           </Container>        
         </Paper>
         {
-          <Modal open={openModal} onClose={() => setOpenModal(prev => !prev)}>
+          <Modal open={openModal} onClose={() => setOpenModal(prev => !prev)} disableBackdropClick  >
             <ModalForm setIsOpen={setOpenModal}></ModalForm>
           </Modal>          
         }

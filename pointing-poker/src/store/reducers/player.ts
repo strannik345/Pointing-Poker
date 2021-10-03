@@ -18,7 +18,8 @@ export const defaultPlayerState: IUser = {
 export const playerReducer = (state = defaultPlayerState, action: PlayerAction): IUser => {
   switch (action.type) {
     case 'CHANGE_PLAYER':
-      return {...state, ...action.payload};
+      console.log(action.payload)
+      return {...state, ...action.payload, id: Date.now().toString(16)};
     default:
       return state;
   }
