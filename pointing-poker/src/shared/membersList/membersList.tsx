@@ -17,43 +17,39 @@ export interface IUser{
   name: string;
   lastName: string;
   position: string;
-  isBlocked: boolean;
   isObserver: boolean;
 }
 
 export const MembersList: React.FC =()=> {
-    const [memberList, setMemberList] = useState<IUser[]>([]);    
-    const dispatch = useDispatch();
-    const gameURL = useTypedSelector(state => state.gameURL.gameURL);
-    useEffect(()=> {
-        getCurrentUsers();
-        subscribeMembers(); 
-    }, [gameURL]);
+    const [memberList, setMemberList] = useState<IUser[]>([]); 
+    const player = useTypedSelector(state => state.player)
 
-    const getCurrentUsers = async () => {
-        try {
-          const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=${gameURL}`); //gameId from redux change then
-          const members: IGame[] = await response.json(); 
-          setMemberList(members[0].users);                   
-        } catch (e) {
-          getCurrentUsers();
+
+    useEffect(() => {
+      connectToServer();
+    }, [])
+
+    const connectToServer = () => {
+      const socket = new WebSocket(`ws://${process.env.REACT_APP_SERVER}`);
+      socket.onopen = () => {
+        console.log('connected'); 
+        socket.send(JSON.stringify({
+          method: 'connection',
+          msg: {...player}
+        }))       
+      }
+      socket.onmessage = (event) => {
+        const type = JSON.parse(event.data).type;
+        console.log(type);
+        if(type === 'connection'){
+          const users: IUser[] = JSON.parse(event.data).msg;   
+          console.log(users);     
+          setMemberList(users);
+          console.log(users);
+          console.log(memberList);
         }
+      }
     }
-
-    const subscribeMembers = async () => {
-        console.log(gameURL);
-        try {             
-            const response = await fetch(`${process.env.REACT_APP_SERVER}/api/get-users?gameID=${gameURL}`);
-            const members: IGame[] = await response.json();
-            console.log(members[0].users);
-            setMemberList(members[0].users);
-            await subscribeMembers()
-        } catch(e) {
-            setTimeout(() => {
-                subscribeMembers();
-            }, 500);
-        }
-    } 
 
     return(
     <>
