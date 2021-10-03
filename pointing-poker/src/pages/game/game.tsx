@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
 import { GameInfo } from '../../shared/gameInfo';
 import { useTypedSelector } from '../../store/hooks/hooks';
-import Score from './score';
+import { Score } from './score';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {

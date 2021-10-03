@@ -73,16 +73,17 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
         </Container>
         <Container className={classes.controlPanel}>
             <div className={`${classes.issues} ${classes.controlPart} ${classes.controlPanelItem}`}>
-                <div className={classes.issuesList}><IssuesList isGame={true} activeIssue={activeIssue}/></div>
-                <div className={classes.statistic}><Statistic/></div>
+                <div className={classes.issuesList}><IssuesList isMaster = {isMaster} isGame={true} activeIssue={activeIssue}/></div>
+               {isMaster ? <div className={classes.statistic}><Statistic/></div> : ""}
             </div>
-            <div className={classes.controlPanelItem}>
-            <GameTimer/>
-            </div>
+            <div className={classes.controlPanelItem}> 
+            <GameTimer isMaster={isMaster}/>
+            </div> 
+            {isMaster ? 
             <Button  className ={`button button__contained  ${classes.nextIssueButton}`} variant="contained" color='primary'
             onClick ={()=>{issues.length > activeIssue+1 
             ? setActiveIssue(activeIssue + 1) 
-            : setActiveIssue(+0)}}>Next issue</Button>
+            : setActiveIssue(+0)}}>Next issue</Button> : ""}
         </Container>
     </Container>);
 }

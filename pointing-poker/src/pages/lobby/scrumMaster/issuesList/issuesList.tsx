@@ -10,7 +10,7 @@ import { IIssueListProp } from '../../../../interfaces/IIssueListProp';
 export const IssuesList: React.FC<IIssueListProp> =(props:IIssueListProp)=> {
     const issues = useTypedSelector(state => state.gameSettings.issues);
     const [openIssueModal, setOpenIssueModal] = useState<boolean>(false);
-    const {isGame, activeIssue} = {...props};
+    const {isGame, activeIssue, isMaster} = {...props};
     return(<>
     <Container>
         <Container style={{}}>
@@ -20,11 +20,11 @@ export const IssuesList: React.FC<IIssueListProp> =(props:IIssueListProp)=> {
             {
                 issues.map((issue: IIssue, index) =>{
                     return <IssueCard isActive = {index === activeIssue} key={index}
-                        isNew={false} setOpenIssueModal={setOpenIssueModal} issue={issue} isGame = {isGame}/>
+                        isNew={false} setOpenIssueModal={setOpenIssueModal} isMaster = {isMaster} issue={issue} isGame = {isGame}/>
                 })
             }
             <IssueCard  isNew={true} setOpenIssueModal={setOpenIssueModal} isActive ={false}
-                issue={{ id: "0", title: "add new issue", link: "", priority: "" }} isGame={isGame}/>
+                issue={{ id: "0", title: "add new issue", link: "", priority: "" }} isMaster ={false} isGame={isGame}/>
         </Container>
         <Modal open={openIssueModal} onClose={() => setOpenIssueModal(prev => !prev)}>
             <CreateIssueModal setIsOpen={setOpenIssueModal}/>

@@ -6,6 +6,7 @@ export interface IssueProp{
     issue: IIssue;
     isGame: boolean;
     isActive: boolean;
+    isMaster: boolean;
 }
 export interface ICreateIssueProp{
     setIsOpen(isopen: boolean): void;

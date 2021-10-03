@@ -4,7 +4,6 @@ import '../../lobby/lobby.scss';
 import '../../lobby/scrumMaster/addCardValue/addCardValue.scss';
 import '@fontsource/ruda';
 import { Container,createStyles,makeStyles,Theme,Typography } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../../store/hooks/hooks';
 import { CardValue } from '../../lobby/scrumMaster/addCardValue/cardValue';
 const useStyles = makeStyles((theme: Theme) =>

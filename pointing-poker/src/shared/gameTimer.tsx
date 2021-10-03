@@ -37,8 +37,15 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
-export const GameTimer: React.FC = () =>{
+
+export interface TimerProps{
+    isMaster: boolean;
+}
+export const GameTimer: React.FC<TimerProps> = (props) =>{
+
     const classes = useStyles();
+    const {isMaster} = {...props};
+    console.log(isMaster);
     const {roundTimeMinutes, roundTimeSeconds} = useTypedSelector(state => state.gameSettings);
     const [[mins, secs], setTime] = useState([0, 0]);
 
@@ -64,8 +71,10 @@ export const GameTimer: React.FC = () =>{
                 <div className={classes.count}><p className = {classes.divider}>:</p></div>
                 <div className={classes.count}>{secs}</div>
             </Card>
+            {isMaster ? 
             <Button  className ={`button button__contained ${classes.timerButton}`} variant="contained" color='primary'
             onClick ={()=>{startTimer()}}>Run round</Button>
+            : ""}
         </Container>
       );
 }
