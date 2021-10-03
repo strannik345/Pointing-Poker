@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './../../pages/lobby/lobby.scss';
 import '@fontsource/ruda';
-import { Typography, Container, Modal } from '@material-ui/core';
+import { Typography, Container, Modal, Paper, Button } from '@material-ui/core';
 import { LobbyMemberCard } from '../memberCard/LobbyMemberCard';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../store/hooks/hooks';
-import { useParams } from 'react-router';
+import { Redirect, useHistory, useParams } from 'react-router';
 import { NoMatchPage } from '../../pages/404page/NoMatchPage';
 import { isConstructorDeclaration } from 'typescript';
+import { useTheme } from '@material-ui/styles';
 
 interface IGame {
   gameID: number;
@@ -34,6 +35,7 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     const player = useTypedSelector(state => state.player);
     const {gameURL} = useTypedSelector(state => state.gameURL);
     const {socketUser} = useTypedSelector(state=> state.socket)
+    const history = useHistory()
     const params = useParams<any>();
     const dispatch = useDispatch();
     
@@ -42,6 +44,11 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
       console.log('in member list', params.id);      
       connectToServer();
     }, [])
+
+    const clearServerInfo = () => {
+      sessionStorage.clear()
+      history.replace('/')
+    }
 
     const connectToServer = () => {  
       if(socketUser.readyState === 1) {
@@ -104,7 +111,12 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
             </>            
             :
             <Modal open={openModal} onClose={() => setOpenModal(prev => !prev)} disableBackdropClick  >
-              <div>You have been kicked from the server</div>
+              <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>      
+                <Paper elevation={3} component='form' style={{width: '100%', height: '80vh', maxHeight: '470px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
+                  <Typography component='h2' variant='h3' color='textPrimary' style={{textTransform: 'uppercase'}}>You have been kicked from the server</Typography>
+                  <Button onClick={clearServerInfo}>OK</Button>
+                </Paper>
+              </Container>
             </Modal>
         }        
       </Container>
