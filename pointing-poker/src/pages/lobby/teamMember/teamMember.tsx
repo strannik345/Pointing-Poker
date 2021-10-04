@@ -16,7 +16,7 @@ export const TeamMember: React.FC =()=> {
     return(
         <div className={classes.container}>
             {/* <LobbyInfo isMaster={false}/> */}
-            <MembersList/>
+            {/* <MembersList/> */}
         </div>
     );
 }

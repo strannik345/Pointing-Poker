@@ -1,50 +1,23 @@
 import { Box, Button, Container, Modal, Paper, TextField, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useTypedSelector } from '../../store/hooks/hooks';
 import { ModalForm } from './ModalForm';
 import './startPage.css'
 
 export const StartPage: React.FC = () => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [m, setM] = useState<any[]>([]);
+  const [openModal, setOpenModal] = useState<boolean>(true);
+  const idRef = useRef<HTMLInputElement>()
   const dispatch = useDispatch();
-  // const { gameURL } = useTypedSelector(state => state.gameURL);
+  const history = useHistory();
+  const { gameURL } = useTypedSelector(state => state.gameURL);
+  const player = useTypedSelector(state => state.player);
   
   const urlHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const index = event.target.value.split('').reverse().findIndex(i => i=== '=');
-    const gameID = event.target.value.split('').reverse().slice(0, index).reverse().join('');
-    console.log(gameID);
-    dispatch({type: "CHANGE_GameURL", payload: {gameURL: gameID}});
-  }
-
-  useEffect(()=> {
-    const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
-    socket.onmessage= (event) => {
-      console.log('get message');
-      const type = JSON.parse(event.data).type;
-      console.log(type);
-      if(type === 'chat-message'){
-        const message = JSON.parse(event.data).msg;        
-        console.log(message);
-        setM(prev => {return [...prev, message] });
-      }
-    }
-  },[])
-
-  const click = () => {
-    console.log('clicked')
-    const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
-    socket.onopen = () => {
-      console.log('connected for chat'); 
-      socket.send(JSON.stringify({
-        method: 'chat-message',
-        msg: 'hello',
-      }))     
-    } 
-    
-  }
+    console.log(event.target.value);
+    dispatch({type: "CHANGE_GameURL", payload: {gameURL: event.target.value}});
+  }  
 
   return (
     <>
@@ -54,24 +27,26 @@ export const StartPage: React.FC = () => {
           <Container style={{display: 'flex', flexDirection: 'column', width: 'fit-content'}}>
             <Box display="flex" flexDirection="row" justifyContent="space-between" height={40}>
               <Typography style={{color: 'black'}}>Create new session</Typography>
-              {/* <Link to='/lobby'> */}
-                <Button variant="contained" color="primary" onClick={click}>Start new game</Button>
-              {/* </Link> */}
-              {
-                m.map(i => <div>i</div>)
-              }
+                <Button variant="contained" color="primary" onClick={()=> {
+                  dispatch({type: 'CHANGE_PLAYER', payload: {...player, isScrumMaster: true}});
+                  history.push('/lobby');
+                }}>Start new game</Button>              
             </Box>
             <Box display="flex" flexDirection="column" >
-              <Typography style={{color: 'black'}}>Connect to lobby by URL:</Typography>
+              <Typography style={{color: 'black'}}>Connect to lobby by Id:</Typography>
               <Box display="flex" flexDirection="row" justifyContent="space-between">
-                <TextField onChange={urlHandler} size="small" id="input-url" label="URL" variant="outlined" style={{width: '400px'}}/>
-                <Button variant="contained" color="primary" onClick={() => setOpenModal(prev => !prev)}>Connect</Button>
+                <TextField inputRef={idRef} size="small" id="input-url" label="URL" variant="outlined" style={{width: '400px'}}/>
+                <Button variant="contained" color="primary" onClick={() => { 
+                  dispatch({type: 'CHANGE_PLAYER', payload: {...player, isScrumMaster: false}}); 
+                  console.log(player);            
+                  history.push(`/lobby/${idRef.current?.value}`)
+                }}>Connect</Button>
               </Box>
             </Box>
           </Container>        
         </Paper>
         {
-          <Modal open={openModal} onClose={() => setOpenModal(prev => !prev)}>
+          <Modal open={openModal} onClose={() => setOpenModal(prev => !prev)} disableBackdropClick  >
             <ModalForm setIsOpen={setOpenModal}></ModalForm>
           </Modal>          
         }

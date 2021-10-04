@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './../../pages/lobby/lobby.scss';
 import '@fontsource/ruda';
-import { Typography, Container } from '@material-ui/core';
+import { Typography, Container, Modal, Paper, Button } from '@material-ui/core';
 import { LobbyMemberCard } from '../memberCard/LobbyMemberCard';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../store/hooks/hooks';
+import { Redirect, useHistory, useParams } from 'react-router';
+import { NoMatchPage } from '../../pages/404page/NoMatchPage';
+import { isConstructorDeclaration } from 'typescript';
+import { useTheme } from '@material-ui/styles';
 
 interface IGame {
   gameID: number;
@@ -18,35 +22,71 @@ export interface IUser{
   lastName: string;
   position: string;
   isObserver: boolean;
+  isScrumMaster: boolean;
 }
 
-export const MembersList: React.FC =()=> {
+export interface MemberListProps {
+  scramMaster: boolean;
+}
+
+export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
+    const [openModal, setOpenModal] = useState<boolean>(true);
     const [memberList, setMemberList] = useState<IUser[]>([]); 
-    const player = useTypedSelector(state => state.player)
-
-
+    const player = useTypedSelector(state => state.player);
+    const {gameURL} = useTypedSelector(state => state.gameURL);
+    const {socketUser} = useTypedSelector(state=> state.socket)
+    const history = useHistory()
+    const params = useParams<any>();
+    const dispatch = useDispatch();
+    
+    
     useEffect(() => {
+      console.log('in member list', params.id);      
       connectToServer();
     }, [])
 
-    const connectToServer = () => {
-      const socket = new WebSocket(`ws://${process.env.REACT_APP_SERVER}`);
-      socket.onopen = () => {
-        console.log('connected'); 
-        socket.send(JSON.stringify({
-          method: 'connection',
-          msg: {...player}
-        }))       
+    const clearServerInfo = () => {
+      sessionStorage.clear()
+      history.replace('/')
+    }
+
+    const connectToServer = () => {  
+      if(socketUser.readyState === 1) {
+        console.log('ready');
+        if(player.isScrumMaster) {
+          console.log('start-server', player); 
+          socketUser.send(JSON.stringify({
+            id: params.id,
+            method: 'start-server',
+            msg: {...player}
+          }))       
+        } else {
+          socketUser.send(JSON.stringify({
+            id: params.id,
+            method: 'connection',
+            msg: {...player}
+          }))
+        }
+      } else {
+        console.log('not ready');
+        socketUser.onopen = () => {
+          console.log('sending fir not ready')
+          socketUser.send(JSON.stringify({
+            id: params.id,
+            method: 'connection',
+            msg: {...player}
+          }))
+        }
       }
-      socket.onmessage = (event) => {
+      socketUser.onmessage = (event: any) => {
         const type = JSON.parse(event.data).type;
         console.log(type);
         if(type === 'connection'){
-          const users: IUser[] = JSON.parse(event.data).msg;   
-          console.log(users);     
+          const users: IUser[] = JSON.parse(event.data).msg[0].players;   
           setMemberList(users);
-          console.log(users);
-          console.log(memberList);
+        } else if(type === 'update-players') {
+          const users: IUser[] = JSON.parse(event.data).msg[0].players;   
+          setMemberList(users);
         }
       }
     }
@@ -58,7 +98,26 @@ export const MembersList: React.FC =()=> {
       </Container>
       <Container className = "team-members">
         {
-          memberList.map(member=> <LobbyMemberCard size={{isSmall:false}} userInfo={member}/>)
+          memberList.some(member=> member.id === player.id) || scramMaster ?
+            <>
+              {
+                memberList.map(member=>             
+                      !member.isScrumMaster || !scramMaster ?
+                      <LobbyMemberCard size={{isSmall:false}} userInfo={member} />
+                      :
+                      <></>           
+                )
+              }
+            </>            
+            :
+            <Modal open={openModal} onClose={() => setOpenModal(prev => !prev)} disableBackdropClick  >
+              <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>      
+                <Paper elevation={3} component='form' style={{width: '100%', height: '80vh', maxHeight: '470px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
+                  <Typography component='h2' variant='h3' color='textPrimary' style={{textTransform: 'uppercase'}}>You have been kicked from the server</Typography>
+                  <Button onClick={clearServerInfo}>OK</Button>
+                </Paper>
+              </Container>
+            </Modal>
         }        
       </Container>
     </>

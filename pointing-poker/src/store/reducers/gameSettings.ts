@@ -9,6 +9,7 @@ const defaultSettings: IScramInfo ={
       lastName: 'Doe',
       position: 'no position',
       isObserver: true,
+      isScrumMaster: true,
     },
     lobbyLink: "",
     members: [],

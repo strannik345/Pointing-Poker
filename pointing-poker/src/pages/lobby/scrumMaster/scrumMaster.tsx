@@ -27,7 +27,7 @@ export const ScrumMaster: React.FC =()=> {
     return(
         <div className={classes.container}>
         <LobbyInfo isMaster = {true} />
-        <MembersList/>
+        <MembersList scramMaster={true}/>
         <IssuesList/>
         <GameSettings/>
         <GameCards/>
