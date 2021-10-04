@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Button, Paper, TextField } from "@material-ui/core";
-import { SendText } from "./sendText";
+// import { SendText } from "./sendText";
 import SendIcon from '@material-ui/icons/Send';
-import { ChatMessage } from "./chatMessage";
+import { ChatMessage, Message } from "./chatMessage";
 import axios from '../../../services/api';
-import { IMessage } from "../../../interfaces/chat";
+// import { IMessage } from "../../../interfaces/chat";
+import { useTypedSelector } from "../../../store/hooks/hooks";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
@@ -50,11 +51,22 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Chat() {
   const classes = useStyles();
-
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const {player} = useTypedSelector(state=>state)
+  const [messages, setMessages] = useState<any[]>([]);
   const [content, setContent] = useState('');
   useEffect(()=> {
     // fetchMessages();
+    const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
+    socket.onmessage= (event) => {
+      console.log('get message');
+      const type = JSON.parse(event.data).type;
+      console.log(type);
+      if(type === 'chat-message'){
+        const message = JSON.parse(event.data).msg;        
+        console.log("useEf", message);
+        setMessages(prev => {return [...prev, message] });
+      }
+    }
 }, []);
   // const fetchMessages = async () => {
   //     try {
@@ -68,13 +80,18 @@ export default function Chat() {
   //       }, 500)
   //     }
   //   }
-  //   const onSaveMessage = async () => {
-  //       await axios.post(`/api/new-message`,{
-  //       id: +(new Date()),
-  //       user_id: 1,
-  //       text: content})
-  //       await fetchMessages();
-  //   }
+    const onSaveMessage = async () => {
+      console.log('clicked', content)
+      const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
+      socket.onopen = () => {
+        console.log('connected for chat'); 
+        socket.send(JSON.stringify({
+          method: 'chat-message',
+          msg: content,
+        }))     
+      }
+      setContent('');
+    }
   
   
   return (
@@ -82,8 +99,10 @@ export default function Chat() {
       <Paper className={classes.paper} >
         <Paper id="style-1" className={classes.messagesBody}>
           { Object.keys(messages).map((key) => {
-            return messages[+key] ? <ChatMessage key = {messages[+key].id} userName={(messages[+key].user_id as unknown as string)} text={messages[+key].text} />
-              : ""})
+            return messages[+key] ? 
+            // <ChatMessage key = {messages[+key].id} userName={(messages[+key].user_id as unknown as string)} text={messages[+key].text} />
+            <ChatMessage userName = "Luy" text={messages[+key]} />  
+            : ""})
           }
         </Paper>
         {/* <SendText/> */}
@@ -97,7 +116,7 @@ export default function Chat() {
             />
             <Button variant="contained" color="primary" 
                     className={classes.button}
-                    onClick = {()=>{}}>
+                    onClick = {onSaveMessage}>
                 <SendIcon />
             </Button>
             </div>
