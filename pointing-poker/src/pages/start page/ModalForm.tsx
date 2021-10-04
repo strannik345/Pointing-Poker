@@ -7,7 +7,7 @@ import { useTypedSelector } from "../../store/hooks/hooks";
 import axios from 'axios';
 import { uploadImage } from "../../services/uploadImage";
 
-export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
+export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp, ref) => {
   const [avatar, setAvatar] = useState<string>("");
   const [observer, setObserver] = useState<boolean>(false);
   const { setIsOpen } = prop;
@@ -24,6 +24,7 @@ export const ModalForm: React.FC<IStartModalProp> = (prop: IStartModalProp) => {
       setAvatar(response.data.public_id);
     })
   }
+  ref={ref}
   // const uploadImage= async (file:File | null)=>{
   //   const imageData = new FormData();
   //   file && imageData.append("file", file);

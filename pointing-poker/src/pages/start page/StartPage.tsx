@@ -58,7 +58,7 @@ export const StartPage: React.FC = () => {
                 <Button variant="contained" color="primary" onClick={click}>Start new game</Button>
               {/* </Link> */}
               {
-                m.map(i => <div>i</div>)
+                m.map(i => <div key= {i}>i</div>)
               }
             </Box>
             <Box display="flex" flexDirection="column" >

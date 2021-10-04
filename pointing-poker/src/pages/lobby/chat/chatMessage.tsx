@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { deepOrange } from "@material-ui/core/colors";
 import { MemberCard } from "../../../shared/memberCard/memberCard";
 
-interface Message {
+export interface Message {
   userName:string;
   text: string;
 }
@@ -84,6 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ChatMessage:React.FC<Message> = (props:Message) => {
+  console.log("props", props)
   const {text} = {...props};
   const classes = useStyles();
   console.log("chat mes", text);

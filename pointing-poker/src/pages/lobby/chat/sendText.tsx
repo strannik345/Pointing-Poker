@@ -26,14 +26,15 @@ import axios from '../../../services/api';
 
 
 export const SendText = () => {
-    // const [content, setContent] = useState('');
-    // const onSaveMessage = async () => {
-    //     await axios.post(`/api/new-message`,{
-    //     id: +(new Date()),
-    //     user_id: 1,
-    //     text: content}
-    //     )
-    // }
+    const [content, setContent] = useState('');
+    const onSaveMessage = async () => {
+        // await axios.post(`/api/new-message`,{
+        // id: +(new Date()),
+        // user_id: 1,
+        // text: content}
+        // )
+        
+    }
 
     // const classes = useStyles();
     return (
