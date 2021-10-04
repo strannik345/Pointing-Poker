@@ -46,7 +46,6 @@ export const GameTimer: React.FC<TimerProps> = (props) =>{
 
     const classes = useStyles();
     const {isMaster} = {...props};
-    console.log(isMaster);
     const {roundTimeMinutes, roundTimeSeconds} = useTypedSelector(state => state.gameSettings);
     const [[mins, secs], setTime] = useState([0, 0]);
 
@@ -60,11 +59,13 @@ export const GameTimer: React.FC<TimerProps> = (props) =>{
             setTime([mins, secs - 1]);
         }
     };
+    
     const startTimer = () => setTime([roundTimeMinutes, roundTimeSeconds]);
     React.useEffect(() => {
         const timerId = setInterval(() => tick(), 1000);
         return () => clearInterval(timerId);
     });
+    
     return (
         <Container className={classes.timerContainer}>
             <Card className={classes.timer}>

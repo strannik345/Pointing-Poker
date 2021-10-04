@@ -9,6 +9,7 @@ import { useTypedSelector } from '../store/hooks/hooks';
 import { GameTimer } from './gameTimer';
 import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,10 +65,11 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
         if(issues.length > activeIssue+1 ) {
             setActiveIssue(activeIssue + 1)
         } else {
-            setActiveIssue(+0)
+            history.push('/result');
             
         }
     }
+    const history = useHistory();
     return(<Container className={classes.container}>
         <Typography className = " lobby--title lobby--title__primary">
             Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)

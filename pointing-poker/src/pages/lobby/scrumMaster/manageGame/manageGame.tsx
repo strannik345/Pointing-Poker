@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './manageGame.scss';
 import { Typography, Button, Container, Box} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 export const ManageGame: React.FC =()=> {
     const [gameID, setGameID] = useState<string>('');
@@ -17,6 +18,7 @@ export const ManageGame: React.FC =()=> {
     //     console.log(gameID);
     //     setGameID(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=${gameID.gameID}`);
     // }
+    const history = useHistory();
     return(<>
         <Container className="manage-game">
             <Typography >Link to lobby:</Typography>
@@ -25,7 +27,8 @@ export const ManageGame: React.FC =()=> {
                 <Button className = "button" variant="contained" color="primary">Copy</Button>
             </Box> 
             <Box className="manage-game-buttons">
-                <Button  className ="button button__contained " variant="contained" color="primary">Start game</Button>
+                <Button  className ="button button__contained " variant="contained" color="primary" 
+                onClick ={()=>{history.push('/game');}}>Start game</Button>
                 <Button  className ="button button__outlined " variant="outlined" >Cancel game</Button>
             </Box>
         </Container>
