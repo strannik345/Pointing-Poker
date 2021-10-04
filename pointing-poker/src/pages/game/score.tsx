@@ -54,6 +54,7 @@ export const Score: React.FC =()=> {
       position: "developer",
       isBlocked: false,
       isObserver: false,
+      isScrumMaster: false,
     },
     {
       id: "2",
@@ -63,6 +64,7 @@ export const Score: React.FC =()=> {
       position: "senior developer",
       isBlocked: false,
       isObserver: false,
+      isScrumMaster: false,
     },
     {
       id: "3",
@@ -72,6 +74,7 @@ export const Score: React.FC =()=> {
       position: "team lead",
       isBlocked: false,
       isObserver: false,
+      isScrumMaster: false,
     },
     
   ]
