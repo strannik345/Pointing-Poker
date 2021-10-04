@@ -1,56 +1,47 @@
-import React from 'react';
-import './memberCard.scss'
+import React, { useEffect } from 'react';
+import '../../../shared/memberCard/memberCard.scss'
 import '@fontsource/roboto';
 import { Avatar, Card, Typography, IconButton } from '@material-ui/core';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
-import { ICardSize } from '../../interfaces/card';
-import { useTypedSelector } from '../../store/hooks/hooks';
 import { AdvancedImage } from '@cloudinary/react';
 import { Cloudinary } from '@cloudinary/url-gen';
 import {Transformation} from "@cloudinary/url-gen";
 import {thumbnail} from "@cloudinary/url-gen/actions/resize";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
+import { ChatMessageFromServer } from './chat';
 
-export const MemberCard: React.FC<ICardSize> = ({isSmall = false}) => {
+export const ChatCard: React.FC<ChatMessageFromServer> = (props: ChatMessageFromServer) => {
   const cld = new Cloudinary({
     cloud: {
       cloudName: 'pointingpoker'
     }
   }); 
-  const {lastName, name, isObserver, position, avatar} = useTypedSelector(state => state.player);
+  const {lastName, name, isObserver, position, avatar} = props;
+  console.log(props);
   console.log(lastName, name, isObserver, position, avatar);
   const avatarImage = cld.image(avatar);
-  if (isSmall) {
+  useEffect (() => {
     avatarImage
-  .resize(thumbnail()
-  .width(30)
-  .height(30))
-  .roundCorners(byRadius(20));
-  } else {
-    avatarImage
-  .resize(thumbnail()
-  .width(48)
-  .height(48))
-  .roundCorners(byRadius(20));
-  }
+    .resize(thumbnail()
+    .width(48)
+    .height(48))
+    .roundCorners(byRadius(20));
+  }, [])  
   
     return (
       <>
-      <Card className = {"member-card " + (isSmall ? 'member-card__small' : '')} >
+      <Card className = {"member-card " + 'member-card__small'} >
         {avatar && <AdvancedImage cldImg={avatarImage}/>}
         { !avatar  && <Avatar className = "avatar" 
             style={
             {color: '#ffffff',  
             backgroundColor: '#60DABF', 
             boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
-            width: (isSmall ? '30px' : '48px'), 
-            height: (isSmall ? '30px' : '48px')}
+            width: '30px', 
+            height: '30px'}
             } >OP</Avatar>}
             
-            <div>{ !isSmall &&
-              <Typography variant="subtitle1">
-              {lastName}
-              </Typography>}
+            <div>
               <Typography variant="h5">
               {name}
               </Typography>

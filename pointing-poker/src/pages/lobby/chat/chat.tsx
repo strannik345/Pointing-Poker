@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Button, Paper, TextField } from "@material-ui/core";
-// import { SendText } from "./sendText";
+import { SendText } from "./sendText";
 import SendIcon from '@material-ui/icons/Send';
-import { ChatMessage, Message } from "./chatMessage";
+import { ChatMessage } from "./chatMessage";
 import axios from '../../../services/api';
-// import { IMessage } from "../../../interfaces/chat";
+import { IMessage } from "../../../interfaces/chat";
+import { connect } from "tls";
 import { useTypedSelector } from "../../../store/hooks/hooks";
+import { useParams } from "react-router";
+import { IUser } from "../../../shared/membersList/membersList";
+
+export interface ChatMessageFromServer extends IUser {
+  message: string;
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
@@ -51,58 +59,49 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Chat() {
   const classes = useStyles();
-  const {player} = useTypedSelector(state=>state)
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<ChatMessageFromServer[]>([]);
   const [content, setContent] = useState('');
+  const {socketChat} = useTypedSelector(state => state.socket);
+  const player = useTypedSelector(state => state.player);
+  const params = useParams<any>();
+
   useEffect(()=> {
-    // fetchMessages();
-    const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
-    socket.onmessage= (event) => {
-      console.log('get message');
+    connect();
+  }, []);
+
+  const connect = () => {
+    socketChat.onmessage = (event: any) => {
       const type = JSON.parse(event.data).type;
       console.log(type);
       if(type === 'chat-message'){
-        const message = JSON.parse(event.data).msg;        
-        console.log("useEf", message);
-        setMessages(prev => {return [...prev, message] });
-      }
-    }
-}, []);
-  // const fetchMessages = async () => {
-  //     try {
-  //       axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
-  //       const {data} = await axios.get(`/api/get-message`);
-  //       setMessages(prev => [...prev, data]);
-  //       await fetchMessages();
-  //     } catch (e) {
-  //       setTimeout(() => {
-  //         fetchMessages();
-  //       }, 500)
-  //     }
-  //   }
-    const onSaveMessage = async () => {
-      console.log('clicked', content)
-      const socket = new WebSocket('ws://shielded-plains-14826.herokuapp.com/');
-      socket.onopen = () => {
-        console.log('connected for chat'); 
-        socket.send(JSON.stringify({
-          method: 'chat-message',
-          msg: content,
-        }))     
-      }
-      setContent('');
-    }
-  
+        const message: ChatMessageFromServer = JSON.parse(event.data).msg;  
+        console.log(message)            
+        setMessages(prev => {
+          console.log(prev)
+          console.log([...prev, message])
+          return [...prev, message]
+        })        
+      }      
+    }    
+  } 
+
+  const sendMessage = () => [
+    socketChat.send(JSON.stringify({
+      id: params.id,
+      method: 'chat-message',
+      msg: {...player, message: content}
+    }))
+  ]
   
   return (
     <div className={classes.container}>
       <Paper className={classes.paper} >
         <Paper id="style-1" className={classes.messagesBody}>
-          { Object.keys(messages).map((key) => {
-            return messages[+key] ? 
-            // <ChatMessage key = {messages[+key].id} userName={(messages[+key].user_id as unknown as string)} text={messages[+key].text} />
-            <ChatMessage userName = "Luy" text={messages[+key]} />  
-            : ""})
+          { 
+            messages.map(message => {
+              console.log(message)
+              return <ChatMessage {...message}/>
+            })
           }
         </Paper>
         {/* <SendText/> */}
@@ -116,7 +115,7 @@ export default function Chat() {
             />
             <Button variant="contained" color="primary" 
                     className={classes.button}
-                    onClick = {onSaveMessage}>
+                    onClick = {sendMessage}>
                 <SendIcon />
             </Button>
             </div>

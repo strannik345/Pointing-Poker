@@ -5,6 +5,10 @@ import { Avatar, Card, Typography, IconButton } from '@material-ui/core';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
 import { ICardSize } from '../../interfaces/card';
 import { IUser } from '../membersList/membersList';
+import { useParams } from 'react-router';
+import { AnyAsyncThunk } from '@reduxjs/toolkit/dist/matchers';
+import { socketReducer } from '../../store/reducers/socket';
+import { useTypedSelector } from '../../store/hooks/hooks';
 
 interface CardProp {
   size: ICardSize;
@@ -12,10 +16,24 @@ interface CardProp {
 }
 
 export const LobbyMemberCard: React.FC<CardProp> = ({size, userInfo}) => {
-    
+  const params = useParams<any>()  
+  const {socketUser} = useTypedSelector(state => state.socket)
+
+
+    const deletePlayer = () => {
+      if (socketUser.OPEN) {
+        console.log(`deleting: ${userInfo}`)
+        socketUser.send(JSON.stringify({
+          id: params.id,
+          method: 'delete-player',
+          msg: {...userInfo}
+        }))
+      }
+    }
+
     return (
       <>
-      <Card className = {"member-card " + (size.isSmall ? 'member-card__small' : '')} >
+      <Card className = {"member-card " + (size.isSmall ? 'member-card__small' : '')} style={userInfo.isScrumMaster? {border:"2px solid gold", boxShadow: 'none'} : {}} >
         <Avatar className = "avatar" 
             style={
             {color: '#ffffff',  
@@ -35,9 +53,14 @@ export const LobbyMemberCard: React.FC<CardProp> = ({size, userInfo}) => {
                 {userInfo.position}
               </Typography>
             </div>
-            <IconButton aria-label="delete" className = "delete">
-              <BlockOutlinedIcon style={{ fontSize: (size.isSmall  ? 26 : 56) }}/>
-            </IconButton>
+            {
+              !userInfo.isScrumMaster ?
+              <IconButton aria-label="delete" className = "delete" onClick={deletePlayer}>
+                <BlockOutlinedIcon style={{ fontSize: (size.isSmall  ? 26 : 56) }}/>
+              </IconButton>
+              : null
+            }
+            
       </Card>
       </>
     );

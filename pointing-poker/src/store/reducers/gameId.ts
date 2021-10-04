@@ -15,7 +15,9 @@ export const defaultGameURL: GameURL = {
 export const gameURLReducer = (state = defaultGameURL, action: GameURLAction): GameURL => {
   switch (action.type) {
     case 'CHANGE_GameURL':
-      return action.payload;
+      console.log(`payload`);
+      console.log( action.payload)
+      return {...state, gameURL: action.payload.gameURL};
     default:
       return state;
   }

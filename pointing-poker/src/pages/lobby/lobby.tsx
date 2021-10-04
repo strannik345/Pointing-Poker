@@ -1,10 +1,11 @@
 import { Container } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { MembersList } from '../../shared/membersList/membersList';
 import { useTypedSelector } from '../../store/hooks/hooks';
 import Chat from './chat/chat';
 import { ScrumMaster } from './scrumMaster/scrumMaster';
-import { TeamMember } from './teamMember/teamMember';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -20,15 +21,24 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 export const Lobby: React.FC =()=> {
-  const {lastName, name, isObserver, position, avatar} = useTypedSelector(state => state.player);
     const classes = useStyles();
+    const { isScrumMaster } = useTypedSelector(state => state.player)
     return(
-        // <div className={classes.container}>
-        //     <TeamMember/> 
-        //     <Chat/>
-        // </div>);
-        <Container className={classes.container}>
-            <ScrumMaster/> 
-            <Chat/>
-        </Container>);
+        <>
+          <Switch>
+            <Route path='/lobby/:id'>
+              <Container className={classes.container}>
+                {
+                  isScrumMaster ? 
+                    <ScrumMaster/> 
+                    :
+                    <MembersList scramMaster={false}/>
+                }                
+                <Chat/>
+              </Container>
+            </Route>
+            <Redirect to={`/lobby/f${(+new Date()).toString(16)}`} />
+          </Switch>
+        </>
+        );
 }
