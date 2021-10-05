@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/player-lobby">
             <PlayerLobby />
           </Route>
-          <Route exact path="/game">
+          <Route path='/game/:id'>
             <Game/>
           </Route>
           <Route exact path="/result">

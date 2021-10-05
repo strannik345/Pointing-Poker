@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '@fontsource/ruda';
 import './lobbyInfo/lobbyInfo.scss';
 import { Typography, Button, Container, makeStyles, Theme, createStyles, Paper} from '@material-ui/core';
@@ -9,7 +9,7 @@ import { useTypedSelector } from '../store/hooks/hooks';
 import { GameTimer } from './gameTimer';
 import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,10 +56,23 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
     const {issues, cardValues} = useTypedSelector(state => state.gameSettings);
+    const {isScrumMaster} = useTypedSelector(state => state.player)
     const [activeIssue, setActiveIssue] = useState(0);
     const {isMaster} = {...props}
     const classes = useStyles();
     const [showStatistic, setShowStatistic] = useState(false);
+    const {socketUser} = useTypedSelector(state=> state.socket)
+    const params = useParams<any>();
+
+    useEffect(()=> {
+      if(socketUser.readyState === 1) {
+        socketUser.send(JSON.stringify({
+          method: 'start-game',
+          id: params.id,
+        }))
+      }
+    }, [])
+
     const nextIssueClick = () => {
         setShowStatistic(true);
         if(issues.length > activeIssue+1 ) {
@@ -81,7 +94,7 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
                 </Typography>
                 <MemberCard isSmall={false}/>
             </Container>
-        {isMaster ? 
+        {isScrumMaster ? 
         <Button  className ="button button__outlined " variant="outlined" >Stop game</Button>
         :
         <Button  className ="button button__outlined " variant="outlined" >Exit</Button>
@@ -90,9 +103,9 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
         <Container className={classes.controlPanel}>
             <div className={`${classes.issues} ${classes.controlPart} ${classes.controlPanelItem}`}>
                 <div className={classes.issuesList}>
-                    <IssuesList isMaster = {isMaster} isGame={true} activeIssue={activeIssue}/>
+                    <IssuesList isMaster = {isScrumMaster} isGame={true} activeIssue={activeIssue}/>
                 </div>
-               {isMaster ? <div className={classes.statistic}><Statistic/></div> : 
+               {isScrumMaster ? <div className={classes.statistic}><Statistic/></div> : 
                <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"45px"}}>
                {
                    cardValues.map((cardValue:string, index: number)=>{
@@ -102,11 +115,11 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
            </Container>}
             </div>
             <div className={classes.controlPanelItem}> 
-                <GameTimer isMaster={isMaster}/>
-                {!isMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic/></div>}
+                <GameTimer isMaster={isScrumMaster}/>
+                {!isScrumMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic/></div>}
             </div> 
             
-            {isMaster ? 
+            {isScrumMaster ? 
             <Button  className ={`button button__contained  ${classes.nextIssueButton}`} variant="contained" color='primary'
             onClick ={()=>{nextIssueClick()}}>Next issue</Button> : ""}
         </Container>
