@@ -18,7 +18,8 @@ export interface IScramInfo{
     scoreTypeShort: string,
     roundTimeMinutes: number,
     roundTimeSeconds: number,
-    cardValues:string[]
+    cardValues:string[],
+    votingSistem: string,
 }
 
 export enum ScramInfoActionTypes {
@@ -32,6 +33,8 @@ export enum ScramInfoActionTypes {
     SET_ROUND_TIME_SECONDS = "SET_ROUND_TIME_SECONDS",
     ADD_CARD_VALUE = "ADD_CARD_VALUE",
     EDIT_CARD_VALUE = "EDIT_CARD_VALUE",
+    SET_VOTING_SISTEM = "SET_VOTING_SISTEM",
+    SET_CARD_VALUE = "SET_CARD_VALUE",
 }
     interface AddIssueAction {
         type: ScramInfoActionTypes.ADD_ISSUE,
@@ -76,6 +79,14 @@ export enum ScramInfoActionTypes {
         text: string,
         isBreak: boolean
     }
+    interface SetCardValue {
+        type: ScramInfoActionTypes.SET_CARD_VALUE,
+        payload: string[]
+    }
+    interface SetVotingSistem {
+        type: ScramInfoActionTypes.SET_VOTING_SISTEM,
+        payload: string,
+    }
 
     export type ScramInfoAction =
         AddIssueAction |
@@ -87,4 +98,6 @@ export enum ScramInfoActionTypes {
         SetScoreType |
         SetScoreTypeShort |
         EditCardValue |
-        AddCardValue;
+        AddCardValue |
+        SetCardValue |
+        SetVotingSistem;

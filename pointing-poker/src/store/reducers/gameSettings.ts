@@ -21,7 +21,8 @@ const defaultSettings: IScramInfo ={
     scoreTypeShort: "SP",
     roundTimeMinutes: 2,
     roundTimeSeconds: 20,
-    cardValues:["2", "4", "8"]
+    cardValues:["1", "2", "4", "8", "16"],
+    votingSistem: "powerOf2",
 }
 export const gameSettingsReducer =(state = defaultSettings, action: ScramInfoAction) =>{
     switch(action.type){
@@ -29,12 +30,15 @@ export const gameSettingsReducer =(state = defaultSettings, action: ScramInfoAct
             return {...state, cardValues: state.cardValues.concat("")}
         case ScramInfoActionTypes.EDIT_CARD_VALUE:
             return {...state, 
-        cardValues: state.cardValues.map((cardValue, index) => {
-          if (index !== action.id) {
-            return cardValue
-          }
-          return action.text
-        })}
+                cardValues: state.cardValues.map((cardValue, index) => {
+                    if (index !== action.id) {
+                        return cardValue
+                    }
+                return action.text
+                })
+            }
+        case ScramInfoActionTypes.SET_CARD_VALUE:
+            return {...state, cardValues: action.payload}
         case ScramInfoActionTypes.ADD_ISSUE:
             return {...state, issues: state.issues.concat(action.payload) }
         case ScramInfoActionTypes.SET_CHANGING_CARD_IN_ROUND_END:
@@ -51,6 +55,8 @@ export const gameSettingsReducer =(state = defaultSettings, action: ScramInfoAct
             return {...state, roundTimeMinutes: action.payload}
         case ScramInfoActionTypes.SET_ROUND_TIME_SECONDS:
             return {...state, roundTimeSeconds: action.payload}
+        case ScramInfoActionTypes.SET_VOTING_SISTEM:
+            return {...state, votingSistem: action.payload}
         default:
             return {...state}
     
