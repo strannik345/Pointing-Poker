@@ -9,7 +9,7 @@ import { useTypedSelector } from '../store/hooks/hooks';
 import { GameTimer } from './gameTimer';
 import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     nextIssueButton:{
         width: "200px",
+        marginTop: "113px",
     },
     hidden:{
         visibility:"hidden"
@@ -59,11 +60,25 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
     const {isScrumMaster} = useTypedSelector(state => state.player)
 
     const [activeIssue, setActiveIssue] = useState(0);
-    const {isMaster} = {...props}
     const classes = useStyles();
     const [showStatistic, setShowStatistic] = useState(false);
+    const [showIssueButton, setShowIssueButton] = useState(false);
     const {socketUser} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
+
+    // const connect = () => {
+    //     socketUser.onmessage = (event: any) => {
+    //       const data = JSON.parse(event.data);
+    //       console.log(data);     
+    //     }    
+    //   } 
+
+    const sendActiveIssue = () => [
+        socketUser.send(JSON.stringify({
+          id: params.id,
+          msg: activeIssue
+        }))
+      ]
 
     useEffect(()=> {
       if(socketUser.readyState === 1) {
@@ -72,17 +87,23 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
           id: params.id,
         }))
       }
+    //   connect();
+    
     }, [])
+    useEffect(()=>{
+        isScrumMaster && sendActiveIssue();
+    }, [activeIssue])
 
     const nextIssueClick = () => {
         setShowStatistic(true);
         if(issues.length > activeIssue+1 ) {
-            setActiveIssue(activeIssue + 1)
+            setActiveIssue(activeIssue + 1);
+            // sendActiveIssue();
         } else {
             history.push('/result');
-            
         }
     }
+    
     const history = useHistory();
     return(<Container className={classes.container}>
         <Typography className = " lobby--title lobby--title__primary">
@@ -96,7 +117,9 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
                 <MemberCard isSmall={false}/>
             </Container>
         {isScrumMaster ? 
-        <Button  className ="button button__outlined " variant="outlined" >Stop game</Button>
+            <Link to = {`/result`}>
+                <Button  className ="button button__outlined " variant="outlined" onClick = {()=>setShowStatistic(true)}>Stop game</Button>
+            </Link>
         :
         <Button  className ="button button__outlined " variant="outlined" >Exit</Button>
         }
@@ -116,11 +139,11 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
            </Container>}
             </div>
             <div className={classes.controlPanelItem}> 
-                {isTimerNeed && <GameTimer isMaster={isScrumMaster}/>}
+                {isTimerNeed && <GameTimer activeIssue={activeIssue} setShowIssueButton={setShowIssueButton}/>}
                 {!isScrumMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic/></div>}
             </div> 
             
-            {isScrumMaster ? 
+            {(isScrumMaster && showIssueButton || isScrumMaster && !isTimerNeed) ? 
             <Button  className ={`button button__contained  ${classes.nextIssueButton}`} variant="contained" color='primary'
             onClick ={()=>{nextIssueClick()}}>Next issue</Button> : ""}
         </Container>
