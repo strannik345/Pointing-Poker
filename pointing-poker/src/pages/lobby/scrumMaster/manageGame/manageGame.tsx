@@ -4,6 +4,7 @@ import { Typography, Button, Container, Box} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../../../store/hooks/hooks';
 import { useParams } from 'react-router';
+import { Link, useHistory } from 'react-router-dom';
 
 interface Params {
     id: string;
@@ -17,7 +18,7 @@ export const ManageGame: React.FC =()=> {
         // getGameID()
         console.log(params)
     },[])
-
+    const history = useHistory();
     // const getGameID = async() => {
     //     const response = await fetch(`${process.env.REACT_APP_SERVER}/api/start-new-game`);
     //     const gameID = await response.json();
@@ -33,7 +34,9 @@ export const ManageGame: React.FC =()=> {
                 <Button className = "button" variant="contained" color="primary">Copy</Button>
             </Box> 
             <Box className="manage-game-buttons">
-                <Button  className ="button button__contained " variant="contained" color="primary">Start game</Button>
+                <Link to = '/game'> 
+                    <Button  className ="button button__contained " variant="contained" color="primary">Start game</Button>
+                </Link>
                 <Button  className ="button button__outlined " variant="outlined" >Cancel game</Button>
             </Box>
         </Container>
