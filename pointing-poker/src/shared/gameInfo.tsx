@@ -55,8 +55,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
-    const {issues, cardValues} = useTypedSelector(state => state.gameSettings);
+    const {issues, cardValues, isTimerNeed} = useTypedSelector(state => state.gameSettings);
     const {isScrumMaster} = useTypedSelector(state => state.player)
+
     const [activeIssue, setActiveIssue] = useState(0);
     const {isMaster} = {...props}
     const classes = useStyles();
@@ -115,7 +116,7 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
            </Container>}
             </div>
             <div className={classes.controlPanelItem}> 
-                <GameTimer isMaster={isScrumMaster}/>
+                {isTimerNeed && <GameTimer isMaster={isScrumMaster}/>}
                 {!isScrumMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic/></div>}
             </div> 
             

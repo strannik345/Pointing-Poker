@@ -8,7 +8,7 @@ import { IssuesList } from './issuesList/issuesList';
 import { GameSettings } from './gameSettings/gameSettings';
 import { GameCards } from './gameCards/gameCards';
 import { AddCardValue } from './addCardValue/addCardValue';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, Grow, makeStyles, Theme } from '@material-ui/core';
 import { IScramInfo } from '../../../interfaces/IScramInfo';
 import { useTypedSelector } from '../../../store/hooks/hooks';
 import { useDispatch } from 'react-redux';
@@ -31,6 +31,11 @@ export const ScrumMaster: React.FC =()=> {
         <IssuesList isGame={false} activeIssue={0} isMaster={false}/>
         <GameSettings/>
         <GameCards/>
-        <AddCardValue/>
+        {gameSettings.votingSistem === "custom" &&
+          <Grow in={gameSettings.votingSistem === "custom"}>
+            <AddCardValue/>
+          </Grow>  
+        }
+        
     </div>)
 }

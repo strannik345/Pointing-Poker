@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './../../lobby.scss';
 import '@fontsource/ruda';
 import './gameSettings';
-import { Typography, Container, FormGroup, FormControlLabel, Switch,  Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles, TextField } from '@material-ui/core';
+import { Typography, Container, FormGroup, FormControlLabel, Switch,  Input, SwitchClassKey, SwitchProps, withStyles, Theme, createStyles, TextField, FormControl, FormLabel, RadioGroup, Radio, Grow, Fade } from '@material-ui/core';
 import { Timer } from '../../../../shared/timer/timer';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../../../store/hooks/hooks';
@@ -74,6 +74,14 @@ const IOSSwitch = withStyles((theme: Theme) =>
 export const GameSettings: React.FC =()=> {
   const dispatch = useDispatch();
   const gameSettings = useTypedSelector(state => state.gameSettings);
+  useEffect(()=>{
+    if(gameSettings.votingSistem === 'fibonacci'){
+      dispatch({type: ScramInfoActionTypes.SET_CARD_VALUE, payload: ["0", "1", "2", "3", "5"]});
+    }
+    if(gameSettings.votingSistem === 'powerOf2'){
+      dispatch({type: ScramInfoActionTypes.SET_CARD_VALUE, payload: ["2", "4", "8", "16", "32"]});
+    }
+  }, [gameSettings.votingSistem]);
     return(<>
     <Container className = "settings-container" style={{width: '1000px', paddingTop: "100px"}}>
         <Container>
@@ -101,16 +109,8 @@ export const GameSettings: React.FC =()=> {
                     dispatch({type: ScramInfoActionTypes.SET_CHANGING_CARD_IN_ROUND_END, 
                       payload: !gameSettings.changingCardInRoundEnd})}}
             />
-            <FormControlLabel
-                control={<IOSSwitch color="primary" className="switch" name = "need-timer" />}
-                label="Is timer needed:"
-                labelPlacement=  "start"
-                style={{display:"flex", justifyContent: "space-between",width:"380px"}}
-                checked = {gameSettings.isTimerNeed}
-                onChange = {()=>{
-                  dispatch({type: ScramInfoActionTypes.SET_IS_TIMER_NEED, 
-                    payload: !gameSettings.isTimerNeed})}}
-            />
+            
+            
             <FormControlLabel
                 control={<Input id="score-type" aria-describedby="score type" 
                 onChange = {(e)=>{
@@ -134,11 +134,42 @@ export const GameSettings: React.FC =()=> {
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
             />
             <FormControlLabel
-                label="Round time:"
-                control={<Timer/>}
+                control={<IOSSwitch color="primary" className="switch" name = "need-timer" />}
+                label="Is timer needed:"
                 labelPlacement=  "start"
                 style={{display:"flex", justifyContent: "space-between",width:"380px"}}
+                checked = {gameSettings.isTimerNeed}
+                onChange = {()=>{
+                  dispatch({type: ScramInfoActionTypes.SET_IS_TIMER_NEED, 
+                    payload: !gameSettings.isTimerNeed})}}
             />
+            {gameSettings.isTimerNeed && 
+            <Grow in={gameSettings.isTimerNeed}>
+              <FormControlLabel
+                  label="Round time:"
+                  control={<Timer/>}
+                  labelPlacement=  "start"
+                  style={{display:"flex", justifyContent: "space-between",width:"380px"}}
+              />
+            </Grow>
+           }
+            <FormControl component="fieldset" style={{marginTop: "13px", marginLeft: "13px" }}>
+              <FormLabel component="legend">Voting sistem</FormLabel>
+                <RadioGroup
+                  aria-label="voting sistem"
+                  name="controlled-radio-buttons-group"
+                  value={gameSettings.votingSistem}
+                  onChange={(e)=>{
+                    dispatch({type: ScramInfoActionTypes.SET_VOTING_SISTEM, 
+                      payload: e.target.value});
+                    }}
+                >
+                  <FormControlLabel value="fibonacci" control={<Radio style={{color:"#60DABF"}}/>} label="fibonacci" />
+                  <FormControlLabel value="powerOf2" control={<Radio style={{color:"#60DABF"}}/>} label="power of 2" />
+                  <FormControlLabel value="custom" control={<Radio style={{color:"#60DABF"}}/>} label="create custom" />
+                </RadioGroup>
+            </FormControl>
+            
             </FormGroup>
         </Container>
     </>)
