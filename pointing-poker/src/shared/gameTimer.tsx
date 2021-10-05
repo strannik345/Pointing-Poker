@@ -1,6 +1,7 @@
 import { classExpression } from "@babel/types";
 import { Button, Card, Container, createStyles, makeStyles, Paper, Theme } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { useTypedSelector } from "../store/hooks/hooks";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,28 +41,56 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export interface TimerProps{
-    isMaster: boolean;
+    activeIssue: number;
+    setShowIssueButton: Dispatch<SetStateAction<boolean>>;
 }
 export const GameTimer: React.FC<TimerProps> = (props) =>{
 
     const classes = useStyles();
-    const {isMaster} = {...props};
+    const {activeIssue, setShowIssueButton} = {...props};
     const {roundTimeMinutes, roundTimeSeconds} = useTypedSelector(state => state.gameSettings);
-    const [[mins, secs], setTime] = useState([0, 0]);
+    const {isScrumMaster, id} = useTypedSelector(state=>state.player);
+    const {socketUser} = useTypedSelector(state => state.socket);
+    const [[mins, secs], setTime] = useState([roundTimeMinutes, roundTimeSeconds]);
+    const [buttonValue, setButtonValue] = useState("Run round");
+    const params = useParams<any>();
+
+    // const connect = () => {
+    //     socketUser.onmessage = (event: any) => {
+    //       const data = JSON.parse(event.data);
+    //       console.log(data);     
+    //     }    
+    //   } 
+
+    // const sendActiveIssue = () => [
+    //     socketUser.send(JSON.stringify({
+    //       id: params.id,
+    //       msg: activeIssue
+    //     }))
+    //   ]
 
     const tick = () => {
    
-        if (mins === 0 && secs === 0) 
+        if (mins === 0 && secs === 0 ) {
+            // sendActiveIssue();
             return false;
+        }
          else if (secs === 0) {
             setTime([mins - 1, 59]);
         } else {
             setTime([mins, secs - 1]);
         }
     };
-    
-    const startTimer = () => setTime([roundTimeMinutes, roundTimeSeconds]);
-    React.useEffect(() => {
+   
+    const startTimer = () => {
+        // sendActiveIssue();
+        setTime([roundTimeMinutes, roundTimeSeconds]);
+        setShowIssueButton(true);
+        setButtonValue("Restart round");
+    };
+    // if(isRoundRun)startTimer();
+    useEffect(() => {
+        // connect();
         const timerId = setInterval(() => tick(), 1000);
         return () => clearInterval(timerId);
     });
@@ -73,9 +102,9 @@ export const GameTimer: React.FC<TimerProps> = (props) =>{
                 <div className={classes.count}><p className = {classes.divider}>:</p></div>
                 <div className={classes.count}>{secs}</div>
             </Card>
-            {isMaster ? 
+            {isScrumMaster ? 
             <Button  className ={`button button__contained ${classes.timerButton}`} variant="contained" color='primary'
-            onClick ={()=>{startTimer()}}>Run round</Button>
+            onClick ={()=>{startTimer()}}>{buttonValue}</Button>
             : ""}
         </Container>
       );

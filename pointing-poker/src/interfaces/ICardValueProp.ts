@@ -4,4 +4,5 @@ export interface ICardValueProp{
     isSmall: boolean;
     isGame: boolean;
     nextIssueClick:()=>void;
+    activeIssue: number;
 }

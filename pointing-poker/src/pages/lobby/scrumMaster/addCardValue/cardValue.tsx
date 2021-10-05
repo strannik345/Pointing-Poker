@@ -6,6 +6,7 @@ import { useTypedSelector } from "../../../../store/hooks/hooks";
 import CreateIcon from '@material-ui/icons/Create';
 import { ScramInfoActionTypes } from "../../../../interfaces/IScramInfo";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     small: {
@@ -17,24 +18,37 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 }));
 export const CardValue: React.FC<ICardValueProp>=(prop: ICardValueProp)=> {
-    const { scoreTypeShort} = useTypedSelector(state => state.gameSettings);
-    const {cardValue, index, isSmall, isGame, nextIssueClick} = {...prop};
+    const { scoreTypeShort, issues} = useTypedSelector(state => state.gameSettings);
+    const {socketUser} = useTypedSelector(state=> state.socket);
+    const player = useTypedSelector(state => state.player);
+    const {cardValue, index, isSmall, isGame, nextIssueClick, activeIssue} = {...prop};
     const [editMode, enableEditMode] = useState(false);
     const [isBreak, setIsBreak] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const dispatch = useDispatch();
     const classes = useStyles();
+    const params = useParams<any>();
+
     const cardClick = () =>{
         if (editMode) {
             enableEditMode(editMode => !editMode);
         } else {
             setIsChecked(true); 
+            sendCardValue();
             setTimeout(()=> {
                 nextIssueClick();
                 setIsChecked(false);
             }, 500);
         } 
     }
+
+    const sendCardValue = () => [
+        socketUser.send(JSON.stringify({
+            method: 'throw-card',
+            id: params.id,
+            msg: {player, issue: issues[activeIssue], cardValue}
+        }))
+      ]
     const hadleChange = (text: string) =>{
         dispatch({type: ScramInfoActionTypes.EDIT_CARD_VALUE, id: index, text}); 
     }
