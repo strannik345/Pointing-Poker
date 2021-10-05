@@ -23,7 +23,7 @@ export const Game: React.FC =()=> {
     const classes = useStyles();
     return(
         <Container className={classes.container}>
-            <GameInfo isMaster={false}/>
+            <GameInfo isMaster={true}/>
             <Score/>
         </Container>);
 }
