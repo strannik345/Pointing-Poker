@@ -58,14 +58,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
     const {issues, cardValues, isTimerNeed} = useTypedSelector(state => state.gameSettings);
     const {isScrumMaster} = useTypedSelector(state => state.player)
-
+    const {isMaster} = {...props};
     const [activeIssue, setActiveIssue] = useState(0);
     const classes = useStyles();
     const [showStatistic, setShowStatistic] = useState(false);
     const [showIssueButton, setShowIssueButton] = useState(false);
     const {socketUser} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
-
     // const connect = () => {
     //     socketUser.onmessage = (event: any) => {
     //       const data = JSON.parse(event.data);
@@ -75,8 +74,9 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
 
     const sendActiveIssue = () => [
         socketUser.send(JSON.stringify({
-          id: params.id,
-          msg: activeIssue
+            method: 'set-active-issue',
+            id: params.id,
+            msg: activeIssue
         }))
       ]
 
@@ -133,7 +133,7 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
                <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"45px"}}>
                {
                    cardValues.map((cardValue:string, index: number)=>{
-                       return <CardValue cardValue={cardValue} index={index} isSmall={false} isGame={true} nextIssueClick = {nextIssueClick}/>
+                       return <CardValue activeIssue={activeIssue} cardValue={cardValue} index={index} isSmall={false} isGame={true} nextIssueClick = {nextIssueClick}/>
                    })
                }
            </Container>}
