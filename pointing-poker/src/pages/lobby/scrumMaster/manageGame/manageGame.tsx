@@ -34,7 +34,7 @@ export const ManageGame: React.FC =()=> {
                 <Button className = "button" variant="contained" color="primary">Copy</Button>
             </Box> 
             <Box className="manage-game-buttons">
-                <Link to = '/game'> 
+                <Link to = {`/game/${params.id}`}> 
                     <Button  className ="button button__contained " variant="contained" color="primary">Start game</Button>
                 </Link>
                 <Button  className ="button button__outlined " variant="outlined" >Cancel game</Button>

@@ -74,12 +74,13 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
           socketUser.send(JSON.stringify({
             id: params.id,
             method: 'connection',
-            msg: {...player}
+            msg: {...player},
           }))
         }
       }
       socketUser.onmessage = (event: any) => {
         const type = JSON.parse(event.data).type;
+        console.log(event.data)
         console.log(type);
         if(type === 'connection'){
           const users: IUser[] = JSON.parse(event.data).msg[0].players;   
@@ -87,6 +88,9 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
         } else if(type === 'update-players') {
           const users: IUser[] = JSON.parse(event.data).msg[0].players;   
           setMemberList(users);
+        }  else if(type === 'start-game') {
+            console.log('game-started')
+            history.replace(`/game/${params.id}`);
         }
       }
     }
