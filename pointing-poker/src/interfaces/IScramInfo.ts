@@ -35,6 +35,7 @@ export enum ScramInfoActionTypes {
     EDIT_CARD_VALUE = "EDIT_CARD_VALUE",
     SET_VOTING_SISTEM = "SET_VOTING_SISTEM",
     SET_CARD_VALUE = "SET_CARD_VALUE",
+    SET_ISSUES = "SET_ISSUES",
 }
     interface AddIssueAction {
         type: ScramInfoActionTypes.ADD_ISSUE,
@@ -87,6 +88,10 @@ export enum ScramInfoActionTypes {
         type: ScramInfoActionTypes.SET_VOTING_SISTEM,
         payload: string,
     }
+    interface SetIssues{
+        type: ScramInfoActionTypes.SET_ISSUES,
+        payload:IIssue[],
+    }
 
     export type ScramInfoAction =
         AddIssueAction |
@@ -100,4 +105,5 @@ export enum ScramInfoActionTypes {
         EditCardValue |
         AddCardValue |
         SetCardValue |
+        SetIssues |
         SetVotingSistem;

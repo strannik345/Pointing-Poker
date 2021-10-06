@@ -41,6 +41,8 @@ export const gameSettingsReducer =(state = defaultSettings, action: ScramInfoAct
             return {...state, cardValues: action.payload}
         case ScramInfoActionTypes.ADD_ISSUE:
             return {...state, issues: state.issues.concat(action.payload) }
+        case ScramInfoActionTypes.SET_ISSUES:
+            return {...state, issues: action.payload}
         case ScramInfoActionTypes.SET_CHANGING_CARD_IN_ROUND_END:
             return {...state, changingCardInRoundEnd: action.payload}
         case ScramInfoActionTypes.SET_IS_TIMER_NEED:

@@ -11,7 +11,9 @@ import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { GameProps } from '../interfaces/GameProps';
-import { IIssue } from '../interfaces/IScramInfo';
+import { IIssue, ScramInfoActionTypes } from '../interfaces/IScramInfo';
+import { useDispatch } from 'react-redux';
+import { GamePlayerProp } from '../interfaces/GamePlayerProp';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,6 +69,7 @@ export const GameInfo: React.FC =()=> {
     const [showIssueButton, setShowIssueButton] = useState(false);
     const {socketGame} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
+    const dispatch = useDispatch();
     
     const sendActiveIssue = () => [
         socketGame.send(JSON.stringify({
@@ -75,6 +78,18 @@ export const GameInfo: React.FC =()=> {
             msg: activeIssue
         }))
       ]
+    const getActiveIssue = () => {
+        if(socketGame.readyState === 1) {
+            socketGame.onmessage = (event: any) =>{
+            const type = JSON.parse(event.data).type;
+                if(type === 'set-active-issue'){
+                    const data= JSON.parse(event.data).msg;
+                    console.log("active:", data);
+                    setActiveIssue(data);
+                }
+            }
+        }
+    }
 
     useEffect(()=> {
         if(socketGame.readyState === 1) {
@@ -90,15 +105,22 @@ export const GameInfo: React.FC =()=> {
                 console.log(event.data)
                 console.log(type);
                 if(type === 'send-issues'){
-                    const issues = JSON.parse(event.data);
-                    console.log(issues);
+                    const data:GamePlayerProp[] = JSON.parse(event.data).msg;
+                    if(!isScrumMaster){
+                        if(data[data.length-1].issues) return dispatch({type: ScramInfoActionTypes.SET_ISSUES, payload: data[data.length-1].issues});
+                        if(data[data.length-1].isTimerNeeded) return dispatch({type: ScramInfoActionTypes.SET_IS_TIMER_NEED, 
+                        payload: data[data.length-1].isTimerNeeded})
+                            
+                    }
+                    
                 }
             }
         }    
-    }, [])
+    }, [isTimerNeed])
 
     useEffect(()=>{
         isScrumMaster && sendActiveIssue();
+        !isScrumMaster && getActiveIssue();
     }, [activeIssue])
 
     const nextIssueClick = () => {
