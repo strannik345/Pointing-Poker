@@ -3,7 +3,10 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Button, Card, Container, Paper, TextField, Typography } from "@material-ui/core";
 import { useTypedSelector } from "../../store/hooks/hooks";
 import { LobbyMemberCard } from "../../shared/memberCard/LobbyMemberCard";
+
 import '@fontsource/ruda';
+import { GameProps } from "../../interfaces/GameProps";
+import { IUser } from "../../shared/membersList/membersList";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
@@ -43,53 +46,46 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Score: React.FC =()=> {
+  const {socketUser} = useTypedSelector(state=> state.socket)
+  const {scoreTypeShort} = useTypedSelector(state => state.gameSettings)
+  const [votes, setVotes] = useState<GameProps[]>([]);
   const classes = useStyles();
-  // const {members} = useTypedSelector(state=>state.gameSettings);
-  const members = [
-    {
-      id: "1",
-      avatar: "",
-      name: "Lizy",
-      lastName: "Snow",
-      position: "developer",
-      isBlocked: false,
-      isObserver: false,
-      isScrumMaster: false,
-    },
-    {
-      id: "2",
-      avatar: "",
-      name: "Garry",
-      lastName: "Snow",
-      position: "senior developer",
-      isBlocked: false,
-      isObserver: false,
-      isScrumMaster: false,
-    },
-    {
-      id: "3",
-      avatar: "",
-      name: "Carl",
-      lastName: "Davis",
-      position: "team lead",
-      isBlocked: false,
-      isObserver: false,
-      isScrumMaster: false,
-    },
-    
-  ]
+
+  const connect = () => {
+    socketUser.onmessage = (event: any) => {
+        const type = JSON.parse(event.data).type;
+        console.log(type);
+        if(type === 'throw-card'){
+          const data:GameProps[] = JSON.parse(event.data).msg.cards;  
+          setVotes( data);             
+    }    
+  }   
+}
+useEffect(()=>{
+  connect();
+})
   return (
     <div className={classes.container}>
       <Container className = {classes.title} ><h2>score:</h2><h2>players:</h2></Container>
       <Container className={classes.paper} >
-       {members.map(member=> {
-
+        
+       { votes.map(vote => {
+       return vote.players.map(member=> {
        return <div className={classes.scoreGroup}>
-         <Card className={classes.scoreCard}>In progress</Card>
-         <LobbyMemberCard size={{isSmall:true}} userInfo={member}/>
+         <Card className={classes.scoreCard}>{member.card} {scoreTypeShort}  </Card>
+         <LobbyMemberCard size={{isSmall:true}} userInfo={{
+           id: (member.id as unknown as string),
+           avatar: member.avatar,
+           name: member.name,
+           position: member.position,
+           isObserver: member.isObserver,
+           lastName:'',
+           isScrumMaster:false,
+         }}/>
          
          </div>
       })
+    })
     }
       </Container>
     </div>

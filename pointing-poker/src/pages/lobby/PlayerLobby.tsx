@@ -1,8 +1,10 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useTypedSelector } from '../../store/hooks/hooks';
 import Chat from './chat/chat';
 import { ScrumMaster } from './scrumMaster/scrumMaster';
 import { TeamMember } from './teamMember/teamMember';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -17,8 +19,21 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
+
 export const PlayerLobby: React.FC =()=> {
+  const {socketUser} = useTypedSelector(state=> state.socket)
+  const connect = () => {
+        socketUser.onmessage = (event: any) => {
+          const data = JSON.parse(event.data);
+          console.log(data);     
+        }    
+      } 
     const classes = useStyles();
+
+    useEffect(()=> {
+      connect();
+    
+    }, [])
     return(
         <div className={classes.container}>
             <TeamMember/> 

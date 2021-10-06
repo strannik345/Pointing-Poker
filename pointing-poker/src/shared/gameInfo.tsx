@@ -10,6 +10,7 @@ import { GameTimer } from './gameTimer';
 import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
 import { Link, useHistory, useParams } from 'react-router-dom';
+import { GameProps } from '../interfaces/GameProps';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,23 +56,17 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
-export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
+export const GameInfo: React.FC =()=> {
     const {issues, cardValues, isTimerNeed} = useTypedSelector(state => state.gameSettings);
     const {isScrumMaster} = useTypedSelector(state => state.player)
-    const {isMaster} = {...props};
+    // const {isMaster} = {...props};
     const [activeIssue, setActiveIssue] = useState(0);
     const classes = useStyles();
     const [showStatistic, setShowStatistic] = useState(false);
     const [showIssueButton, setShowIssueButton] = useState(false);
     const {socketUser} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
-    // const connect = () => {
-    //     socketUser.onmessage = (event: any) => {
-    //       const data = JSON.parse(event.data);
-    //       console.log(data);     
-    //     }    
-    //   } 
-
+    
     const sendActiveIssue = () => [
         socketUser.send(JSON.stringify({
             method: 'set-active-issue',
@@ -85,9 +80,9 @@ export const GameInfo: React.FC<ILobbyInfo> =(props)=> {
         socketUser.send(JSON.stringify({
           method: 'start-game',
           id: params.id,
+          msg: {issues: issues, isTimerNeed: isTimerNeed},
         }))
       }
-    //   connect();
     
     }, [])
     useEffect(()=>{

@@ -36,7 +36,7 @@ export const CardValue: React.FC<ICardValueProp>=(prop: ICardValueProp)=> {
             setIsChecked(true); 
             sendCardValue();
             setTimeout(()=> {
-                nextIssueClick();
+                // nextIssueClick();
                 setIsChecked(false);
             }, 500);
         } 
@@ -46,7 +46,7 @@ export const CardValue: React.FC<ICardValueProp>=(prop: ICardValueProp)=> {
         socketUser.send(JSON.stringify({
             method: 'throw-card',
             id: params.id,
-            msg: {player, issue: issues[activeIssue], cardValue}
+            msg: {player, issue: issues[activeIssue], card: cardValue}
         }))
       ]
     const hadleChange = (text: string) =>{

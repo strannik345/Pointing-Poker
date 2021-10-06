@@ -21,9 +21,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Game: React.FC =()=> {
   const {lastName, name, isObserver, position, avatar} = useTypedSelector(state => state.player);
     const classes = useStyles();
+    
     return(
         <Container className={classes.container}>
-            <GameInfo isMaster={true}/>
+            <GameInfo/>
             <Score/>
         </Container>);
 }
