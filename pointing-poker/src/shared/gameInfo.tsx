@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: "113px",
     },
     hidden:{
-        visibility:"hidden"
+        visibility:"hidden" 
     }
   })
 )
@@ -64,11 +64,11 @@ export const GameInfo: React.FC =()=> {
     const classes = useStyles();
     const [showStatistic, setShowStatistic] = useState(false);
     const [showIssueButton, setShowIssueButton] = useState(false);
-    const {socketUser} = useTypedSelector(state=> state.socket)
+    const {socketGame} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
     
     const sendActiveIssue = () => [
-        socketUser.send(JSON.stringify({
+        socketGame.send(JSON.stringify({
             method: 'set-active-issue',
             id: params.id,
             msg: activeIssue
@@ -76,8 +76,8 @@ export const GameInfo: React.FC =()=> {
       ]
 
     useEffect(()=> {
-      if(socketUser.readyState === 1) {
-        socketUser.send(JSON.stringify({
+      if(socketGame.readyState === 1) {
+        socketGame.send(JSON.stringify({
           method: 'start-game',
           id: params.id,
           msg: {issues: issues, isTimerNeed: isTimerNeed},

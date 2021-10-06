@@ -1,6 +1,7 @@
 export interface Socket {
   socketUser: WebSocket;
   socketChat: WebSocket;
+  socketGame: WebSocket;
 }
 
 export interface SocketAction {
@@ -11,6 +12,7 @@ export interface SocketAction {
 export const defaultSocket: Socket = {
   socketUser: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`),
   socketChat: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`),
+  socketGame: new WebSocket(`ws://${process.env.REACT_APP_SERVER}`),
 }
 
 export const socketReducer = (state = defaultSocket, action: SocketAction): Socket => {
