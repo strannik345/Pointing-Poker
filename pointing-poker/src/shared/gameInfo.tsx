@@ -11,6 +11,7 @@ import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { GameProps } from '../interfaces/GameProps';
+import { IIssue } from '../interfaces/IScramInfo';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,15 +77,26 @@ export const GameInfo: React.FC =()=> {
       ]
 
     useEffect(()=> {
-      if(socketGame.readyState === 1) {
-        socketGame.send(JSON.stringify({
-          method: 'start-game',
-          id: params.id,
-          msg: {issues: issues, isTimerNeed: isTimerNeed},
-        }))
-      }
-    
+        if(socketGame.readyState === 1) {
+            if(isScrumMaster) {
+                socketGame.send(JSON.stringify({
+                method: 'send-issues',
+                id: params.id,
+                msg: {issues: issues, isTimerNeed: isTimerNeed},
+                }))
+            }
+            socketGame.onmessage = (event: any) =>{
+                const type = JSON.parse(event.data).type;
+                console.log(event.data)
+                console.log(type);
+                if(type === 'send-issues'){
+                    const issues = JSON.parse(event.data);
+                    console.log(issues);
+                }
+            }
+        }    
     }, [])
+
     useEffect(()=>{
         isScrumMaster && sendActiveIssue();
     }, [activeIssue])

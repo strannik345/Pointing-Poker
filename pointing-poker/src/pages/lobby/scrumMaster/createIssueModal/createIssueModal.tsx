@@ -17,7 +17,7 @@ export const CreateIssueModal: React.FC<ICreateIssueProp> = (prop: ICreateIssueP
     newIssue.priority = priority as string;
   }
   const newIssue = {
-    id: `${(new Date())}`,
+    id: `${(+new Date()).toString(16)}`,
     title: title,
     link: link,
     priority: priority

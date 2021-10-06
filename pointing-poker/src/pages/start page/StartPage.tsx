@@ -13,11 +13,23 @@ export const StartPage: React.FC = () => {
   const history = useHistory();
   const { gameURL } = useTypedSelector(state => state.gameURL);
   const player = useTypedSelector(state => state.player);
+  const {socketUser} = useTypedSelector(state => state.socket)
   
   const urlHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
     dispatch({type: "CHANGE_GameURL", payload: {gameURL: event.target.value}});
   }  
+
+  useEffect(()=> {
+    socketUser.onmessage = (event: any) => {
+      const type = JSON.parse(event.data).type;
+      console.log(event.data)
+      console.log(type); 
+      if(type === 'start-server'){
+        history.push(`/lobby/${JSON.parse(event.data).msg}`)
+      } 
+    }
+  },[])
 
   return (
     <>
@@ -28,8 +40,14 @@ export const StartPage: React.FC = () => {
             <Box display="flex" flexDirection="row" justifyContent="space-between" height={40}>
               <Typography style={{color: 'black'}}>Create new session</Typography>
                 <Button variant="contained" color="primary" onClick={()=> {
+                  const id = `f${(+new Date()).toString(16)}`;
                   dispatch({type: 'CHANGE_PLAYER', payload: {...player, isScrumMaster: true}});
-                  history.push('/lobby');
+                  dispatch({type: "CHANGE_GameURL", payload: {gameURL: id}});                  
+                  socketUser.send(JSON.stringify({
+                    id: id,
+                    method: 'start-server',
+                    msg: {...player},
+                  })) 
                 }}>Start new game</Button>              
             </Box>
             <Box display="flex" flexDirection="column" >

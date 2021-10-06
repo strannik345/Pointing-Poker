@@ -53,14 +53,7 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     const connectToServer = () => {  
       if(socketUser.readyState === 1) {
         console.log('ready');
-        if(player.isScrumMaster) {
-          console.log('start-server', player); 
-          socketUser.send(JSON.stringify({
-            id: params.id,
-            method: 'start-server',
-            msg: {...player}
-          }))       
-        } else {
+        if(!player.isScrumMaster) {          
           socketUser.send(JSON.stringify({
             id: params.id,
             method: 'connection',
@@ -81,7 +74,7 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
       socketUser.onmessage = (event: any) => {
         const type = JSON.parse(event.data).type;
         console.log(event.data)
-        console.log(type);
+        console.log(type); 
         if(type === 'connection'){
           const users: IUser[] = JSON.parse(event.data).msg[0].players;   
           setMemberList(users);

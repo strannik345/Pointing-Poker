@@ -14,6 +14,9 @@ export const ManageGame: React.FC =()=> {
     const [gameID, setGameID] = useState<string>('');
     const dispatch = useDispatch();
     const params: Params = useParams();
+    const {socketUser} = useTypedSelector(state => state.socket)
+    const player = useTypedSelector(state => state.player)
+    const {gameURL} = useTypedSelector(state => state.gameURL)
     useEffect(()=>{
         // getGameID()
         console.log(params)
@@ -26,17 +29,25 @@ export const ManageGame: React.FC =()=> {
     //     console.log(gameID);
     //     setGameID(`${process.env.REACT_APP_SERVER}/api/get-all-users?gameID=${gameID.gameID}`);
     // }
+
+    const startGameHandler = () => {
+        console.log('startinggggggg gameee')
+        socketUser.send(JSON.stringify({
+            id: gameURL,
+            method: 'start-game',
+            msg: true
+          })) 
+    }
+
     return(<>
         <Container className="manage-game">
             <Typography >Game ID</Typography>
             <Box className="link-to-lobby" >
-                <Typography className = "link-to-lobby--text" style={{height: "1.5rem", width: "-webkit-fill-available"}}>{params.id}</Typography>
+                <Typography className = "link-to-lobby--text" style={{height: "1.5rem", width: "-webkit-fill-available"}}>{gameURL}</Typography>
                 <Button className = "button" variant="contained" color="primary">Copy</Button>
             </Box> 
             <Box className="manage-game-buttons">
-                <Link to = {`/game/${params.id}`}> 
-                    <Button  className ="button button__contained " variant="contained" color="primary">Start game</Button>
-                </Link>
+                <Button onClick={startGameHandler} className ="button button__contained " variant="contained" color="primary">Start game</Button>
                 <Button  className ="button button__outlined " variant="outlined" >Cancel game</Button>
             </Box>
         </Container>
