@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Score: React.FC =()=> {
   const {socketUser} = useTypedSelector(state=> state.socket)
+  const {scoreTypeShort} = useTypedSelector(state => state.gameSettings)
   const [votes, setVotes] = useState<GameProps[]>([]);
   const classes = useStyles();
 
@@ -58,8 +59,7 @@ export const Score: React.FC =()=> {
           const data:GameProps[] = JSON.parse(event.data).msg.cards;  
           setVotes( data);             
     }    
-  } 
-  
+  }   
 }
 useEffect(()=>{
   connect();
@@ -72,7 +72,7 @@ useEffect(()=>{
        { votes.map(vote => {
        return vote.players.map(member=> {
        return <div className={classes.scoreGroup}>
-         <Card className={classes.scoreCard}>{`${member.card}`} </Card>
+         <Card className={classes.scoreCard}>{member.card} {scoreTypeShort}  </Card>
          <LobbyMemberCard size={{isSmall:true}} userInfo={{
            id: (member.id as unknown as string),
            avatar: member.avatar,
