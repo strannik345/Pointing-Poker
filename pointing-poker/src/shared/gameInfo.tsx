@@ -80,8 +80,7 @@ export const GameInfo: React.FC =()=> {
         socketUser.send(JSON.stringify({
           method: 'start-game',
           id: params.id,
-          issues: issues,
-          isTimerNeed: isTimerNeed,
+          msg: {issues: issues, isTimerNeed: isTimerNeed},
         }))
       }
     
