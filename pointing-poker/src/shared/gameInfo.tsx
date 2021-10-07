@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme: Theme) =>
 export const GameInfo: React.FC =()=> {
     const {issues, cardValues, isTimerNeed} = useTypedSelector(state => state.gameSettings);
     const {isScrumMaster} = useTypedSelector(state => state.player)
-    // const {isMaster} = {...props};
     const [activeIssue, setActiveIssue] = useState(0);
     const classes = useStyles();
     const [showStatistic, setShowStatistic] = useState(false);
@@ -78,19 +77,6 @@ export const GameInfo: React.FC =()=> {
             msg: activeIssue
         }))
       ]
-    const getActiveIssue = () => {
-        if(socketGame.readyState === 1) {
-            socketGame.onmessage = (event: any) =>{
-            const type = JSON.parse(event.data).type;
-                if(type === 'set-active-issue'){
-                    const data= JSON.parse(event.data).msg;
-                    console.log("active:", data);
-                    setActiveIssue(data);
-                }
-            }
-        }
-    }
-
     useEffect(()=> {
         if(socketGame.readyState === 1) {
             if(isScrumMaster) {
@@ -98,36 +84,35 @@ export const GameInfo: React.FC =()=> {
                 method: 'send-issues',
                 id: params.id,
                 msg: {issues: issues, isTimerNeed: isTimerNeed},
-                }))
+                }));
             }
             socketGame.onmessage = (event: any) =>{
                 const type = JSON.parse(event.data).type;
-                console.log(event.data)
-                console.log(type);
                 if(type === 'send-issues'){
                     const data:GamePlayerProp[] = JSON.parse(event.data).msg;
                     if(!isScrumMaster){
-                        if(data[data.length-1].issues) return dispatch({type: ScramInfoActionTypes.SET_ISSUES, payload: data[data.length-1].issues});
-                        if(data[data.length-1].isTimerNeeded) return dispatch({type: ScramInfoActionTypes.SET_IS_TIMER_NEED, 
+                        if(data[data.length-1].issues) dispatch({type: ScramInfoActionTypes.SET_ISSUES, payload: data[data.length-1].issues});
+                        if(data[data.length-1].isTimerNeeded) dispatch({type: ScramInfoActionTypes.SET_IS_TIMER_NEED, 
                         payload: data[data.length-1].isTimerNeeded})
                             
-                    }
-                    
+                    } 
+                }
+                if(type === 'set-active-issue'){
+                    const data= JSON.parse(event.data).msg;
+                    setActiveIssue(data);
                 }
             }
         }    
-    }, [isTimerNeed])
+    }, [])
 
     useEffect(()=>{
         isScrumMaster && sendActiveIssue();
-        !isScrumMaster && getActiveIssue();
     }, [activeIssue])
 
     const nextIssueClick = () => {
         setShowStatistic(true);
         if(issues.length > activeIssue+1 ) {
             setActiveIssue(activeIssue + 1);
-            // sendActiveIssue();
         } else {
             history.push('/result');
         }
@@ -162,7 +147,7 @@ export const GameInfo: React.FC =()=> {
                <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"45px"}}>
                {
                    cardValues.map((cardValue:string, index: number)=>{
-                       return <CardValue activeIssue={activeIssue} cardValue={cardValue} index={index} isSmall={false} isGame={true} nextIssueClick = {nextIssueClick}/>
+                       return <CardValue key = {index} activeIssue={activeIssue} cardValue={cardValue} index={index} isSmall={false} isGame={true} nextIssueClick = {nextIssueClick}/>
                    })
                }
            </Container>}
