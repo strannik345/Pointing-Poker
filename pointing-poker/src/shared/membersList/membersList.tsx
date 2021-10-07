@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './../../pages/lobby/lobby.scss';
 import '@fontsource/ruda';
-import { Typography, Container, Modal, Paper, Button } from '@material-ui/core';
+import { Typography, Container, Modal, Paper, Button, Box } from '@material-ui/core';
 import { LobbyMemberCard } from '../memberCard/LobbyMemberCard';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../store/hooks/hooks';
@@ -31,7 +31,9 @@ export interface MemberListProps {
 
 export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     const [openModal, setOpenModal] = useState<boolean>(true);
+    const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
     const [memberList, setMemberList] = useState<IUser[]>([]); 
+    const [deleteUser, setDeleteUser] = useState<IUser>();
     const player = useTypedSelector(state => state.player);
     const {gameURL} = useTypedSelector(state => state.gameURL);
     const {socketUser} = useTypedSelector(state=> state.socket)
@@ -81,9 +83,17 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
         } else if(type === 'update-players') {
           const users: IUser[] = JSON.parse(event.data).msg[0].players;   
           setMemberList(users);
+          setOpenDeleteModal(false);
         }  else if(type === 'start-game') {
             console.log('game-started')
             history.replace(`/game/${params.id}`);
+        } else if(type === 'vote-for-delete-player') {
+          console.log('voting for delete', JSON.parse(event.data).msg)
+          const userToDelete: IUser = JSON.parse(event.data).msg.msg;
+          if(userToDelete.id !== player.id) {
+            setOpenDeleteModal(prev => !prev)
+            setDeleteUser(userToDelete);
+          }
         }
       }
     }
@@ -115,7 +125,28 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
                 </Paper>
               </Container>
             </Modal>
-        }        
+        }       
+        <Modal open={openDeleteModal} onClose={() => setOpenDeleteModal(prev => !prev)} disableBackdropClick  >
+          <Container maxWidth='sm' style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>      
+            <Paper elevation={3} component='form' style={{width: '100%', height: '80vh', maxHeight: '470px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
+              <Typography component='h3' variant='h5' color='textPrimary' style={{textTransform: 'uppercase', width: '90%', textAlign: 'center'}}>Поступило предложение об исключении {deleteUser?.name}</Typography>
+              <Box display='flex' flexDirection='row'>
+                <Button variant="contained" color="primary" onClick={()=> {
+                  socketUser.send(JSON.stringify({
+                    id: params.id,
+                    method: 'get-votes',
+                    msg: {
+                      desision: true,
+                      player: deleteUser,
+                    }
+                  }))
+                  setOpenDeleteModal(prev => !prev)
+                }}>Исключить</Button>
+                <Button variant="contained" color="secondary" onClick={() => setOpenDeleteModal(prev => !prev)}>Оставить</Button>
+              </Box>
+            </Paper>
+          </Container>
+        </Modal> 
       </Container>
     </>
     );

@@ -18,16 +18,25 @@ interface CardProp {
 export const LobbyMemberCard: React.FC<CardProp> = ({size, userInfo}) => {
   const params = useParams<any>()  
   const {socketUser} = useTypedSelector(state => state.socket)
+  const {isScrumMaster} = useTypedSelector(state => state.player)
 
 
     const deletePlayer = () => {
-      if (socketUser.OPEN) {
+      if (socketUser.readyState === 1) {
         console.log(`deleting: ${userInfo}`)
-        socketUser.send(JSON.stringify({
-          id: params.id,
-          method: 'delete-player',
-          msg: {...userInfo}
-        }))
+        if(isScrumMaster) {
+          socketUser.send(JSON.stringify({
+            id: params.id,
+            method: 'delete-player',
+            msg: {...userInfo}
+          }))
+        } else {
+          socketUser.send(JSON.stringify({
+            id: params.id,
+            method: 'vote-for-delete-player',
+            msg: {...userInfo}
+          }))
+        }
       }
     }
 
