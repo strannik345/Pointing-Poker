@@ -7,12 +7,15 @@ export const defaultStatistic:StatisticProp ={
 }
 export interface StatisticAction {
     type: string;
-    payload: IssueStatistic[][]; 
+    payload: IssueStatistic[]; 
   }
 export const statisticReducer = (state = defaultStatistic, action: StatisticAction) => {
     switch (action.type) {
-      case 'SET_STATISTIC':
+      case 'SET_STATISTIC':{
+        console.log("dispatch-statistic", action.payload);
         return {...state, gameStatistic: state.gameStatistic.concat(action.payload)};
+      }
+        
       default:
         return state;
     }

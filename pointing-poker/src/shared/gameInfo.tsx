@@ -11,10 +11,10 @@ import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { GameProps } from '../interfaces/GameProps';
-import { IIssue, ScramInfoActionTypes } from '../interfaces/IScramInfo';
+import { ScramInfoActionTypes } from '../interfaces/IScramInfo';
 import { useDispatch } from 'react-redux';
 import { GamePlayerProp } from '../interfaces/GamePlayerProp';
-import { IssueStatistic, StatisticProp } from '../interfaces/IssueStatistic';
+import { StatisticProp } from '../interfaces/IssueStatistic';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,13 +73,13 @@ export const GameInfo: React.FC<StatisticProp> =(props)=> {
     const params = useParams<any>();
     const dispatch = useDispatch();
     
-    const sendActiveIssue = () => [
+    const sendActiveIssue = () => {
         socketGame.send(JSON.stringify({
             method: 'set-active-issue',
             id: params.id,
             msg: activeIssue
         }))
-      ]
+    }
     useEffect(()=> {
         if(socketGame.readyState === 1) {
             if(isScrumMaster) {
@@ -104,10 +104,14 @@ export const GameInfo: React.FC<StatisticProp> =(props)=> {
                     const data= JSON.parse(event.data).msg;
                     setActiveIssue(data);
                 }
+                // if(type === 'throw-card'){
+                //     const data:GameProps[] = JSON.parse(event.data).msg.cards; 
+                //     if(issueStatistic.length >= data[data.length-1].players.length-1) return dispatch({type: "SET_STATISTIC", payload: issueStatistic});
+                // }
             }
         }    
     }, [])
-
+console.log(issueStatistic);
     useEffect(()=>{
         isScrumMaster && sendActiveIssue();
     }, [activeIssue])

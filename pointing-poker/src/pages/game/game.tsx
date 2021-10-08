@@ -27,16 +27,16 @@ export const Game: React.FC =()=> {
     const [issueStatistic, setIssueStatistic] =useState<number[]>([]); 
     const [gameStatistic, setGameStatistic] = useState<IssueStatistic[][]>([]);
     const {socketUser} = useTypedSelector(state=> state.socket);
+    // const dispatch = useDispatch();
   
     const calculateIssueStatistic = ()=>{
       let data:IssueStatistic[] =[];
       console.log(issueStatistic);
       const uniqueCards = issueStatistic.filter((e, i, a) => a.indexOf(e) === i);
-      console.log("unique", uniqueCards);
       uniqueCards.map((el: number) =>{
         data.push({cardValue: el, percent: issueStatistic.filter(ob=>ob===el).length*100/issueStatistic.length})
       })
-      console.log(data);
+      console.log("game data", data);
       return data;
     }
 
@@ -50,7 +50,7 @@ export const Game: React.FC =()=> {
             console.log(data);
             data[data.length-1].players.map(player => {
               console.log(player.card);
-              setIssueStatistic((prev: number[]) => [...prev, +player.card]);    
+               setIssueStatistic((prev: number[]) => [...prev, +player.card]); 
             }    
             )  
           }    
@@ -59,6 +59,7 @@ export const Game: React.FC =()=> {
  
   useEffect(()=>{
     connect();
+    
   })
     return(
         <Container className={classes.container}>

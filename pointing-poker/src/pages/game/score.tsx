@@ -68,7 +68,6 @@ export const Score: React.FC =()=> {
 useEffect(()=>{
   connect();
 })
-
 const votingResult = () => { return <Container className={classes.paper} >      
   { votes.map((vote, i) => {
     if(votes[i].issue.id === issueId){
