@@ -14,6 +14,7 @@ import { GameProps } from '../interfaces/GameProps';
 import { IIssue, ScramInfoActionTypes } from '../interfaces/IScramInfo';
 import { useDispatch } from 'react-redux';
 import { GamePlayerProp } from '../interfaces/GamePlayerProp';
+import { IssueStatistic, StatisticProp } from '../interfaces/IssueStatistic';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,7 +60,9 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
-export const GameInfo: React.FC =()=> {
+
+export const GameInfo: React.FC<StatisticProp> =(props)=> {
+    const {issueStatistic, gameStatistic} = {...props};
     const {issues, cardValues, isTimerNeed} = useTypedSelector(state => state.gameSettings);
     const {isScrumMaster} = useTypedSelector(state => state.player)
     const [activeIssue, setActiveIssue] = useState(0);
@@ -130,6 +133,7 @@ export const GameInfo: React.FC =()=> {
                 </Typography>
                 <MemberCard isSmall={false}/>
             </Container>
+            
         {isScrumMaster ? 
             <Link to = {`/result`}>
                 <Button  className ="button button__outlined " variant="outlined" onClick = {()=>setShowStatistic(true)}>Stop game</Button>
@@ -143,7 +147,8 @@ export const GameInfo: React.FC =()=> {
                 <div className={classes.issuesList}>
                     <IssuesList isMaster = {isScrumMaster} isGame={true} activeIssue={activeIssue}/>
                 </div>
-               {isScrumMaster ? <div className={classes.statistic}><Statistic/></div> : 
+                {/* {console.log("STAT:", statistic)} */}
+               {isScrumMaster ? <div className={classes.statistic}><Statistic issueStatistic={issueStatistic} gameStatistic={gameStatistic} index={null}/></div> : 
                <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"45px"}}>
                {
                    cardValues.map((cardValue:string, index: number)=>{
@@ -154,7 +159,7 @@ export const GameInfo: React.FC =()=> {
             </div>
             <div className={classes.controlPanelItem}> 
                 {isTimerNeed && <GameTimer activeIssue={activeIssue} setShowIssueButton={setShowIssueButton}/>}
-                {!isScrumMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic/></div>}
+                {!isScrumMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic issueStatistic={issueStatistic} gameStatistic={gameStatistic} index={null}/></div>}
             </div> 
             
             {(isScrumMaster && showIssueButton || isScrumMaster && !isTimerNeed) ? 

@@ -1,5 +1,6 @@
 import { Button, Container } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { TrainRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { IIssue } from '../../interfaces/IScramInfo';
 import { useTypedSelector } from '../../store/hooks/hooks';
@@ -18,9 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 export const Result: React.FC =()=> {
     const {issues, cardValues} = useTypedSelector(state => state.gameSettings);
+    const {gameStatistic} = useTypedSelector(state => state.statistic);
     const [downloadLink, setDownloadLink] = useState('')
     const classes = useStyles();
     let list: string[] = [];
+    console.log(gameStatistic);
     const makeTextFile = () => {
         issues.map(issue =>{
             list.push(issue.title);
@@ -45,7 +48,8 @@ export const Result: React.FC =()=> {
                     return <div id="result">
                                 <IssueCard isActive = {false} key={index+1}
                                     isNew={false} setOpenIssueModal={()=>{}} isMaster = {false} issue={issue} isGame = {false}/>
-                                <Statistic/>
+                                {console.log(gameStatistic[index])}
+                                <Statistic gameStatistic={gameStatistic} issueStatistic={gameStatistic[index]} index={index}/>
                         </div>
             })}
         </Container>);

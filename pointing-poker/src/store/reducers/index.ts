@@ -4,6 +4,7 @@ import { gameSettingsReducer } from "./gameSettings"
 import { messageReducer } from "./messageReducer"
 import { playerReducer } from "./player"
 import { socketReducer } from "./socket"
+import { statisticReducer } from "./statistic"
 
 // Register your redusers here
 
@@ -14,6 +15,7 @@ export const rootReducer = combineReducers({
   messages: messageReducer,
   gameSettings: gameSettingsReducer,
   socket: socketReducer,
+  statistic: statisticReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>
