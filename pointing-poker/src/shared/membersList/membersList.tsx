@@ -9,6 +9,7 @@ import { Redirect, useHistory, useParams } from 'react-router';
 import { NoMatchPage } from '../../pages/404page/NoMatchPage';
 import { isConstructorDeclaration } from 'typescript';
 import { useTheme } from '@material-ui/styles';
+import { ScramInfoActionTypes } from '../../interfaces/IScramInfo';
 
 interface IGame {
   gameID: number;
@@ -86,6 +87,9 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
           setOpenDeleteModal(false);
         }  else if(type === 'start-game') {
             console.log('game-started')
+            const settings = JSON.parse(event.data).msg;   
+            console.log(settings);
+            // dispatch({type=ScramInfoActionTypes.})   сюда добавить сохранение настроек полученных с сервера (из переменной settings)
             history.replace(`/game/${params.id}`);
         } else if(type === 'vote-for-delete-player') {
           console.log('voting for delete', JSON.parse(event.data).msg)
