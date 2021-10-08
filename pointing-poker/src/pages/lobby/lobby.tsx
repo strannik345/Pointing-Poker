@@ -32,7 +32,7 @@ export const Lobby: React.FC =()=> {
                   isScrumMaster ? 
                     <ScrumMaster/> 
                     :
-                    <MembersList scramMaster={false}/>
+                    <MembersList/>
                 }                
                 <Chat/>
               </Container>

@@ -30,7 +30,7 @@ export interface MemberListProps {
   scramMaster: boolean;
 }
 
-export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
+export const MembersList: React.FC = ()=> {
     const [openModal, setOpenModal] = useState<boolean>(true);
     const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
     const [memberList, setMemberList] = useState<IUser[]>([]); 
@@ -38,6 +38,7 @@ export const MembersList: React.FC<MemberListProps> = ({scramMaster})=> {
     const player = useTypedSelector(state => state.player);
     const {gameURL} = useTypedSelector(state => state.gameURL);
     const {socketUser} = useTypedSelector(state=> state.socket)
+    const scramMaster = useTypedSelector(state=>state.player.isScrumMaster)
     const history = useHistory()
     const params = useParams<any>();
     const dispatch = useDispatch();

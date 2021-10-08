@@ -11,7 +11,10 @@ import { Statistic } from '../pages/game/scramMaster/statistic';
 import { CardValue } from '../pages/lobby/scrumMaster/addCardValue/cardValue';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { GameProps } from '../interfaces/GameProps';
-import { IIssue } from '../interfaces/IScramInfo';
+import { ScramInfoActionTypes } from '../interfaces/IScramInfo';
+import { useDispatch } from 'react-redux';
+import { GamePlayerProp } from '../interfaces/GamePlayerProp';
+import { StatisticProp } from '../interfaces/IssueStatistic';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,25 +60,26 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
-export const GameInfo: React.FC =()=> {
+
+export const GameInfo: React.FC<StatisticProp> =(props)=> {
+    const {issueStatistic, gameStatistic} = {...props};
     const {issues, cardValues, isTimerNeed} = useTypedSelector(state => state.gameSettings);
     const {isScrumMaster} = useTypedSelector(state => state.player)
-    // const {isMaster} = {...props};
     const [activeIssue, setActiveIssue] = useState(0);
     const classes = useStyles();
     const [showStatistic, setShowStatistic] = useState(false);
     const [showIssueButton, setShowIssueButton] = useState(false);
     const {socketGame} = useTypedSelector(state=> state.socket)
     const params = useParams<any>();
+    const dispatch = useDispatch();
     
-    const sendActiveIssue = () => [
+    const sendActiveIssue = () => {
         socketGame.send(JSON.stringify({
             method: 'set-active-issue',
             id: params.id,
             msg: activeIssue
         }))
-      ]
-
+    }
     useEffect(()=> {
         if(socketGame.readyState === 1) {
             if(isScrumMaster) {
@@ -83,20 +87,31 @@ export const GameInfo: React.FC =()=> {
                 method: 'send-issues',
                 id: params.id,
                 msg: {issues: issues, isTimerNeed: isTimerNeed},
-                }))
+                }));
             }
             socketGame.onmessage = (event: any) =>{
                 const type = JSON.parse(event.data).type;
-                console.log(event.data)
-                console.log(type);
                 if(type === 'send-issues'){
-                    const issues = JSON.parse(event.data);
-                    console.log(issues);
+                    const data:GamePlayerProp[] = JSON.parse(event.data).msg;
+                    if(!isScrumMaster){
+                        if(data[data.length-1].issues) dispatch({type: ScramInfoActionTypes.SET_ISSUES, payload: data[data.length-1].issues});
+                        if(data[data.length-1].isTimerNeeded) dispatch({type: ScramInfoActionTypes.SET_IS_TIMER_NEED, 
+                        payload: data[data.length-1].isTimerNeeded})
+                            
+                    } 
                 }
+                if(type === 'set-active-issue'){
+                    const data= JSON.parse(event.data).msg;
+                    setActiveIssue(data);
+                }
+                // if(type === 'throw-card'){
+                //     const data:GameProps[] = JSON.parse(event.data).msg.cards; 
+                //     if(issueStatistic.length >= data[data.length-1].players.length-1) return dispatch({type: "SET_STATISTIC", payload: issueStatistic});
+                // }
             }
         }    
     }, [])
-
+console.log(issueStatistic);
     useEffect(()=>{
         isScrumMaster && sendActiveIssue();
     }, [activeIssue])
@@ -105,7 +120,6 @@ export const GameInfo: React.FC =()=> {
         setShowStatistic(true);
         if(issues.length > activeIssue+1 ) {
             setActiveIssue(activeIssue + 1);
-            // sendActiveIssue();
         } else {
             history.push('/result');
         }
@@ -123,6 +137,7 @@ export const GameInfo: React.FC =()=> {
                 </Typography>
                 <MemberCard isSmall={false}/>
             </Container>
+            
         {isScrumMaster ? 
             <Link to = {`/result`}>
                 <Button  className ="button button__outlined " variant="outlined" onClick = {()=>setShowStatistic(true)}>Stop game</Button>
@@ -136,18 +151,19 @@ export const GameInfo: React.FC =()=> {
                 <div className={classes.issuesList}>
                     <IssuesList isMaster = {isScrumMaster} isGame={true} activeIssue={activeIssue}/>
                 </div>
-               {isScrumMaster ? <div className={classes.statistic}><Statistic/></div> : 
+                {/* {console.log("STAT:", statistic)} */}
+               {isScrumMaster ? <div className={classes.statistic}><Statistic issueStatistic={issueStatistic} gameStatistic={gameStatistic} index={null}/></div> : 
                <Container className = "cards-list" style={{display:"flex", justifyContent:"start", padding:"45px"}}>
                {
                    cardValues.map((cardValue:string, index: number)=>{
-                       return <CardValue activeIssue={activeIssue} cardValue={cardValue} index={index} isSmall={false} isGame={true} nextIssueClick = {nextIssueClick}/>
+                       return <CardValue key = {index} activeIssue={activeIssue} cardValue={cardValue} index={index} isSmall={false} isGame={true} nextIssueClick = {nextIssueClick}/>
                    })
                }
            </Container>}
             </div>
             <div className={classes.controlPanelItem}> 
                 {isTimerNeed && <GameTimer activeIssue={activeIssue} setShowIssueButton={setShowIssueButton}/>}
-                {!isScrumMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic/></div>}
+                {!isScrumMaster && <div className={`${!showStatistic && classes.hidden} ${classes.statistic}`}><Statistic issueStatistic={issueStatistic} gameStatistic={gameStatistic} index={null}/></div>}
             </div> 
             
             {(isScrumMaster && showIssueButton || isScrumMaster && !isTimerNeed) ? 

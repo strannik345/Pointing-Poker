@@ -5,8 +5,9 @@ import { Typography, Button, Container} from '@material-ui/core';
 import { MemberCard } from '../memberCard/memberCard';
 import { ILobbyInfo } from '../../interfaces/ILobbyInfo';
 import { ManageGame } from '../../pages/lobby/scrumMaster/manageGame/manageGame';
+import { useTypedSelector } from '../../store/hooks/hooks';
 export const LobbyInfo: React.FC<ILobbyInfo> =(props)=> {
-    const isMaster = {...props}
+    const isMaster = useTypedSelector(state=>state.player.isScrumMaster)
     return(<>
     <Container className = "lobby-info">
         <Typography className = " lobby--title lobby--title__primary">
