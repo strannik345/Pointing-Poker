@@ -17,6 +17,7 @@ export const ManageGame: React.FC =()=> {
     const {socketUser} = useTypedSelector(state => state.socket)
     const player = useTypedSelector(state => state.player)
     const {gameURL} = useTypedSelector(state => state.gameURL)
+    const gameSettings = useTypedSelector(state => state.gameSettings)
     useEffect(()=>{
         // getGameID()
         console.log(params)
@@ -31,11 +32,11 @@ export const ManageGame: React.FC =()=> {
     // }
 
     const startGameHandler = () => {
-        console.log('startinggggggg gameee')
+        console.log('startinggggggg gameee',gameSettings)
         socketUser.send(JSON.stringify({
             id: gameURL,
             method: 'start-game',
-            msg: true
+            msg: gameSettings
           })) 
     }
 

@@ -72,7 +72,7 @@ const IOSSwitch = withStyles((theme: Theme) =>
 });
 
 export const GameSettings: React.FC =()=> {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const gameSettings = useTypedSelector(state => state.gameSettings);
   useEffect(()=>{
     if(gameSettings.votingSistem === 'fibonacci'){
