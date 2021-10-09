@@ -90,6 +90,7 @@ const broadcastConnection = (ws: any, msg: any) => {
   aWss.clients.forEach((client: any) => {
     console.log('in aws foreach', msg.method);
     if(ws.id === msg.id) {
+      try {
       switch (msg.method) {
         case 'start-server':
           client.send(JSON.stringify({
@@ -176,7 +177,10 @@ const broadcastConnection = (ws: any, msg: any) => {
             msg: gameProps[index],
           }))
           break;
-      }       
+      }   
+    } catch (e) {
+      console.log(e)
+    }    
    }
   });
 }
